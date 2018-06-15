@@ -1,31 +1,31 @@
-# parcel-react-electron
+# Glow
 
-A minimal Electron + React.js boilerplate with [parcel as bundler](https://github.com/parcel-bundler/parcel). Parcel is an alternative web application bundler to Webpack.
+An electron app for code qulity analysis through git.
 
-## Installation
+## Development
 
-* `git@github.com:Snjoo/parcel-react-electron.git`
-* `cd parcel-react-electron`
-* `yarn`
+Run local web development server
 
-## Usage
-
-### Development mode
-Run these commands to start dev server and Electron app
-``` bash
-# Parcel bundles the code and runs dev server
+```bash
 $ yarn dev
+```
 
-# Run the electron app which uses local dev server
+Start the electron development
+
+```bash
 $ yarn start-dev
 ```
 
 ### Production mode and packaging app
-Run this command to bundle code in production mode
-``` bash
-# Parcel bundle code once
-$ yarn build
 
-# Create executables
+Package the web content
+
+```bash
+$ yarn build
+```
+
+Package and create the app
+
+```bash
 $ yarn dist
 ```
