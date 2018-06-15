@@ -2,14 +2,9 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 70px;
   padding: 20px;
   color: white;
 }
@@ -25,4 +20,25 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+.file-table{
+  width:100%;
+  padding: 0 20px;
+  text-align: left;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.file-table td{
+  border:thin solid black
+}
+
+.file-table thead td{
+  cursor: pointer;
+}
+
+.file-table tr:nth-child(even){
+  background: lightgrey
 }

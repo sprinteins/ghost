@@ -1,7 +1,7 @@
 {
-  "name": "parcel-reactjs-electron",
-  "version": "1.0.0",
-  "description": "A minimal React.js boilerplate with parcel as bundler",
+  "name": "Glow",
+  "version": "0.1.0",
+  "description": "A Git analyser tool",
   "main": "main.js",
   "scripts": {
     "dev": "parcel ./src/index.html -d build/",
@@ -23,12 +23,9 @@
     ]
   },
   "keywords": [
-    "parcel",
-    "react"
-  ],
-  "contributors": [
-    "Robin <wrobin@gmx.net> (https://www.robinwieruch.de)",
-    "Samppa Hynninen <samppa.hynninen@gmail.com>"
+    "git",
+    "analysis",
+    "code"
   ],
   "license": "MIT",
   "dependencies": {
@@ -37,6 +34,8 @@
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "electron": "~1.7.8",
     "electron-builder": "^19.50.0",
