@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {log} from '../../modules/git';
+import './style.css';
 
 const electron = window.require('electron');
 const dialog = electron.remote.dialog;
@@ -49,7 +50,7 @@ export class Start extends Component {
     
     return (
       <div className="Start">
-        <button onClick={this.openFolderDialog.bind(this)}>Open Repo</button>
+        <button class="repo-button" onClick={this.openFolderDialog.bind(this)}>Open Repo</button>
          <div>{this.state.noOfFiles}</div>
          <div>
            

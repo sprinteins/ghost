@@ -5,3 +5,5 @@ npm-debug.log
 dist/
 build/
 node_modules/
+yarn-error.log
+*.log
