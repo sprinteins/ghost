@@ -11,13 +11,14 @@ export default class Start extends Component {
     this.openFolderDialog = this.openFolderDialog.bind(this);
     this.logDoneCB = this.logDoneCB.bind(this);
     this.logProgressCB = this.logProgressCB.bind(this);
-    this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
+    this.sortByCommits = _ =>
+      this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
 
     this.state = {
       noOfFiles: 0,
       status: 0,
-      fileStats: [],
+      fileStats: []
     };
   }
 
@@ -35,7 +36,7 @@ export default class Start extends Component {
 
   openFolderDialog() {
     const path = dialog.showOpenDialog({
-      properties: ['openFile', 'openDirectory', 'multiSelections'],
+      properties: ['openFile', 'openDirectory', 'multiSelections']
     })[0];
 
     log(path, this.logDoneCB, this.logProgressCB);
@@ -93,7 +94,11 @@ export default class Start extends Component {
 
     return (
       <div className="Start">
-        <button className="repo-button" onClick={this.openFolderDialog.bind(this)} type="button">
+        <button
+          className="repo-button"
+          onClick={this.openFolderDialog.bind(this)}
+          type="button"
+        >
           Open Repo
         </button>
         <div>{this.state.noOfFiles}</div>
