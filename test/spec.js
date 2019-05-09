@@ -2,11 +2,13 @@ const Application = require('spectron').Application
 const assert = require('assert')
 const electronPath = require('electron') // Require Electron from the binaries included in node_modules.
 const path = require('path')
+const sinon = require('sinon')
+//const {openFolderDialog} = require('./../src/views/start')
 
 // process.env.ELECTRON_START_URL = "http://localhost:1234";
 
 describe('Application launch', function () {
-  this.timeout(10000)
+  this.timeout(0)
   
   beforeEach(function () {
     this.app = new Application({
@@ -36,7 +38,38 @@ describe('Application launch', function () {
     })
   })
   
-  it.only('has "Open Repo" button', async function(){
+  it('has "Open Repo" button', async function(){
     await this.app.client.waitForVisible('.repo-button',5*1000);
+  });
+
+  it.only('should recognize the click on the "Open Repo" button"', async function(){
+    /*
+
+
+    var repofunction = {method: log("/Users/Heiko/Projekte/sprinteins/Ghost3/test/testrepo_ghost", this.logDoneCB, this.logProgressCB )};
+    var fakemethode = sinon.fake();
+    sinon.replace(this.app, 'openFolderDialog', fakemethode);
+    */
+   
+    stubfunction=this.app.client.log("/Users/Heiko/Projekte/sprinteins/Ghost3/test/testrepo_ghost", this.logDoneCB, this.logProgressCB )
+    
+    var stub = sinon.stub(this.app.client, 'openFolderDialog').callsFake(stubfunction);
+
+    await this.app.client.waitForVisible('.repo-button',5*1000);
+    return this.app.client.element('.repo-button').click();
+
+
+
+    //return this.app.client.element('.repo-button').click();
+    //assert.equal(fakemethode.count, 1)
+    /*
+    await this.app.client.waitForVisible('openFolderDialog',5*1000);
+    return this.app.client.getWindowCount().then(function (count) {
+      assert.equal(count, 2)});
+    */
+
+    //log("/Users/Heiko/Projekte/sprinteins/Ghost3/test/testrepo_ghost", this.logDoneCB, this.logProgressCB );
+
+
   });
 })

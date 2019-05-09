@@ -50,7 +50,7 @@ export class Start extends Component {
     
     return (
       <div className="Start">
-        <button class="repo-button" onClick={this.openFolderDialog.bind(this)}>Open Repo</button>
+        <button id="repo-button" class="repo-button" onClick={this.openFolderDialog.bind(this)}>Open Repo</button>
          <div>{this.state.noOfFiles}</div>
          <div>
            
