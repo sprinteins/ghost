@@ -20,9 +20,13 @@ describe('Application launch', function () {
         "ELECTRON_START_URL": "http://localhost:1234"
       },
     });
+
+    //this will mock the repo-selection
     fakeDialog.apply(this.app)
+    const pwd = process.cwd()+'/test/testrepo';
     return this.app.start().then(()=> 
-    fakeDialog.mock([{method: 'showOpenDialog', value: ['/Users/heikolang/Projekte/Semesterprojekt']}])
+    fakeDialog.mock([{method: 'showOpenDialog', value: [pwd]}])
+
     )
   })
   
@@ -48,4 +52,5 @@ describe('Application launch', function () {
     await this.app.client.waitForVisible('.repo-button',5*1000)
     .then(()=> this.app.client.click('.repo-button')
   )});
+  
 })
