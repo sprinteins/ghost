@@ -1,30 +1,32 @@
-const { spawn } = window.require('child_process');
+const { spawn } = window.require("child_process");
 
 export default function log(path, doneCB, progressCB) {
   let noOfFiles = 0;
-  const fileMap = {};
-  const cmd = 'git';
+  let fileMap = {};
+  const cmd = "git";
   const cmdArgs = [
-    'log',
-    '--merges',
-    '--numstat',
-    '-m',
-    '--pretty=tformat:',
-    '--grep=from bugfix/',
+    "log",
+    "--merges",
+    "--numstat",
+    "-m",
+    "--first-parent",
+    "master",
+    "--pretty=%cD",
+    "--grep=bugfix/"
   ];
 
   const gitLog = spawn(cmd, cmdArgs, { cwd: path });
 
-  gitLog.stdout.on('data', (data) => {
-    let lines = data.toString().split('\n');
+  gitLog.stdout.on("data", data => {
+    let lines = data.toString().split("\n");
     lines = lines.slice(0, -1);
     let date;
 
-    lines.forEach((line) => {
-      const stats = line.split('\t');
-      const additions = parseInt(stats[0]);
-      const deletions = parseInt(stats[1]);
-      const file = stats[2];
+    lines.forEach(line => {
+      let stats = line.split("\t");
+      let additions = parseInt(stats[0]);
+      let deletions = parseInt(stats[1]);
+      let file = stats[2];
 
       if (!fileMap[file]) {
         fileMap[file] = {
@@ -33,7 +35,7 @@ export default function log(path, doneCB, progressCB) {
           deletions: 0,
           changes: 0,
           commits: 0,
-          date,
+          date
         };
       }
 
@@ -47,16 +49,16 @@ export default function log(path, doneCB, progressCB) {
     progressCB(noOfFiles);
   });
 
-  gitLog.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+  gitLog.stderr.on("data", data => {
+    console.log("stderr: " + data);
   });
 
-  gitLog.on('close', (code) => {
+  gitLog.on("close", code => {
     // console.log('child process exited with code ' + code);
     if (code === 0) {
-      console.log('child process complete.');
+      console.log("child process complete.");
     } else {
-      console.log(`child process exited with code ${code}`);
+      console.log("child process exited with code " + code);
     }
 
     doneCB(fileMap, noOfFiles);

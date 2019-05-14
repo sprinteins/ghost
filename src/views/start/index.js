@@ -47,8 +47,6 @@ export default class Start extends Component {
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
-
-    console.log(fileStats);
   }
 
   logProgressCB(noOfFiles) {
