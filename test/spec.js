@@ -57,6 +57,5 @@ describe('Application launch', function () {
     await this.app.client.waitForVisible('.repo-button',5*1000)
     .then(()=> this.app.client.click('.repo-button'))
     await this.app.client.waitForVisible('.file-table')
-    
   })
 })
