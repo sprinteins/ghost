@@ -53,4 +53,10 @@ describe('Application launch', function () {
     .then(()=> this.app.client.click('.repo-button')
   )});
   
+  it('should show entries for the mocked repo', async function (){
+    await this.app.client.waitForVisible('.repo-button',5*1000)
+    .then(()=> this.app.client.click('.repo-button'))
+    await this.app.client.waitForVisible('.file-table')
+    
+  })
 })
