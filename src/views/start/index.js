@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import log from '../../modules/git';
 import './style.css';
 
-const electron = window.require('electron');
-const { dialog } = electron.remote;
+const { dialog } = window.bridge;
 
 export default class Start extends Component {
   constructor(props) {
@@ -94,6 +93,7 @@ export default class Start extends Component {
       <div className="Start">
         <button
           className="repo-button"
+          id="repo-button"
           onClick={this.openFolderDialog.bind(this)}
           type="button"
         >

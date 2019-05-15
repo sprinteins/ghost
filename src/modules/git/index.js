@@ -1,4 +1,4 @@
-const { spawn } = window.require("child_process");
+const { spawn } = window.bridge;
 
 export default function log(path, doneCB, progressCB) {
   let noOfFiles = 0;

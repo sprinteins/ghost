@@ -1,5 +1,6 @@
 // Basic init
 const electron = require('electron');
+const ipc = require('electron').ipcMain;
 
 const { app, BrowserWindow } = electron;
 const path = require('path');
@@ -13,8 +14,15 @@ if (process.env.ELECTRON_START_URL) {
 // To avoid being garbage collected
 let mainWindow;
 
-app.on('ready', () => {
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: path.resolve(path.join(__dirname, 'preload.js')),
+    },
+  });
 
   const startUrl = process.env.ELECTRON_START_URL
     || url.format({
@@ -31,7 +39,10 @@ app.on('ready', () => {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-});
+}
+
+app.on('ready', createWindow);
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
