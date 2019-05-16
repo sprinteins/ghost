@@ -34,11 +34,15 @@ export default class Start extends Component {
   }
 
   openFolderDialog() {
-    const path = dialog.showOpenDialog({
-      properties: ['openFile', 'openDirectory', 'multiSelections']
-    })[0];
+    const path1 = dialog.showOpenDialog({
+      properties: ['openFile', 'openDirectory', 'multiSelections'],
+    });
 
-    log(path, this.logDoneCB, this.logProgressCB);
+    if (path1 !== undefined) {
+      const path = path1[0];
+
+      log(path, this.logDoneCB, this.logProgressCB);
+    }
   }
 
   logDoneCB(fileMap, noOfFiles) {
