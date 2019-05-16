@@ -78,14 +78,16 @@ export default class Start extends Component {
         <table className="file-table">
           <thead>
             <tr>
+              <td>#</td>
               <td onClick={this.sortByFile}>File</td>
               <td onClick={this.sortByCommits}>Bugfixes</td>
               <td onClick={this.sortByDate}>Date of last change</td>
             </tr>
           </thead>
           <tbody>
-            {this.state.fileStats.map(stat => (
-              <tr key={Math.random()}>
+            {this.state.fileStats.map((stat, index) => (
+              <tr key={Math.random()} id={'stat' + index + 1}>
+                <td>{index + 1}</td>
                 <td>{stat.file}</td>
                 <td>{stat.commits}</td>
                 <td>{stat.latestDate}</td>
@@ -106,7 +108,7 @@ export default class Start extends Component {
         >
           Open Repo
         </button>
-        <div>{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>
+        <div id="noOfFiles">{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>
         <div>{fileTable}</div>
       </div>
     );

@@ -9,7 +9,7 @@ const fakeDialog = require('spectron-fake-dialog');
 // process.env.ELECTRON_START_URL = "http://localhost:1234";
 
 describe('Application launch', function () {
-  this.timeout(0);
+  this.timeout(10000);
 
   beforeEach(function () {
     this.app = new Application({
@@ -51,12 +51,32 @@ describe('Application launch', function () {
 
   it('should recognize the click on the "Open Repo" button"', async function () {
     await this.app.client.waitForVisible('.repo-button', 5 * 1000)
-      .then(() => this.app.client.click('.repo-button'));
+      .click('.repo-button');
   });
 
   it('should show entries for the mocked repo', async function () {
     await this.app.client.waitForVisible('.repo-button', 5 * 1000)
-      .then(() => this.app.client.click('.repo-button'));
+      .click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
+  });
+
+  it('should display the corresponding number of number of files', async function () {
+    await this.app.client.waitForVisible('.repo-button', 5 * 1000)
+      .click('.repo-button');
+    await this.app.client.waitForVisible('.file-table');
+
+    const elementText = await this.app.client.getText('#noOfFiles');
+
+    assert.equal(elementText, 'Overall number of files with bugfix-ocassion : 3');
+  });
+
+  it('should display the corresponding files', async function () {
+    await this.app.client.waitForVisible('.repo-button', 5 * 1000)
+      .click('.repo-button');
+    await this.app.client.waitForVisible('.file-table');
+
+    const element = await this.app.client.getText('#stat01');
+
+    assert.equal(element, '1 Bugfix_2.txt 2 6 Feb 2019 10:15:28');
   });
 });
