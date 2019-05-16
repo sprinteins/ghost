@@ -29,3 +29,14 @@ Package and create the app
 ```bash
 $ yarn dist
 ```
+
+
+### Testing
+
+before testing, change nodeIntegration to true in main.js
+
+Run tests
+
+```bash
+$ yarn test
+```
