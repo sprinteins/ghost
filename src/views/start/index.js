@@ -10,14 +10,14 @@ export default class Start extends Component {
     this.openFolderDialog = this.openFolderDialog.bind(this);
     this.logDoneCB = this.logDoneCB.bind(this);
     this.logProgressCB = this.logProgressCB.bind(this);
-    this.sortByCommits = _ =>
-      this.changeSorting(this.state.fileStats, 'commits');
+    this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
+    this.sortByDate = _ => this.changeSorting(this.state.file, 'latestDate');
 
     this.state = {
       noOfFiles: 0,
       status: 0,
-      fileStats: []
+      fileStats: [],
     };
   }
 
@@ -34,6 +34,7 @@ export default class Start extends Component {
   }
 
   openFolderDialog() {
+    this.state.noOfFiles = 0;
     const path1 = dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
@@ -78,7 +79,8 @@ export default class Start extends Component {
           <thead>
             <tr>
               <td onClick={this.sortByFile}>File</td>
-              <td onClick={this.sortByCommits}>bug fixes</td>
+              <td onClick={this.sortByCommits}>Bugfixes</td>
+              <td onClick={this.sortByDate}>Date of last change</td>
             </tr>
           </thead>
           <tbody>
@@ -86,6 +88,7 @@ export default class Start extends Component {
               <tr key={Math.random()}>
                 <td>{stat.file}</td>
                 <td>{stat.commits}</td>
+                <td>{stat.latestDate}</td>
               </tr>
             ))}
           </tbody>
@@ -103,7 +106,7 @@ export default class Start extends Component {
         >
           Open Repo
         </button>
-        <div>{this.state.noOfFiles}</div>
+        <div>{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>
         <div>{fileTable}</div>
       </div>
     );

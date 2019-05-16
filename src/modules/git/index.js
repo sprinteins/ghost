@@ -30,7 +30,8 @@ export default function log(path, doneCB, progressCB) {
       }
     }
 
-    let date;
+    let latestDate;
+    let commitDate = 'commitDate';
 
     lines.forEach((line) => {
       const stats = line.split('\t');
@@ -38,8 +39,20 @@ export default function log(path, doneCB, progressCB) {
       const deletions = parseInt(stats[1]);
       const file = stats[2];
 
-      if (file === undefined) return;
-
+      if (file === undefined) {
+        if (
+          line.startsWith('Mon, ')
+          || line.startsWith('Tue, ')
+          || line.startsWith('Wed, ')
+          || line.startsWith('Thu, ')
+          || line.startsWith('Fri, ')
+          || line.startsWith('Sat, ')
+          || line.startsWith('Sun, ')
+        ) {
+          commitDate = line;
+        }
+        return;
+      }
       if (!fileMap[file]) {
         fileMap[file] = {
           file,
@@ -47,7 +60,7 @@ export default function log(path, doneCB, progressCB) {
           deletions: 0,
           changes: 0,
           commits: 0,
-          date,
+          latestDate,
         };
       }
 
@@ -55,6 +68,13 @@ export default function log(path, doneCB, progressCB) {
       fileMap[file].deletions += deletions;
       fileMap[file].changes += additions + deletions;
       fileMap[file].commits += 1;
+
+      if (
+        fileMap[file].latestDate === undefined
+        || fileMap[file].latestDate === ''
+      ) {
+        fileMap[file].latestDate = commitDate.slice(5, -5);
+      }
     });
 
     noOfFiles += lines.length / 2;
