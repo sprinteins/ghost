@@ -12,7 +12,7 @@ export default class Start extends Component {
     this.logProgressCB = this.logProgressCB.bind(this);
     this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
-    this.sortByDate = _ => this.changeSorting(this.state.file, 'latestDate');
+    this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
 
     this.state = {
       noOfFiles: 0,
