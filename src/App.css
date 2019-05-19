@@ -3,18 +3,28 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-image: linear-gradient(90deg,#08223f,#005c6c);
   height: 70px;
   padding: 20px;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 1.8em;
+  display: inline-flex;
+  align-items: center;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.header img{
+  padding: 20px;
+}
+
+.Start {
+  /* background: hsla(0,0%,96%,.5); */
 }
 
 @keyframes App-logo-spin {
@@ -32,7 +42,11 @@
 }
 
 .file-table td{
-  border:thin solid black
+  border:thin solid black;
+}
+
+#tablefield{
+  padding: 20px;
 }
 
 .file-table thead td{

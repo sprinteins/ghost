@@ -143,8 +143,6 @@ export default function log(path, doneCB, progressCB) {
     } else {
       console.log(`child process exited with code ${code}`);
     }
-
-    console.log('filemap : ', fileMap);
     doneCB(fileMap, noOfFiles);
   });
 }

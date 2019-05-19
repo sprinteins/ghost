@@ -19,10 +19,13 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
+      // devTools: false,
       nodeIntegration: false,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
     },
+    show: false,
   });
+  mainWindow.maximize();
 
   const startUrl = process.env.ELECTRON_START_URL
     || url.format({
@@ -32,6 +35,9 @@ function createWindow() {
     });
 
   mainWindow.loadURL(startUrl);
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows

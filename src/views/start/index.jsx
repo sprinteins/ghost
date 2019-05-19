@@ -86,7 +86,7 @@ export default class Start extends Component {
           </thead>
           <tbody>
             {this.state.fileStats.map((stat, index) => (
-              <tr key={Math.random()} id={'stat' + index + 1}>
+              <tr key={Math.random()} id={`stat${index}${1}`}>
                 <td>{index + 1}</td>
                 <td>{stat.file}</td>
                 <td>{stat.commits}</td>
@@ -96,6 +96,24 @@ export default class Start extends Component {
           </tbody>
         </table>
       );
+    }
+
+    // function showNumberOfFiles(state) {
+    //   return <div id="noOfFiles">{`Overall number of files with bugfix-ocassion : ${state}`}</div>;
+    // }
+
+    // function checkForFiles(state) {
+    //   if (state !== undefined) {
+    //     return <showNumberOfFiles />;
+    //   }
+    //   return <div />;
+    // }
+
+    let showNumberOfFiles;
+    if (this.state.noOfFiles) {
+      showNumberOfFiles = <div id="noOfFiles">{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>;
+    } else {
+      showNumberOfFiles = <div> </div>;
     }
 
     return (
@@ -108,8 +126,8 @@ export default class Start extends Component {
         >
           Open Repo
         </button>
-        <div id="noOfFiles">{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>
-        <div>{fileTable}</div>
+        {showNumberOfFiles}
+        <div id="tablefield">{fileTable}</div>
       </div>
     );
   }

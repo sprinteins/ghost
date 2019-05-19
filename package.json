@@ -1,9 +1,9 @@
 {
-  "name": "Glow",
+  "name": "Ghost",
   "version": "0.1.0",
   "description": "A Git analyser tool",
   "author": {
-    "name": "Tamás Rusz",
+    "name": "Tamás Rusz, Heiko Lang",
     "email": "t.rusz@sprinteins.com"
   },
   "main": "main.js",
@@ -18,7 +18,7 @@
     "test": "mocha"
   },
   "build": {
-    "appId": "com.sprinteins.glow",
+    "appId": "com.sprinteins.ghost",
     "files": [
       "main.js",
       "build/*"

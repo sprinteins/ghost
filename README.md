@@ -1,4 +1,4 @@
-# Glow
+# Ghost
 
 An electron app for code qulity analysis through git.
 

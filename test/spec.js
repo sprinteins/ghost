@@ -77,6 +77,6 @@ describe('Application launch', function () {
 
     const element = await this.app.client.getText('#stat01');
 
-    assert.equal(element, '1 Bugfix_2.txt 2 6 Feb 2019 10:15:28');
+    assert.equal(element, '1 Bugfix_2.txt 2 2019-02-06 T10:15:28');
   });
 });
