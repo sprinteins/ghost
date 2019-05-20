@@ -1,6 +1,6 @@
 const { spawn } = window.bridge;
 
-export default function log(path, doneCB, progressCB) {
+export default function log(path, doneCB, progressCB, queryParameter) {
   let noOfFiles = 0;
   const fileMap = {};
   const cmd = 'git';
@@ -12,7 +12,7 @@ export default function log(path, doneCB, progressCB) {
     '--first-parent',
     'master',
     '--pretty=%cD',
-    '--grep=bugfix/',
+    '--grep=' + queryParameter,
   ];
 
   // git command:

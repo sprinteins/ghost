@@ -21,6 +21,7 @@ export default class Start extends Component {
     };
   }
 
+
   sortByAttribute(array, attribute) {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
@@ -34,6 +35,7 @@ export default class Start extends Component {
   }
 
   openFolderDialog() {
+    const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
     const path1 = dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
@@ -42,7 +44,7 @@ export default class Start extends Component {
     if (path1 !== undefined) {
       const path = path1[0];
 
-      log(path, this.logDoneCB, this.logProgressCB);
+      log(path, this.logDoneCB, this.logProgressCB, queryParameter);
     }
   }
 
@@ -98,17 +100,6 @@ export default class Start extends Component {
       );
     }
 
-    // function showNumberOfFiles(state) {
-    //   return <div id="noOfFiles">{`Overall number of files with bugfix-ocassion : ${state}`}</div>;
-    // }
-
-    // function checkForFiles(state) {
-    //   if (state !== undefined) {
-    //     return <showNumberOfFiles />;
-    //   }
-    //   return <div />;
-    // }
-
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
       showNumberOfFiles = <div id="noOfFiles">{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>;
@@ -118,14 +109,17 @@ export default class Start extends Component {
 
     return (
       <div className="Start">
-        <button
-          className="repo-button"
-          id="repo-button"
-          onClick={this.openFolderDialog.bind(this)}
-          type="button"
-        >
-          Open Repo
-        </button>
+        <div>
+          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" placeholder="Bugfix-Branch Name" />
+          <button
+            className="repo-button gitLogQuery"
+            id="repo-button"
+            onClick={this.openFolderDialog.bind(this)}
+            type="button"
+          >
+            Open Repo
+          </button>
+        </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>
       </div>
