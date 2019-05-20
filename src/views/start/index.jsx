@@ -102,7 +102,7 @@ export default class Start extends Component {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = <div id="noOfFiles">{'Overall number of files with bugfix-ocassion : ' + this.state.noOfFiles}</div>;
+      showNumberOfFiles = <div id="noOfFiles">{'Overall number of files with query-parameter-ocassion : ' + this.state.noOfFiles}</div>;
     } else {
       showNumberOfFiles = <div> </div>;
     }
@@ -110,7 +110,8 @@ export default class Start extends Component {
     return (
       <div className="Start">
         <div>
-          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" placeholder="Bugfix-Branch Name" />
+          Query Parameter :
+          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" defaultValue="bugfix/" />
           <button
             className="repo-button gitLogQuery"
             id="repo-button"
