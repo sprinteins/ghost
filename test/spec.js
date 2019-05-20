@@ -67,7 +67,7 @@ describe('Application launch', function () {
 
     const elementText = await this.app.client.getText('#noOfFiles');
 
-    assert.equal(elementText, 'Overall number of files with bugfix-ocassion : 3');
+    assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 3');
   });
 
   it('should display the corresponding files', async function () {

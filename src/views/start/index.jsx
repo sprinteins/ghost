@@ -82,7 +82,7 @@ export default class Start extends Component {
             <tr>
               <td>#</td>
               <td onClick={this.sortByFile}>File</td>
-              <td onClick={this.sortByCommits}>Bugfixes</td>
+              <td onClick={this.sortByCommits}>Occassions per file</td>
               <td onClick={this.sortByDate}>Date of last change</td>
             </tr>
           </thead>
