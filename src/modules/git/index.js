@@ -18,6 +18,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
 
+  let finalcount = 0;
   const gitLog = spawn(cmd, cmdArgs, { cwd: path });
 
   gitLog.stdout.on('data', (data) => {
@@ -31,6 +32,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
 
     let latestDate;
     let commitDate = 'commitDate';
+    let count = 0;
 
     lines.forEach((line) => {
       const stats = line.split('\t');
@@ -52,6 +54,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
         }
         return;
       }
+
       if (!fileMap[file]) {
         fileMap[file] = {
           file,
@@ -126,10 +129,13 @@ export default function log(path, doneCB, progressCB, queryParameter) {
 
         fileMap[file].latestDate = formatedDate;
       }
+      count += 1;
     });
 
-    noOfFiles += lines.length / 2;
-    progressCB(noOfFiles);
+    finalcount += count;
+
+    noOfFiles += lines.length;
+    progressCB(finalcount);
   });
 
   gitLog.stderr.on('data', (data) => {
