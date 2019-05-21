@@ -1,6 +1,6 @@
 const { spawn } = window.bridge;
 
-const { BrowserWindow } = window.bridge;
+const { remote } = window.bridge;
 
 export default function log(path, doneCB, progressCB, queryParameter) {
   let noOfFiles = 0;
@@ -153,7 +153,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     }
     doneCB(fileMap, noOfFiles);
     document.body.classList.remove('busy-cursor');
-    //const splash = BrowserWindow.getCurrentWindow();
-    //splash.destroy();
+    const focusWindow = remote.BrowserWindow.getFocusedWindow();
+    focusWindow.destroy();
   });
 }

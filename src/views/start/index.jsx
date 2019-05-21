@@ -50,10 +50,9 @@ export default class Start extends Component {
 
       let splash;
       splash = new BrowserWindow({
-        width: 400,
-        height: 500,
-        //frame: false,
-        //transparent: true,
+        width: 316,
+        height: 350,
+        frame: false,
         alwaysOnTop: true,
       });
       splash.loadURL(`file://${__dirname}/../splash.html`);
