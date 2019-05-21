@@ -4,6 +4,8 @@ import './style.css';
 
 const { dialog } = window.bridge;
 
+const { BrowserWindow } = window.bridge;
+
 export default class Start extends Component {
   constructor(props) {
     super(props);
@@ -45,6 +47,17 @@ export default class Start extends Component {
       const path = path1[0];
 
       document.body.classList.add('busy-cursor');
+
+      let splash;
+      splash = new BrowserWindow({
+        width: 400,
+        height: 500,
+        //frame: false,
+        //transparent: true,
+        alwaysOnTop: true,
+      });
+      splash.loadURL(`file://${__dirname}/../splash.html`);
+
       log(path, this.logDoneCB, this.logProgressCB, queryParameter);
     }
   }

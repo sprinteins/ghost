@@ -1,5 +1,7 @@
 const { spawn } = window.bridge;
 
+const { BrowserWindow } = window.bridge;
+
 export default function log(path, doneCB, progressCB, queryParameter) {
   let noOfFiles = 0;
   const fileMap = {};
@@ -151,5 +153,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     }
     doneCB(fileMap, noOfFiles);
     document.body.classList.remove('busy-cursor');
+    //const splash = BrowserWindow.getCurrentWindow();
+    //splash.destroy();
   });
 }
