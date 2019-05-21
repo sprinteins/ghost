@@ -150,5 +150,6 @@ export default function log(path, doneCB, progressCB, queryParameter) {
       console.log(`child process exited with code ${code}`);
     }
     doneCB(fileMap, noOfFiles);
+    document.body.classList.remove('busy-cursor');
   });
 }

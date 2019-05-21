@@ -58,5 +58,9 @@
 }
 
 .file-table tr:nth-child(even){
-  background: lightgrey
+  background: lightgrey;
+}
+
+body.busy-cursor {
+  cursor: progress;
 }

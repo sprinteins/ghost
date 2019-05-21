@@ -44,6 +44,7 @@ export default class Start extends Component {
     if (path1 !== undefined) {
       const path = path1[0];
 
+      document.body.classList.add('busy-cursor');
       log(path, this.logDoneCB, this.logProgressCB, queryParameter);
     }
   }
