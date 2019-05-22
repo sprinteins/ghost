@@ -11,7 +11,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     '--first-parent',
     'master',
     '--pretty=%cD',
-    `--grep=${queryParameter}`,
+    `--grep=${queryParameter}/`,
   ];
 
   // git command:

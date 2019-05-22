@@ -115,7 +115,7 @@ export default class Start extends Component {
       <div className="Start">
         <div>
           Query Parameter :
-          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" defaultValue="bugfix/" />
+          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" defaultValue="bugfix" />
           <button
             className="repo-button gitLogQuery"
             id="repo-button"
