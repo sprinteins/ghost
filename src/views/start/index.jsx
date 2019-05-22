@@ -47,15 +47,9 @@ export default class Start extends Component {
       const path = path1[0];
 
       document.body.classList.add('busy-cursor');
-
-      let splash;
-      splash = new BrowserWindow({
-        width: 316,
-        height: 350,
-        frame: false,
-        alwaysOnTop: true,
-      });
-      splash.loadURL(`file://${__dirname}/../splash.html`);
+      const ele = document.getElementById('loadingscreen');
+      ele.classList.add('loadingscreen-active');
+      ele.classList.remove('loadingscreen-passive');
 
       log(path, this.logDoneCB, this.logProgressCB, queryParameter);
     }

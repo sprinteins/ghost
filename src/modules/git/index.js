@@ -3,7 +3,6 @@ const { spawn } = window.bridge;
 const { remote } = window.bridge;
 
 export default function log(path, doneCB, progressCB, queryParameter) {
-  let noOfFiles = 0;
   const fileMap = {};
   const cmd = 'git';
   const cmdArgs = [
@@ -14,7 +13,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     '--first-parent',
     'master',
     '--pretty=%cD',
-    '--grep=' + queryParameter,
+    `--grep=${queryParameter}`,
   ];
 
   // git command:
@@ -136,7 +135,6 @@ export default function log(path, doneCB, progressCB, queryParameter) {
 
     finalcount += count;
 
-    noOfFiles += lines.length;
     progressCB(finalcount);
   });
 
@@ -151,9 +149,12 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     } else {
       console.log(`child process exited with code ${code}`);
     }
-    doneCB(fileMap, noOfFiles);
+
     document.body.classList.remove('busy-cursor');
-    const focusWindow = remote.BrowserWindow.getFocusedWindow();
-    focusWindow.destroy();
+    const ele = document.getElementById('loadingscreen');
+    ele.classList.add('loadingscreen-passive');
+    ele.classList.remove('loadingscreen-active');
+
+    doneCB(fileMap, finalcount);
   });
 }
