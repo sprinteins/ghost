@@ -4,8 +4,6 @@ import './style.css';
 
 const { dialog } = window.bridge;
 
-const { BrowserWindow } = window.bridge;
-
 export default class Start extends Component {
   constructor(props) {
     super(props);
@@ -109,7 +107,7 @@ export default class Start extends Component {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = <div id="noOfFiles">{'Overall number of files with query-parameter-ocassion : ' + this.state.noOfFiles}</div>;
+      showNumberOfFiles = <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>;
     } else {
       showNumberOfFiles = <div> </div>;
     }

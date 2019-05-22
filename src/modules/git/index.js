@@ -1,7 +1,5 @@
 const { spawn } = window.bridge;
 
-const { remote } = window.bridge;
-
 export default function log(path, doneCB, progressCB, queryParameter) {
   const fileMap = {};
   const cmd = 'git';
@@ -82,7 +80,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
 
         if (formatedSplittedDate[0].length < 2) {
           let formatedSplittedPaddedDate = formatedSplittedDate[0];
-          formatedSplittedPaddedDate = '0' + formatedSplittedPaddedDate[0];
+          formatedSplittedPaddedDate = `0${formatedSplittedPaddedDate[0]}`;
           formatedSplittedDate[0] = formatedSplittedPaddedDate;
         }
 
@@ -126,7 +124,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
           default:
             break;
         }
-        formatedDate = formatedSplittedDate[2] + '-' + formatedSplittedDate[1] + '-' + formatedSplittedDate[0] + ' T' + formatedSplittedDate[3];
+        formatedDate = `${formatedSplittedDate[2]}-${formatedSplittedDate[1]}-${formatedSplittedDate[0]} T${formatedSplittedDate[3]}`;
 
         fileMap[file].latestDate = formatedDate;
       }
