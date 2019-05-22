@@ -16,7 +16,6 @@ export default class Start extends Component {
 
     this.state = {
       noOfFiles: 0,
-      status: 0,
       fileStats: [],
     };
   }

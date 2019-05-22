@@ -20,7 +20,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       // devTools: false,
-      nodeIntegration: true,
+      nodeIntegration: false,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
     },
     show: false,
