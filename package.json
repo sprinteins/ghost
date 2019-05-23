@@ -22,8 +22,10 @@
     "files": [
       "main.js",
       "preload.js",
+      "assets/*",
       "build/*"
-    ]
+    ],
+    "icon": "./assets/ghost_pacman.png"
   },
   "keywords": [
     "git",
