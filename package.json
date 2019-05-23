@@ -21,6 +21,7 @@
     "appId": "com.sprinteins.ghost",
     "files": [
       "main.js",
+      "preload.js",
       "build/*"
     ]
   },
