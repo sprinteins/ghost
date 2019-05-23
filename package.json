@@ -31,8 +31,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "electron": "~1.8.2",
-    "electron-reload": "^1.2.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
@@ -41,7 +39,9 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.6.1",
+    "electron": "~1.8.2",
     "electron-builder": "^19.50.0",
+    "electron-reload": "^1.2.2",
     "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",

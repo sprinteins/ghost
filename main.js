@@ -1,6 +1,5 @@
 // Basic init
 const electron = require('electron');
-const electronReload = require('electron-reload');
 
 const { app, BrowserWindow } = electron;
 const path = require('path');
@@ -8,7 +7,7 @@ const url = require('url');
 
 // Let electron reloads by itself when webpack watches changes in ./app/
 if (process.env.ELECTRON_START_URL) {
-  electronReload(__dirname);
+  require('electron-reload')(__dirname);
 }
 
 // To avoid being garbage collected
@@ -20,7 +19,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       // devTools: false,
-      nodeIntegration: false,
+      nodeIntegration: true,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
     },
     show: false,
