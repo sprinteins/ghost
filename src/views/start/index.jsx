@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import log from '../../modules/git';
 import './style.css';
+import helpIcon from '../../../assets/helpIcon.png';
 
-const { dialog } = window.bridge;
+const { dialog, BrowserWindow } = window.bridge;
 
 export default class Start extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class Start extends Component {
     this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
+    this.help = this.help.bind(this);
 
     this.state = {
       noOfFiles: 0,
@@ -77,6 +79,14 @@ export default class Start extends Component {
     this.setState({ fileStats });
   }
 
+  help() {
+    const helpWindow = new BrowserWindow({
+      width: 350,
+      height: 600,
+    });
+    helpWindow.loadURL(`file://${__dirname}/help.html`);
+  }
+
   render() {
     let fileTable;
     if (this.state.fileStats.length > 0) {
@@ -124,6 +134,7 @@ export default class Start extends Component {
           >
             Open Repo
           </button>
+          <img src={helpIcon} alt="help_icon" className="gitLogQuery" onClick={this.help.bind(this)} type="button" height="18px" style={{ margin: '-3px' }} />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>
