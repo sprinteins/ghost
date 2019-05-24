@@ -1,6 +1,7 @@
 # Ghost
 
-An electron app for code qulity analysis through git.
+Welcome,
+this is Ghost, an electron app for code quality analysis through git.
 
 ## Development
 
