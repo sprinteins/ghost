@@ -1,12 +1,16 @@
 # Ghost
 <img src="assets/ghost_pacman.png" height="150px" />
 
+### Welcome
 <p>
-Welcome,<br>
-this is Ghost, an electron app for code quality analysis through git.
+  This is <b>Ghost</b>, an electron app for code quality analysis through git.
+</p>
+<p>
+  Just enter a branchname or branchtype you want to analyse and select your .git-repository.<br>
+  Ghost will show all file occurrence within these branches and provide statistics for you.
 </p>
 
-### Initialize
+## Initialize
 
 Load project dependencies
 
@@ -14,7 +18,7 @@ Load project dependencies
 $ yarn install
 ```
 
-### Development
+## Development
 
 Run local web development server
 
@@ -28,7 +32,7 @@ Start the electron development
 $ yarn start-dev
 ```
 
-### Production mode and packaging app
+## Production mode and packaging app
 
 Package the web content
 
