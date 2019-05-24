@@ -3,7 +3,11 @@ import log from '../../modules/git';
 import './style.css';
 import helpIcon from '../../../assets/helpIcon.png';
 
-const { dialog, BrowserWindow } = window.bridge;
+const {
+  dialog, BrowserWindow,
+} = window.bridge;
+const url = require('url');
+const path = require('path');
 
 export default class Start extends Component {
   constructor(props) {
@@ -38,19 +42,19 @@ export default class Start extends Component {
   openFolderDialog() {
     const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
-    const path1 = dialog.showOpenDialog({
+    const filepath = dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
 
-    if (path1 !== undefined) {
-      const path = path1[0];
+    if (filepath !== undefined) {
+      const givenpath = filepath[0];
 
       document.body.classList.add('busy-cursor');
       const ele = document.getElementById('loadingscreen');
       ele.classList.add('loadingscreen-active');
       ele.classList.remove('loadingscreen-passive');
 
-      log(path, this.logDoneCB, this.logProgressCB, queryParameter);
+      log(givenpath, this.logDoneCB, this.logProgressCB, queryParameter);
     }
   }
 
@@ -80,11 +84,23 @@ export default class Start extends Component {
   }
 
   help() {
-    const helpWindow = new BrowserWindow({
+    let helpWindow = new BrowserWindow({
       width: 350,
       height: 600,
     });
-    helpWindow.loadURL(`file://${__dirname}/help.html`);
+
+    const helpUrl = url.format({
+      pathname: path.join(__dirname, 'help.html'),
+      protocol: 'file:',
+      slashes: true,
+    });
+
+
+    helpWindow.loadURL(helpUrl);
+
+    helpWindow.on('closed', () => {
+      helpWindow = null;
+    })
   }
 
   render() {

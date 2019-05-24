@@ -1,8 +1,10 @@
 # Ghost
+<img src="assets/ghost_pacman.png" height="150px" />
 
-Welcome,
+<p>
+Welcome,<br>
 this is Ghost, an electron app for code quality analysis through git.
-
+</p>
 ### Initialize
 
 Load project dependencies
@@ -43,7 +45,6 @@ $ yarn dist
 ### Testing
 
 before testing, change nodeIntegration to true in main.js
-and rename the folder ./test/testrepo/git into ./test/testrepo/.git
 
 run local web dev server
 

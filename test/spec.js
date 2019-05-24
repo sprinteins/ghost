@@ -27,7 +27,7 @@ describe('Application launch', function () {
 
     // this will mock the repo-selection
     fakeDialog.apply(this.app);
-    const pwd = `${process.cwd()}/test/testrepo`;
+    const pwd = `${process.cwd()}/test/testrepo/git`;
     return this.app.start().then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
   });
 
