@@ -3,7 +3,7 @@
 Welcome,
 this is Ghost, an electron app for code quality analysis through git.
 
-## Initialize
+### Initialize
 
 Load project dependencies
 
@@ -11,7 +11,7 @@ Load project dependencies
 $ yarn install
 ```
 
-## Development
+### Development
 
 Run local web development server
 
