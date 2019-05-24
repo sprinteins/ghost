@@ -5,6 +5,7 @@
 Welcome,<br>
 this is Ghost, an electron app for code quality analysis through git.
 </p>
+
 ### Initialize
 
 Load project dependencies
@@ -44,7 +45,7 @@ $ yarn dist
 
 ### Testing
 
-before testing, change nodeIntegration to true in main.js
+Before testing, change nodeIntegration to true in main.js
 
 run local web dev server
 
