@@ -5,7 +5,7 @@ this is Ghost, an electron app for code quality analysis through git.
 
 ## Initialize
 
-load project dependencies
+Load project dependencies
 
 ```bash
 $ yarn install
