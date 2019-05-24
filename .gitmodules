@@ -1,3 +1,0 @@
-[submodule "test/testrepo"]
-	path = test/testrepo
-	url = https://bitbucket.sprinteins.com/scm/~hlang/testrepo_ghost.git

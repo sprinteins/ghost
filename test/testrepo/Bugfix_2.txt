@@ -1,0 +1,7 @@
+Datei für den zweiten Bugfixbranch erstellt
+
+Änderungen in zweitem Bugfixbranch eingefügt mit zeitgleichen Änderungen im Masterbranch
+
+Änderungen in zweitem Bugfixbranch eingefügt nachdem erster Bugfixbranch in den Master gemerged wurde
+
+Änderungen in drittem Bugfixbranch eingefügt, allerdings auf File die im zweiten Bugfixbranch erstellt wurde

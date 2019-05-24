@@ -1,0 +1,15 @@
+Dies ist die Datei für den Main-Branch
+
+Hier wurde ein neuer Commit eingefügt
+
+Änderungen eingefügt nach Commits auf dem zweiten Bugfixbranch
+
+Änderungen eingefügt nach Commits auf dem ersten und dem zweiten Bugfixbranch
+
+Änderungen nach Merge mit erstem Bugfixbranch eingefügt mit zeitgleichen Commits auf zweitem Bugfixbranch
+
+Änderungen nach Merge mit zweitem Bugfixbranch eingefügt
+
+Änderungen nach Arbeit am dritten Bugfixbranch eingefügt
+
+Änderungen nach Merge mit drittem Bugfixbranch eingefügt
