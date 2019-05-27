@@ -91,13 +91,13 @@ export default function log(path, doneCB, progressCB, queryParameter) {
           case 'Feb':
             formatedSplittedDate[1] = '02';
             break;
-          case 'May':
+          case 'Mar':
             formatedSplittedDate[1] = '03';
             break;
           case 'Apr':
             formatedSplittedDate[1] = '04';
             break;
-          case 'Mar':
+          case 'May':
             formatedSplittedDate[1] = '05';
             break;
           case 'Jun':
