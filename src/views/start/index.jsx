@@ -54,7 +54,7 @@ export default class Start extends Component {
       ele.classList.add('loadingscreen-active');
       ele.classList.remove('loadingscreen-passive');
 
-      this.state.fileStats = {};
+      this.setState({fileStats:{}}
 
       log(givenpath, this.logDoneCB, this.logProgressCB, queryParameter);
     }
