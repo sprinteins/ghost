@@ -79,6 +79,7 @@ export default class Start extends Component {
   }
 
   changeSorting(fileStats, attribute) {
+    this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
   }
