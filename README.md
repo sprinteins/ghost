@@ -32,7 +32,7 @@ Go to your settings menu and select 'security & privacy'. In the 'General' Tab a
 
 ## Initialize
 
-To load project dependencies open the open the project folder in the terminal and type
+To load project dependencies open the project folder in the terminal and type
 
 ```bash
 $ yarn install
