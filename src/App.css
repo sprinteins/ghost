@@ -47,6 +47,7 @@
 
 .file-table td{
   border:thin solid black;
+  hyphens: auto;
 }
 
 #tablefield{
