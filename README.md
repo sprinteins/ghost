@@ -22,13 +22,13 @@ As mentioned above Ghost is an analysing tool for git branches. The main purpose
 
 <p> When you first download and install Ghost a warning message will appear, telling you that the application is from an unidentified dev and therefore can't be opened. </p>
 
-<img src="can'tBeOpened.png">
+<img src="assets/can'tBeOpened.png">
 
 <p> Until we get an open source license a work around is needed to install Ghost: <br>
 Go to your settings menu and select 'security & privacy'. In the 'General' Tab a note at the bottom will tell you, that the installation has been blocked. Tap the button 'Open Anyway' to allow the installation. </p>
 
-<img src="generalSettings.png">
-<img src="Security&Privacy.png">
+<img src="assets/generalSettings.png">
+<img src="assets/Security&Privacy.png">
 
 ## Initialize
 
