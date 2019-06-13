@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-image: linear-gradient(90deg, #08223f, #005c6c);
+  height: 70px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.8em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.gitLogQuery {
+  display: inline-block;
+}
+
+.header img {
+  padding: 20px;
+}
+
+.Start {
+  /* background: hsla(0,0%,96%,.5); */
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.file-table {
+  width: 100%;
+  padding: 0 20px;
+  text-align: left;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.file-table td {
+  border: thin solid black;
+  hyphens: auto;
+}
+
+#tablefield {
+  padding: 20px;
+}
+
+.file-table thead td {
+  cursor: pointer;
+}
+
+.file-table tr:nth-child(even) {
+  background: lightgrey;
+}
+
+body.busy-cursor {
+  cursor: progress;
+}
