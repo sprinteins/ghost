@@ -1,6 +1,12 @@
 const { spawn } = window.bridge;
 
-export default function log(path, doneCB, progressCB, queryParameter) {
+export default function log(
+  path,
+  doneCB,
+  progressCB,
+  queryParameter,
+  fileExtensionArray
+) {
   const fileMap = {};
   const cmd = 'git';
   const cmdArgs = [
@@ -11,16 +17,17 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     '--first-parent',
     'master',
     '--pretty=%cD',
-    `--grep=${queryParameter}/`,
+    `--grep=${queryParameter}/`
   ];
 
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
+  const cmdArgsWithExtensions = cmdArgs.concat(fileExtensionArray);
 
   let finalcount = 0;
-  const gitLog = spawn(cmd, cmdArgs, { cwd: path });
+  const gitLog = spawn(cmd, cmdArgsWithExtensions, { cwd: path });
 
-  gitLog.stdout.on('data', (data) => {
+  gitLog.stdout.on('data', data => {
     const lines = data.toString().split('\n');
 
     for (let i = 0; i < lines.length; i += 1) {
@@ -33,7 +40,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     let commitDate = 'commitDate';
     let count = 0;
 
-    lines.forEach((line) => {
+    lines.forEach(line => {
       const stats = line.split('\t');
       const additions = parseInt(stats[0]);
       const deletions = parseInt(stats[1]);
@@ -41,13 +48,13 @@ export default function log(path, doneCB, progressCB, queryParameter) {
 
       if (file === undefined) {
         if (
-          line.startsWith('Mon, ')
-          || line.startsWith('Tue, ')
-          || line.startsWith('Wed, ')
-          || line.startsWith('Thu, ')
-          || line.startsWith('Fri, ')
-          || line.startsWith('Sat, ')
-          || line.startsWith('Sun, ')
+          line.startsWith('Mon, ') ||
+          line.startsWith('Tue, ') ||
+          line.startsWith('Wed, ') ||
+          line.startsWith('Thu, ') ||
+          line.startsWith('Fri, ') ||
+          line.startsWith('Sat, ') ||
+          line.startsWith('Sun, ')
         ) {
           commitDate = line;
         }
@@ -61,7 +68,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
           deletions: 0,
           changes: 0,
           commits: 0,
-          latestDate,
+          latestDate
         };
       }
 
@@ -71,8 +78,8 @@ export default function log(path, doneCB, progressCB, queryParameter) {
       fileMap[file].commits += 1;
 
       if (
-        fileMap[file].latestDate === undefined
-        || fileMap[file].latestDate === ''
+        fileMap[file].latestDate === undefined ||
+        fileMap[file].latestDate === ''
       ) {
         let formatedDate = commitDate.slice(5, -5);
 
@@ -124,7 +131,9 @@ export default function log(path, doneCB, progressCB, queryParameter) {
           default:
             break;
         }
-        formatedDate = `${formatedSplittedDate[2]}-${formatedSplittedDate[1]}-${formatedSplittedDate[0]} T${formatedSplittedDate[3]}`;
+        formatedDate = `${formatedSplittedDate[2]}-${formatedSplittedDate[1]}-${
+          formatedSplittedDate[0]
+        } T${formatedSplittedDate[3]}`;
 
         fileMap[file].latestDate = formatedDate;
       }
@@ -136,11 +145,11 @@ export default function log(path, doneCB, progressCB, queryParameter) {
     progressCB(finalcount);
   });
 
-  gitLog.stderr.on('data', (data) => {
+  gitLog.stderr.on('data', data => {
     console.log(`stderr: ${data}`);
   });
 
-  gitLog.on('close', (code) => {
+  gitLog.on('close', code => {
     // console.log('child process exited with code ' + code);
     if (code === 0) {
       console.log('child process complete.');
