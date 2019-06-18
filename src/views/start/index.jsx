@@ -13,16 +13,14 @@ export default class Start extends Component {
     this.openFolderDialog = this.openFolderDialog.bind(this);
     this.logDoneCB = this.logDoneCB.bind(this);
     this.logProgressCB = this.logProgressCB.bind(this);
-    this.sortByCommits = _ =>
-      this.changeSorting(this.state.fileStats, 'commits');
+    this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
-    this.sortByDate = _ =>
-      this.changeSorting(this.state.fileStats, 'latestDate');
+    this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
     this.help = this.help.bind(this);
 
     this.state = {
       noOfFiles: 0,
-      fileStats: []
+      fileStats: [],
     };
   }
 
@@ -43,14 +41,14 @@ export default class Start extends Component {
     let fileExtension = document.getElementById('fileExtension').value;
     this.state.noOfFiles = 0;
     const filepath = dialog.showOpenDialog({
-      properties: ['openFile', 'openDirectory', 'multiSelections']
+      properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
 
     if (fileExtension === '') {
       fileExtension = '*';
     }
 
-    var fileExtensionArray = fileExtension.split(',');
+    const fileExtensionArray = fileExtension.split(',');
 
     if (filepath !== undefined) {
       const givenpath = filepath[0];
@@ -66,7 +64,7 @@ export default class Start extends Component {
         this.logDoneCB,
         this.logProgressCB,
         queryParameter,
-        fileExtensionArray
+        fileExtensionArray,
       );
     }
   }
@@ -87,7 +85,6 @@ export default class Start extends Component {
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
     }
-
     return fileStats;
   }
 
@@ -99,13 +96,13 @@ export default class Start extends Component {
   help() {
     let helpWindow = new BrowserWindow({
       width: 350,
-      height: 600
+      height: 600,
     });
 
     const helpUrl = url.format({
       pathname: path.join(__dirname, 'help.html'),
       protocol: 'file:',
-      slashes: true
+      slashes: true,
     });
 
     helpWindow.loadURL(helpUrl);
@@ -145,8 +142,12 @@ export default class Start extends Component {
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
       showNumberOfFiles = (
-        <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${
-          this.state.noOfFiles
+        <div id="noOfFiles">
+          {`Overall number of files with query-parameter-ocassion : ${
+            this.state.noOfFiles
+            }`}
+
+        </div>
       );
     } else {
       showNumberOfFiles = <div> </div>;
