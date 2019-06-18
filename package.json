@@ -8,7 +8,7 @@
   "main": "main.js",
   "scripts": {
     "dev": "parcel ./src/index.html -d build/",
-    "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
+    "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron . --inspect",
     "start": "electron .",
     "build": "parcel build ./src/index.html -d build/ --public-url ./",
     "pack": "electron-builder --dir",

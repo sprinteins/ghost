@@ -22,7 +22,12 @@ export default function log(
 
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
-  const cmdArgsWithExtensions = cmdArgs.concat(fileExtensionArray);
+
+  const prefix = '*.';
+  const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
+  const extensions = prefixString.split(',');
+
+  const cmdArgsWithExtensions = cmdArgs.concat(extensions);
 
   let finalcount = 0;
   const gitLog = spawn(cmd, cmdArgsWithExtensions, { cwd: path });

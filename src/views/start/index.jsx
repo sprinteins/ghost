@@ -40,11 +40,15 @@ export default class Start extends Component {
 
   openFolderDialog() {
     const queryParameter = document.getElementById('queryParameter').value;
-    const fileExtension = document.getElementById('fileExtension').value;
+    let fileExtension = document.getElementById('fileExtension').value;
     this.state.noOfFiles = 0;
     const filepath = dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections']
     });
+
+    if (fileExtension === '') {
+      fileExtension = '*';
+    }
 
     var fileExtensionArray = fileExtension.split(',');
 
@@ -88,7 +92,6 @@ export default class Start extends Component {
   }
 
   changeSorting(fileStats, attribute) {
-    this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
   }
@@ -144,7 +147,6 @@ export default class Start extends Component {
       showNumberOfFiles = (
         <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${
           this.state.noOfFiles
-        }`}</div>
       );
     } else {
       showNumberOfFiles = <div> </div>;
@@ -167,7 +169,6 @@ export default class Start extends Component {
             type="text"
             name="fileExtension"
             id="fileExtension"
-            defaultValue="*"
           />
           split by ','
           <button
