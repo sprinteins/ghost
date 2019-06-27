@@ -19,6 +19,8 @@ export default class Start extends Component {
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
     this.help = this.help.bind(this);
+    this.queryValue="bugfix"
+    this.currentPath=null;
 
     this.state = {
       noOfFiles: 0,
@@ -47,7 +49,7 @@ export default class Start extends Component {
     });
 
     if (filepath !== undefined) {
-      const givenpath = filepath[0];
+      this.currentPath = filepath[0];
 
       document.body.classList.add('busy-cursor');
       const ele = document.getElementById('loadingscreen');
@@ -55,8 +57,7 @@ export default class Start extends Component {
       ele.classList.remove('loadingscreen-passive');
 
       this.setState({fileStats:{}})
-
-      log(givenpath, this.logDoneCB, this.logProgressCB, queryParameter);
+      log(this.currentPath, this.logDoneCB, this.logProgressCB, queryParameter);
     }
   }
 
@@ -104,6 +105,20 @@ export default class Start extends Component {
       helpWindow = null;
     })
   }
+  
+  onQueryKeyDown(e) {
+    //if keydown on enter reevaluate the query
+    if (e.keyCode === 13) {
+      if(this.currentPath){
+        log(this.currentPath, this.logDoneCB, this.logProgressCB, this.queryValue);
+      }
+    }
+  }
+
+  setQueryValue(e){
+    this.queryValue= e.target.value;
+  }
+
 
   render() {
     let fileTable;
@@ -143,7 +158,15 @@ export default class Start extends Component {
       <div className="Start">
         <div>
           Query Parameter :
-          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" defaultValue="bugfix" />
+          <input 
+            className="gitLogQuery" 
+            type="text" 
+            name="queryParameter" 
+            id="queryParameter" 
+            defaultValue={this.queryValue} 
+            onKeyDown={this.onQueryKeyDown.bind(this)}
+            onChange={this.setQueryValue.bind(this)}
+             />
           <button
             className="repo-button gitLogQuery"
             id="repo-button"
