@@ -101,7 +101,7 @@ export default class Start extends Component {
           </button>
           <img src={helpIcon} alt="help_icon" className="gitLogQuery" onClick={this.help.bind(this)} type="button" height="18px" style={{ margin: "-3px" }} />
         </div>
-        {noOfFiles && <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${noOfFiles}`}</div>}
+        {noOfFiles > 0 && <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${noOfFiles}`}</div>}
         <div id="tablefield">{fileStats && fileStats.length > 0 && <Table fileStats={fileStats} />}</div>
       </div>
     );
