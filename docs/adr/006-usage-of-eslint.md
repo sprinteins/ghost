@@ -4,7 +4,7 @@ Date 7. February 2019
 
 ## Status:
 
-proposed
+accepted
 
 ## Context:
 
