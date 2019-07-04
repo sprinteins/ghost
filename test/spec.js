@@ -14,7 +14,7 @@ describe('Application launch', function() {
     this.app = new Application({
       path: electronPath,
       env: {
-        NODE_ENV="test"
+        NODE_ENV: 'test',
       },
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.
