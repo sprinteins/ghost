@@ -7,7 +7,6 @@ const fakeDialog = require('spectron-fake-dialog');
 // process.env.ELECTRON_START_URL = "http://localhost:1234";
 
 describe('Application launch', function() {
-  console.log('testtravis');
   this.timeout(10000);
 
   beforeEach(function() {
@@ -17,10 +16,6 @@ describe('Application launch', function() {
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.
       args: [path.join(__dirname, '..')],
-
-      env: {
-        ELECTRON_START_URL: 'http://localhost:1234',
-      },
     });
 
     // this will mock the repo-selection
