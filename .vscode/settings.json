@@ -1,0 +1,11 @@
+{
+  "prettier.endOfLine": "crlf",
+  "editor.formatOnSave": true,
+  "editor.wordWrapColumn": 180,
+  "prettier.printWidth": 180,
+  "prettier.jsxSingleQuote": false,
+  "prettier.singleQuote": true,
+  "prettier.useTabs": false,
+  "prettier.trailingComma": "all",
+  "javascript.updateImportsOnFileMove.enabled": "always"
+}
