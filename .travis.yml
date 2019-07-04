@@ -6,6 +6,7 @@ addons:
   chrome: stable
 os:
   - linux
+  - osx
 
 env:
 global:
@@ -22,8 +23,6 @@ cache:
 before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf $HOME/.cache/electron-builder/wine; fi
 
-
-  # These commands are executed before the scripts are executed
 install:
   # Install all dependencies listed in your package.json file
   - npm install
