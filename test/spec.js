@@ -8,8 +8,6 @@ const fakeDialog = require('spectron-fake-dialog');
 
 describe('Application launch', function() {
   this.timeout(10000);
-  console.log(process.env);
-
   beforeEach(function() {
     this.app = new Application({
       path: electronPath,
