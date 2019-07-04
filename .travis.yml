@@ -6,3 +6,32 @@ addons:
   chrome: stable
 os:
   - linux
+  - osx
+
+env:
+global:
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+cache:
+  yarn: true
+  directories:
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+    - $HOME/.npm/_prebuilds
+
+before_cache:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf $HOME/.cache/electron-builder/wine; fi
+
+
+  # These commands are executed before the scripts are executed
+install:
+  # On OS X we first need to install Yarn via Homebrew
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install npm; fi
+  # Install all dependencies listed in your package.json file
+  - npm install
+
+script:
+  - echo "Tests"
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run npm run test; else npm run test; fi
+
