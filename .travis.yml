@@ -1,3 +1,8 @@
 language: node_js
 node_js: 11
 cache: npm
+sudo: required
+addons:
+  chrome: stable
+os:
+  - linux
