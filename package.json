@@ -14,8 +14,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "test": "NODE_ENV=test&&npm run build &&mocha",
-    "test-win": "SET NODE_ENV=test&&npm run build && mocha"
+    "test": "NODE_ENV=test&&npm run build &&mocha --exit",
+    "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit"
   },
   "build": {
     "appId": "com.sprinteins.ghost",
