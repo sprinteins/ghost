@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "parcel ./src/index.html -d build/",
     "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
+    "start-dev-win": "SET ELECTRON_START_URL=http://localhost:1234 & electron .",
     "start": "electron .",
     "build": "parcel build ./src/index.html -d build/ --public-url ./",
     "pack": "electron-builder --dir",
@@ -37,7 +38,8 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.6.1",
