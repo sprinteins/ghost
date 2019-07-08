@@ -68,14 +68,6 @@ $ yarn dist
 
 ### Testing
 
-Before testing, change nodeIntegration to true in main.js
-
-run local web dev server
-
-```bash
-$ yarn dev
-```
-
 Run tests
 
 ```bash
