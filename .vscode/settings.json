@@ -7,5 +7,7 @@
   "prettier.singleQuote": true,
   "prettier.useTabs": false,
   "prettier.trailingComma": "all",
+  "prettier.arrowParens": "always",
+  "prettier.eslintIntegration": true,
   "javascript.updateImportsOnFileMove.enabled": "always"
 }
