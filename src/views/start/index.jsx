@@ -59,11 +59,11 @@ export default class Start extends Component {
     this.changeSorting(fileStats, 'commits');
   };
 
-  logProgressCB = noOfFiles => {
+  logProgressCB = (noOfFiles) => {
     this.setState({ noOfFiles });
   };
 
-  convertfileMapToArray = fileMap => {
+  convertfileMapToArray = (fileMap) => {
     const fileStats = [];
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
@@ -125,7 +125,11 @@ export default class Start extends Component {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>;
+      showNumberOfFiles = (
+        <div id="noOfFiles">
+          {`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}
+        </div>
+      );
     } else {
       showNumberOfFiles = <div> </div>;
     }
@@ -134,11 +138,30 @@ export default class Start extends Component {
       <div className="Start">
         <div>
           Query Parameter :
-          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" defaultValue="bugfix" />
-          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolderDialog} type="button">
+          <input
+            className="gitLogQuery"
+            type="text"
+            name="queryParameter"
+            id="queryParameter"
+            defaultValue="bugfix"
+          />
+          <button
+            className="repo-button gitLogQuery"
+            id="repo-button"
+            onClick={this.openFolderDialog}
+            type="button"
+          >
             Open Repo
           </button>
-          <img src={helpIcon} alt="help_icon" className="gitLogQuery" onClick={this.help} type="button" height="18px" style={{ margin: '-3px' }} />
+          <img
+            src={helpIcon}
+            alt="help_icon"
+            className="gitLogQuery"
+            onClick={this.help}
+            type="button"
+            height="18px"
+            style={{ margin: '-3px' }}
+          />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>

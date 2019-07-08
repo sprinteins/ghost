@@ -1,5 +1,3 @@
-
-
 const { Application } = require('spectron');
 const assert = require('assert');
 const electronPath = require('electron'); // Require Electron from the binaries included in node_modules.
@@ -19,7 +17,6 @@ describe('Application launch', function () {
       // and the package.json located 1 level above.
       args: [path.join(__dirname, '..')],
 
-
       env: {
         ELECTRON_START_URL: 'http://localhost:1234',
       },
@@ -28,7 +25,9 @@ describe('Application launch', function () {
     // this will mock the repo-selection
     fakeDialog.apply(this.app);
     const pwd = `${process.cwd()}/test/testrepo/git`;
-    return this.app.start().then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
+    return this.app
+      .start()
+      .then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
   });
 
   afterEach(function () {
@@ -50,19 +49,16 @@ describe('Application launch', function () {
   });
 
   it('should recognize the click on the "Open Repo" button"', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000)
-      .click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
   });
 
   it('should show entries for the mocked repo', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000)
-      .click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
   });
 
   it('should display the corresponding number of number of files', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000)
-      .click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
 
     const elementText = await this.app.client.getText('#noOfFiles');
@@ -71,8 +67,7 @@ describe('Application launch', function () {
   });
 
   it('should display the corresponding files', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000)
-      .click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
 
     const element = await this.app.client.getText('#stat01');
