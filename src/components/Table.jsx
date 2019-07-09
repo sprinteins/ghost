@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { sortByAttribute } from "../utils/sort";
+import React, { Component } from 'react';
+import { sortByAttribute } from '../utils/sort';
 
 export default class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileStats: props.fileStats
+      fileStats: props.fileStats,
     };
   }
 
-  changeSorting(attribute) {
+  changeSorting = (attribute) => {
     sortByAttribute(this.state.fileStats, attribute);
     this.setState({ fileStats: this.state.fileStats });
-  }
+  };
 
   render() {
     const { fileStats } = this.state;
@@ -22,9 +22,9 @@ export default class Table extends Component {
           <thead>
             <tr>
               <td>#</td>
-              <td onClick={this.changeSorting.bind(this, "file")}>File</td>
-              <td onClick={this.changeSorting.bind(this, "commits")}>Occassions per file</td>
-              <td onClick={this.changeSorting.bind(this, "latestDate")}>Date of last change</td>
+              <td onClick={() => this.changeSorting('file')}>File</td>
+              <td onClick={() => this.changeSorting('commits')}>Occassions per file</td>
+              <td onClick={() => this.changeSorting('latestDate')}>Date of last change</td>
             </tr>
           </thead>
           <tbody>
