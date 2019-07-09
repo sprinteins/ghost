@@ -70,10 +70,7 @@ export default function log(path, doneCB, progressCB, queryParameter) {
       fileMap[file].changes += additions + deletions;
       fileMap[file].commits += 1;
 
-      if (
-        fileMap[file].latestDate === undefined
-        || fileMap[file].latestDate === ''
-      ) {
+      if (fileMap[file].latestDate === undefined || fileMap[file].latestDate === '') {
         let formatedDate = commitDate.slice(5, -5);
 
         const formatedSplittedDate = formatedDate.split(' ');
@@ -124,7 +121,9 @@ export default function log(path, doneCB, progressCB, queryParameter) {
           default:
             break;
         }
-        formatedDate = `${formatedSplittedDate[2]}-${formatedSplittedDate[1]}-${formatedSplittedDate[0]} T${formatedSplittedDate[3]}`;
+        formatedDate = `${formatedSplittedDate[2]}-${formatedSplittedDate[1]}-${
+          formatedSplittedDate[0]
+        } T${formatedSplittedDate[3]}`;
 
         fileMap[file].latestDate = formatedDate;
       }
