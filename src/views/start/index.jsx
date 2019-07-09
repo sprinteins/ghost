@@ -3,31 +3,23 @@ import log from '../../modules/git';
 import './style.css';
 import helpIcon from '../../../assets/helpIcon.png';
 
-const {
-  dialog, BrowserWindow,
-} = window.bridge;
+const { dialog, BrowserWindow } = window.bridge;
 const url = require('url');
 const path = require('path');
 
 export default class Start extends Component {
   constructor(props) {
     super(props);
-    this.openFolderDialog = this.openFolderDialog.bind(this);
-    this.logDoneCB = this.logDoneCB.bind(this);
-    this.logProgressCB = this.logProgressCB.bind(this);
     this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
-    this.help = this.help.bind(this);
-
     this.state = {
       noOfFiles: 0,
       fileStats: [],
     };
   }
 
-
-  sortByAttribute(array, attribute) {
+  sortByAttribute = (array, attribute) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
         return -1;
@@ -37,9 +29,9 @@ export default class Start extends Component {
       }
       return 0;
     });
-  }
+  };
 
-  openFolderDialog() {
+  openFolderDialog = () => {
     const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
     const filepath = dialog.showOpenDialog({
@@ -54,37 +46,39 @@ export default class Start extends Component {
       ele.classList.add('loadingscreen-active');
       ele.classList.remove('loadingscreen-passive');
 
+      this.setState({ fileStats: {} });
+
       log(givenpath, this.logDoneCB, this.logProgressCB, queryParameter);
     }
-  }
+  };
 
-  logDoneCB(fileMap, noOfFiles) {
+  logDoneCB = (fileMap, noOfFiles) => {
     this.noOfFiles = noOfFiles;
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
-  }
+  };
 
-  logProgressCB(noOfFiles) {
+  logProgressCB = (noOfFiles) => {
     this.setState({ noOfFiles });
-  }
+  };
 
-  convertfileMapToArray(fileMap) {
+  convertfileMapToArray = (fileMap) => {
     const fileStats = [];
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
     }
 
     return fileStats;
-  }
+  };
 
   changeSorting(fileStats, attribute) {
     this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
-  }
+  };
 
-  help() {
+  help = () => {
     let helpWindow = new BrowserWindow({
       width: 350,
       height: 600,
@@ -96,13 +90,12 @@ export default class Start extends Component {
       slashes: true,
     });
 
-
     helpWindow.loadURL(helpUrl);
 
     helpWindow.on('closed', () => {
       helpWindow = null;
-    })
-  }
+    });
+  };
 
   render() {
     let fileTable;
@@ -133,7 +126,11 @@ export default class Start extends Component {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>;
+      showNumberOfFiles = (
+        <div id="noOfFiles">
+          {`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}
+        </div>
+      );
     } else {
       showNumberOfFiles = <div> </div>;
     }
@@ -142,16 +139,30 @@ export default class Start extends Component {
       <div className="Start">
         <div>
           Query Parameter :
-          <input className="gitLogQuery" type="text" name="queryParameter" id="queryParameter" defaultValue="bugfix" />
+          <input
+            className="gitLogQuery"
+            type="text"
+            name="queryParameter"
+            id="queryParameter"
+            defaultValue="bugfix"
+          />
           <button
             className="repo-button gitLogQuery"
             id="repo-button"
-            onClick={this.openFolderDialog.bind(this)}
+            onClick={this.openFolderDialog}
             type="button"
           >
             Open Repo
           </button>
-          <img src={helpIcon} alt="help_icon" className="gitLogQuery" onClick={this.help.bind(this)} type="button" height="18px" style={{ margin: '-3px' }} />
+          <img
+            src={helpIcon}
+            alt="help_icon"
+            className="gitLogQuery"
+            onClick={this.help}
+            type="button"
+            height="18px"
+            style={{ margin: '-3px' }}
+          />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>
