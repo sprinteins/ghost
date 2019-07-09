@@ -17,12 +17,15 @@ describe('Application launch', function() {
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.
       args: [path.join(__dirname, '..')],
+
     });
 
     // this will mock the repo-selection
     fakeDialog.apply(this.app);
     const pwd = `${process.cwd()}/test/testrepo/git`;
-    return this.app.start().then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
+    return this.app
+      .start()
+      .then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
   });
 
   afterEach(function() {
@@ -52,6 +55,7 @@ describe('Application launch', function() {
     await this.app.client.waitForVisible('.file-table');
   });
 
+
   it('should display the corresponding number of number of files', async function() {
     await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
@@ -60,6 +64,7 @@ describe('Application launch', function() {
 
     assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 3');
   });
+
 
   it('should display the corresponding files', async function() {
     await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
