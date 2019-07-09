@@ -112,7 +112,7 @@ export default class Start extends Component {
             src={helpIcon}
             alt="help_icon"
             className="gitLogQuery"
-            onClick={this.help.bind(this)}
+            onClick={this.help}
             type="button"
             height="18px"
             style={{ margin: '-3px' }}
