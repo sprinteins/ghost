@@ -1,4 +1,4 @@
-import formatting from './the-real-formatting';
+import formatting from './formatting';
 import { fileMap, finalcount } from './calculations';
 
 const { spawn } = window.bridge;
