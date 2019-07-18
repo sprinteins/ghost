@@ -53,7 +53,7 @@ export default class Start extends Component {
   };
 
   gLogDoneCB = (fileMap, noOfFiles) => {
-    this.noOfFiles = noOfFiles;
+    this.setState({ noOfFiles });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
