@@ -121,9 +121,9 @@ export default class Start extends Component {
           <thead>
             <tr>
               <td>#</td>
-              <td onClick={this.sortByFile}>File</td>
-              <td onClick={this.sortByCommits}>Occassions per file</td>
-              <td onClick={this.sortByDate}>Date of last change</td>
+              <td id="sortByFile" onClick={this.sortByFile}>File</td>
+              <td id="sortByCommits" onClick={this.sortByCommits}>Occassions per file</td>
+              <td id="sortByDate" onClick={this.sortByDate}>Date of last change</td>
             </tr>
           </thead>
           <tbody>
