@@ -25,7 +25,7 @@ before_cache:
 
 install:
   # Install all dependencies listed in your package.json file
-  - npm install
+  - yarn install --force
 
 script:
   - echo "Tests"
