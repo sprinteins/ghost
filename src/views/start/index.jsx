@@ -72,7 +72,8 @@ export default class Start extends Component {
     return fileStats;
   };
 
-  changeSorting = (fileStats, attribute) => {
+  changeSorting=(fileStats, attribute)=> {
+    this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
   };
