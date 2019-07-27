@@ -39,11 +39,14 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.6.1",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "electron": "~1.8.2",
     "electron-builder": "^19.50.0",
     "electron-reload": "^1.2.2",
