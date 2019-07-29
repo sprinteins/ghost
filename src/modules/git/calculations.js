@@ -24,6 +24,4 @@ export default function doTheCalculations(newFileMap) {
       fileMap[file].commits += 1;
     }
   }
-  console.log('finalcount ', finalcount);
-  console.log('finalised fileMap ', fileMap);
 }

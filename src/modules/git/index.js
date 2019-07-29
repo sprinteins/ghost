@@ -24,10 +24,7 @@ export default function gLog(path, doneCB, queryParameter) {
   let output = '';
 
   gitLog.stdout.on('data', (data) => {
-    const lines2 = data.toString();
-
-    output += lines2;
-    // console.log('Repeating the stream output ', output);
+    output += data.toString();
   });
 
   gitLog.on('close', (code) => {

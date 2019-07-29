@@ -41,7 +41,11 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+<<<<<<< HEAD
     "@babel/preset-env": "^7.5.2",
+=======
+    "@babel/preset-env": "^7.5.0",
+>>>>>>> feature/git-formatting-calculation-render
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.6.1",
