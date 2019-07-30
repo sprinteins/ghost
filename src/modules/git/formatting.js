@@ -5,13 +5,6 @@ export default function formatting(output) {
   let commitDate = 'commitDate';
   // creates Array, new element every linebreak
   const lines = output.split('\n');
-  // deletes empty lines
-  // for (let i = 0; i < lines.length; i += 1) {
-  //   if (lines[i] === '') {
-  //     lines.splice(i, 1);
-  //   }
-  //   // else do nothing
-  // }
 
   const requiredLines = lines.reduce((newArray, value) => {
     if (value !== '') {
@@ -82,6 +75,5 @@ export default function formatting(output) {
 
     return accum;
   }, []);
-  console.log('newFileMap ', newFileMap);
   doTheCalculations(newFileMap);
 }
