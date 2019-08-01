@@ -15,7 +15,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "test": "npm run build &&mocha --exit",
+    "test": "npm run build &&mocha --require @babel/register",
     "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit"
   },
   "build": {
@@ -40,11 +40,19 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
+    "@babel/node": "7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "7.4.4",
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "chai": "*",
+    "chai-as-promised": "^7.1.1",
     "electron": "~1.8.2",
     "electron-builder": "^19.50.0",
     "electron-reload": "^1.2.2",
@@ -53,7 +61,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
-    "mocha": "^5.2.0",
+    "mocha": "*",
     "parcel-bundler": "^1.3.1",
     "spectron": "^3.8.0",
     "spectron-fake-dialog": "^0.0.1"
