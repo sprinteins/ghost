@@ -87,8 +87,8 @@ describe('Application launch', function () {
 // non UI tests
 describe('calculations tests', () => {
   const newFileMap = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-  { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-  { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
   doTheCalculations(newFileMap);
 
   it('amout of additions should be calculated as 8 and 3 and filled into the fileMap', () => {
@@ -120,3 +120,6 @@ describe('calculations tests', () => {
   });
 });
 
+describe('foramtting tests', () => {
+  const fakeOutput = 'Wed, 6 Feb 2019 10:15:28 +0100\n\n3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n\n5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n\n3	1	Bugfix_1.txt';
+});
