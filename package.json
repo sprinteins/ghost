@@ -15,7 +15,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "test": "npm run build &&mocha --exit",
+    "test": "NODE_ENV=test&&npm run build &&mocha --exit",
     "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit"
   },
   "build": {
