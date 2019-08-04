@@ -1,31 +1,38 @@
-language: node_js
-node_js: 11
+# Note: if you switch to sudo: false, you'll need to launch chrome with --no-sandbox.
+# See https://github.com/travis-ci/travis-ci/issues/8836
 sudo: required
-addons:
-  chrome: stable
-  apt:
-    packages:
-      - xvfb
 
+# Define Node.js as the programming language as we have a web application
+language: node_js
+node_js: '11'
+
+addons:
+  chrome: stable # Install chrome stable on operating systems
+
+# A list of operating systems which are used for tests
 os:
   - linux
 
 env:
-global:
-  - ELECTRON_CACHE=$HOME/.cache/electron
-  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  global:
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
-before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sleep 3; fi
+cache:
+  yarn: true
+  directories:
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+    - $HOME/.npm/_prebuilds
 
+before_cache:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf $HOME/.cache/electron-builder/wine; fi
+
+# These commands are executed before the scripts are executed
 install:
-  - yarn install --force
-
+  # Install all dependencies listed in your package.json file
+  - yarn
 
 script:
-  - node --version
-  - npm --version
-  - yarn install
-  - yarn test
+  - echo "Tests"
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run yarn test; else yarn test; fi
