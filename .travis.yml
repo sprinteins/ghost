@@ -3,10 +3,13 @@ node_js: 11
 cache: npm
 sudo: required
 addons:
+  apt:
+    packages:
+      - xvfb
   chrome: stable
+
 os:
   - linux
-  - osx
 
 env:
 global:
@@ -14,6 +17,8 @@ global:
   - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 install:
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   # Install all dependencies listed in your package.json file
   - yarn install --force
 
