@@ -3,6 +3,9 @@ node_js: 11
 sudo: required
 addons:
   chrome: stable
+  apt:
+    packages:
+      - xvfb
 
 os:
   - linux
