@@ -1,11 +1,7 @@
 language: node_js
 node_js: 11
-cache: npm
 sudo: required
 addons:
-  apt:
-    packages:
-      - xvfb
   chrome: stable
 
 os:
@@ -16,12 +12,17 @@ global:
   - ELECTRON_CACHE=$HOME/.cache/electron
   - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sleep 3; fi
+
 install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-  # Install all dependencies listed in your package.json file
   - yarn install --force
 
+
 script:
-  - echo "Tests"
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run npm run test; else npm run test; fi
+  - node --version
+  - npm --version
+  - yarn install
+  - yarn test
