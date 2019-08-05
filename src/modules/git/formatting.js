@@ -1,5 +1,7 @@
 import doTheCalculations from './calculations';
 
+export let newFileMap = [];
+
 export default function formatting(output) {
   let latestDate;
   let commitDate = 'commitDate';
@@ -13,7 +15,7 @@ export default function formatting(output) {
     return newArray;
   }, []);
 
-  const newFileMap = requiredLines.reduce((accum, line) => {
+  newFileMap = requiredLines.reduce((accum, line) => {
     let subFileMap = {};
     const stats = line.split('\t');
 
