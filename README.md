@@ -1,4 +1,4 @@
-# Ghost
+# Ghost <img src="https://travis-ci.com/sprinteins/ghost.svg?branch=master" height="20px" />
 
 <img src="assets/ghost_pacman.png" height="150px" />
 
