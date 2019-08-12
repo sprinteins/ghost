@@ -2,6 +2,9 @@ language: node_js
 node_js: 11
 cache: npm
 sudo: required
+branches:
+  only:
+    - master
 addons:
   chrome: stable
 os:
