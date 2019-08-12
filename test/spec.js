@@ -1,5 +1,4 @@
 /* eslint-disable func-names */
-// import formatting from '../src/modules/git/formatting';
 
 import doTheCalculations, { fileMap } from '../src/modules/git/calculations';
 import formatting, { newFileMap } from '../src/modules/git/formatting';
