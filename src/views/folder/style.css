@@ -1,0 +1,23 @@
+.folderViewWrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+.folderView {
+  flex: 1 1 0;
+  text-align: left;
+}
+
+.itemView:nth-child(odd) {
+  background-color: #ffffff;
+}
+.itemView:nth-child(even) {
+  background-color: #e2e2e2;
+}
+
+.folderItemView:nth-child(n) {
+  background-color: #838383;
+}
+
+.fileItemView :nth-child(n) {
+}

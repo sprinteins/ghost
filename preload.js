@@ -9,6 +9,7 @@ const { remote } = require('electron');
 const { dialog } = require('electron').remote;
 
 const { BrowserWindow } = require('electron').remote;
+const { getDirectory } = require('./backend/filesystem');
 
 function init() {
   window.bridge = {
@@ -17,6 +18,7 @@ function init() {
     dialog,
     BrowserWindow,
     remote,
+    getDirectory,
   };
 }
 

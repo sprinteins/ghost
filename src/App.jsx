@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Start from './views/start/index';
 import icon from '../assets/ghost_pacman.png';
+import FolderView from './views/folder';
 
 export default function App() {
   return (
@@ -13,7 +14,7 @@ export default function App() {
         </h1>
       </header>
 
-      <Start />
+      <FolderView />
     </div>
   );
 }
