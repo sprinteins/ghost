@@ -15,8 +15,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "test": "NODE_ENV=test&&npm run build &&mocha --exit",
-    "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit"
+    "test": "NODE_ENV=test&& npm run build &&mocha --exit --require @babel/register",
+    "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit --require @babel/register"
   },
   "build": {
     "appId": "com.sprinteins.ghost",
@@ -43,6 +43,8 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/register": "7.4.4",
     "babel-eslint": "^10.0.2",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.2.0",

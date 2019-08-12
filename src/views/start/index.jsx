@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import log from '../../modules/git';
+import gLog from '../../modules/git';
 import './style.css';
 import helpIcon from '../../../assets/helpIcon.png';
 
@@ -48,19 +48,15 @@ export default class Start extends Component {
 
       this.setState({ fileStats: {} });
 
-      log(givenpath, this.logDoneCB, this.logProgressCB, queryParameter);
+      gLog(givenpath, this.gLogDoneCB, queryParameter);
     }
   };
 
-  logDoneCB = (fileMap, noOfFiles) => {
-    this.noOfFiles = noOfFiles;
+  gLogDoneCB = (fileMap, noOfFiles) => {
+    this.setState({ noOfFiles });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
-  };
-
-  logProgressCB = (noOfFiles) => {
-    this.setState({ noOfFiles });
   };
 
   convertfileMapToArray = (fileMap) => {
@@ -72,7 +68,7 @@ export default class Start extends Component {
     return fileStats;
   };
 
-  changeSorting=(fileStats, attribute)=> {
+  changeSorting = (fileStats, attribute) => {
     this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
