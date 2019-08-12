@@ -31,10 +31,10 @@ export default class Start extends Component {
     });
   };
 
-  openFolderDialog = () => {
+  openFolderDialog = async () => {
     const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
-    const filepath = dialog.showOpenDialog({
+    const filepath = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
 
