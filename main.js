@@ -19,15 +19,16 @@ function createWindow() {
     height: 600,
     webPreferences: {
       // devTools: false,
-      nodeIntegration: process.env.NODE_ENV === 'test',
+      nodeIntegration: process.env.NODE_ENV === 'test' ? true : false,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
     },
     show: false,
   });
   mainWindow.maximize();
 
-  const startUrl = process.env.ELECTRON_START_URL
-    || url.format({
+  const startUrl =
+    process.env.ELECTRON_START_URL ||
+    url.format({
       pathname: path.join(__dirname, './build/index.html'),
       protocol: 'file:',
       slashes: true,

@@ -31,16 +31,14 @@ export default class Start extends Component {
     });
   };
 
-  openFolderDialog = () => {
+  openFolderDialog = async () => {
     const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
-    const filepath = dialog.showOpenDialog({
+    const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
-
-    if (filepath !== undefined) {
-      const givenpath = filepath[0];
-
+    if (filePaths !== undefined && canceled !== true) {
+      const givenpath = filePaths[0];
       document.body.classList.add('busy-cursor');
       const ele = document.getElementById('loadingscreen');
       ele.classList.add('loadingscreen-active');
@@ -101,9 +99,15 @@ export default class Start extends Component {
           <thead>
             <tr>
               <td>#</td>
-              <td onClick={this.sortByFile}>File</td>
-              <td onClick={this.sortByCommits}>Occassions per file</td>
-              <td onClick={this.sortByDate}>Date of last change</td>
+              <td id="sortByFile" onClick={this.sortByFile}>
+                File
+              </td>
+              <td id="sortByCommits" onClick={this.sortByCommits}>
+                Occassions per file
+              </td>
+              <td id="sortByDate" onClick={this.sortByDate}>
+                Date of last change
+              </td>
             </tr>
           </thead>
           <tbody>

@@ -2,6 +2,9 @@ language: node_js
 node_js: 11
 cache: npm
 sudo: required
+branches:
+  only:
+    - master
 addons:
   chrome: stable
 os:
@@ -30,4 +33,3 @@ install:
 script:
   - echo "Tests"
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run npm run test; else npm run test; fi
-

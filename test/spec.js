@@ -14,6 +14,8 @@ const chai = require('chai');
 chai.should();
 chai.use(chaiAsPromised);
 
+const WAIT_FOR_ELEMENT = 5 * 1000;
+
 // process.env.ELECTRON_START_URL = "http://localhost:1234";
 
 describe('Application launch', function () {
@@ -32,9 +34,12 @@ describe('Application launch', function () {
     // this will mock the repo-selection
     fakeDialog.apply(this.app);
     const pwd = `${process.cwd()}/test/testrepo/git`;
+    chaiAsPromised.transferPromiseness = this.app.transferPromiseness;
     return this.app
       .start()
-      .then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
+      .then(() => fakeDialog.mock([
+        { method: 'showOpenDialog', value: { filePaths: [pwd], canceled: false } },
+      ]));
   });
 
   afterEach(function () {
@@ -52,20 +57,20 @@ describe('Application launch', function () {
   });
 
   it('has "Open Repo" button', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000);
+    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT);
   });
 
   it('should recognize the click on the "Open Repo" button"', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
   });
 
   it('should show entries for the mocked repo', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
   });
 
   it('should display the corresponding number of number of files', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
 
     const elementText = await this.app.client.getText('#noOfFiles');
@@ -74,12 +79,48 @@ describe('Application launch', function () {
   });
 
   it('should display the corresponding files', async function () {
-    await this.app.client.waitForVisible('.repo-button', 5 * 1000).click('.repo-button');
+    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
 
     const element = await this.app.client.getText('#stat01');
 
     assert.equal(element, '1 Bugfix_2.txt 2 2019-02-06 T10:15:28');
+  });
+
+  async function prepareOrderTable(client) {
+    fakeDialog.mock([{ method: 'showOpenDialog', value:{ filePaths: [`${process.cwd()}/test/testrepo`] , canceled: false } }]);
+    await client.waitForVisible('#queryParameter', WAIT_FOR_ELEMENT).click('#queryParameter');
+    await client
+      .element('#queryParameter')
+      .setValue('')
+      .getText('#queryParameter')
+      .should.eventually.be.equal('');
+
+    await client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
+    await client.waitForVisible('.file-table');
+    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
+  }
+
+  it('should order the repos by file once -> biggest on top', async function () {
+    const { client } = this.app;
+    await prepareOrderTable(client);
+    await client.click('#sortByFile');
+    await client.getText('#stat01').should.eventually.be.contain('yarn.lock');
+  });
+
+  it('should order the repos by Commits once -> biggest on top', async function () {
+    const { client } = this.app;
+    await prepareOrderTable(client);
+    await client.click('#sortByCommits');
+    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
+    await client.getText('#stat31').should.eventually.be.contain('src/modules/git/index.js');
+  });
+
+  it('should order the repos by Date once -> biggest on top', async function () {
+    const { client } = this.app;
+    await prepareOrderTable(client);
+    await client.click('#sortByDate');
+    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
   });
 });
 
@@ -127,9 +168,11 @@ describe('foramtting tests', () => {
 
 describe('calculations tests', () => {
   it('amout of additions should be calculated as 8 and 3 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_2.txt'].additions;
     assert.equal(isValid, 8);
@@ -138,9 +181,11 @@ describe('calculations tests', () => {
   });
 
   it('amout of deletions should be calculated as 1 and 1 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_2.txt'].deletions;
     assert.equal(isValid, 1);
@@ -149,9 +194,11 @@ describe('calculations tests', () => {
   });
 
   it('amout of changes should be calculated as 4 and 9 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_1.txt'].changes;
     assert.equal(isValid, 4);
@@ -160,9 +207,11 @@ describe('calculations tests', () => {
   });
 
   it('amout of commits should be calculated as 2 and 1 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_2.txt'].commits;
     assert.equal(isValid, 2);
