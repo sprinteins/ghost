@@ -91,13 +91,12 @@ describe('Application launch', function () {
 
     await client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await client.waitForVisible('.file-table');
-    await client.getText('#stat01').should.eventually.be.contain('src/modules/git/index.js');
+    await client.getText('#stat01').should.eventually.be.contain('package.json');
   }
 
   it('should order the repos by file once -> biggest on top', async function () {
     const { client } = this.app;
     await prepareOrderTable(client);
-
     await client.click('#sortByFile');
     await client.getText('#stat01').should.eventually.be.contain('yarn.lock');
   });
@@ -105,17 +104,15 @@ describe('Application launch', function () {
   it('should order the repos by Commits once -> biggest on top', async function () {
     const { client } = this.app;
     await prepareOrderTable(client);
-
     await client.click('#sortByCommits');
-    await client.getText('#stat01').should.eventually.be.contain('src/modules/git/index.js');
-    await client.getText('#stat11').should.eventually.be.contain('package.json');
+    await client.getText('#stat01').should.eventually.be.contain('package.json');
+    await client.getText('#stat31').should.eventually.be.contain('src/modules/git/index.js');
   });
 
   it('should order the repos by Date once -> biggest on top', async function () {
     const { client } = this.app;
     await prepareOrderTable(client);
-
     await client.click('#sortByDate');
-    await client.getText('#stat01').should.eventually.be.contain('.babelrc');
+    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
   });
 });
