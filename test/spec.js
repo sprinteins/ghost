@@ -37,7 +37,9 @@ describe('Application launch', function () {
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness;
     return this.app
       .start()
-      .then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: [pwd] }]));
+      .then(() => fakeDialog.mock([
+        { method: 'showOpenDialog', value: { filePaths: [pwd], canceled: false } },
+      ]));
   });
 
   afterEach(function () {
@@ -86,7 +88,7 @@ describe('Application launch', function () {
   });
 
   async function prepareOrderTable(client) {
-    fakeDialog.mock([{ method: 'showOpenDialog', value: [`${process.cwd()}/test/testrepo`] }]);
+    fakeDialog.mock([{ method: 'showOpenDialog', value:{ filePaths: [`${process.cwd()}/test/testrepo`] , canceled: false } }]);
     await client.waitForVisible('#queryParameter', WAIT_FOR_ELEMENT).click('#queryParameter');
     await client
       .element('#queryParameter')
@@ -166,9 +168,11 @@ describe('foramtting tests', () => {
 
 describe('calculations tests', () => {
   it('amout of additions should be calculated as 8 and 3 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_2.txt'].additions;
     assert.equal(isValid, 8);
@@ -177,9 +181,11 @@ describe('calculations tests', () => {
   });
 
   it('amout of deletions should be calculated as 1 and 1 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_2.txt'].deletions;
     assert.equal(isValid, 1);
@@ -188,9 +194,11 @@ describe('calculations tests', () => {
   });
 
   it('amout of changes should be calculated as 4 and 9 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_1.txt'].changes;
     assert.equal(isValid, 4);
@@ -199,9 +207,11 @@ describe('calculations tests', () => {
   });
 
   it('amout of commits should be calculated as 2 and 1 and filled into the fileMap', () => {
-    const fileMapForCalculations = [{ file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
-    { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] }];
+    const fileMapForCalculations = [
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:15:28', stats: [3, 1, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_2.txt', latestDate: '2019-02-06 T10:04:11', stats: [5, 0, 'Bugfix_2.txt'] },
+      { file: 'Bugfix_1.txt', latestDate: '2019-02-06 T10:00:42', stats: [3, 1, 'Bugfix_1.txt'] },
+    ];
     doTheCalculations(fileMapForCalculations);
     const isValid = fileMap['Bugfix_2.txt'].commits;
     assert.equal(isValid, 2);

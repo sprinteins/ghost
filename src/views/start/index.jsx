@@ -34,13 +34,11 @@ export default class Start extends Component {
   openFolderDialog = async () => {
     const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
-    const filepath = await dialog.showOpenDialog({
+    const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
-
-    if (filepath !== undefined) {
-      const givenpath = filepath[0];
-
+    if (filePaths !== undefined && canceled !== true) {
+      const givenpath = filePaths[0];
       document.body.classList.add('busy-cursor');
       const ele = document.getElementById('loadingscreen');
       ele.classList.add('loadingscreen-active');
