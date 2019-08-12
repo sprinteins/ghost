@@ -13,9 +13,19 @@ global:
   - ELECTRON_CACHE=$HOME/.cache/electron
   - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
+cache:
+  yarn: true
+  directories:
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+    - $HOME/.npm/_prebuilds
+
+before_cache:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf $HOME/.cache/electron-builder/wine; fi
+
 install:
   # Install all dependencies listed in your package.json file
-  - yarn install --force
+  - npm install
 
 script:
   - echo "Tests"
