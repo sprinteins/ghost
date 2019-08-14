@@ -75,20 +75,24 @@ describe('Application launch', function () {
 
     const elementText = await this.app.client.getText('#noOfFiles');
 
-    assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 3');
+    assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 12');
   });
 
   it('should display the corresponding files', async function () {
     await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
-
     const element = await this.app.client.getText('#stat01');
 
-    assert.equal(element, '1 Bugfix_2.txt 2 2019-02-06 T10:15:28');
+    assert.equal(element, '1 Bugfix_3.txt 4 2019-02-06 T10:15:28');
   });
 
   async function prepareOrderTable(client) {
-    fakeDialog.mock([{ method: 'showOpenDialog', value:{ filePaths: [`${process.cwd()}/test/testrepo`] , canceled: false } }]);
+    fakeDialog.mock([
+      {
+        method: 'showOpenDialog',
+        value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false },
+      },
+    ]);
     await client.waitForVisible('#queryParameter', WAIT_FOR_ELEMENT).click('#queryParameter');
     await client
       .element('#queryParameter')
@@ -98,29 +102,29 @@ describe('Application launch', function () {
 
     await client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await client.waitForVisible('.file-table');
-    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
   }
 
   it('should order the repos by file once -> biggest on top', async function () {
     const { client } = this.app;
     await prepareOrderTable(client);
     await client.click('#sortByFile');
-    await client.getText('#stat01').should.eventually.be.contain('yarn.lock');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_7.txt');
   });
 
   it('should order the repos by Commits once -> biggest on top', async function () {
     const { client } = this.app;
     await prepareOrderTable(client);
     await client.click('#sortByCommits');
-    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
-    await client.getText('#stat31').should.eventually.be.contain('src/modules/git/index.js');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
+    await client.getText('#stat11').should.eventually.be.contain('Bugfix_7.txt');
   });
 
   it('should order the repos by Date once -> biggest on top', async function () {
     const { client } = this.app;
     await prepareOrderTable(client);
     await client.click('#sortByDate');
-    await client.getText('#stat01').should.eventually.be.contain('test/spec.js');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_4.txt');
   });
 });
 
