@@ -1,7 +1,8 @@
 const fs = require('fs');
 const { join } = require('path');
 
-fs.readFile(join(__dirname, 'glogExampleData.txt'), (err, data) => {
+const file = process.argv.length >= 3 ? process.argv[2] : 'sample.txt';
+fs.readFile(join(__dirname, file), (err, data) => {
   if (err) throw err;
   process.stdout.write(data);
 });

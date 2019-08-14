@@ -21,7 +21,7 @@ function createWindow() {
       // devTools: false,
       nodeIntegration: process.env.NODE_ENV === 'test',
       preload: path.resolve(
-        path.join(__dirname, process.env.NODE_ENV === 'test' ? 'testPreload.js' : 'testPreload.js'),
+        path.join(__dirname, process.env.NODE_ENV === 'test' ? 'testPreload.js' : 'preload.js'),
       ),
     },
     show: false,

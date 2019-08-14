@@ -25,6 +25,7 @@ describe('Application launch', function () {
       path: electronPath,
       env: {
         NODE_ENV: 'test',
+        PRELOAD_GIT_MOCK_FILE:'glogExampleData.txt'
       },
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.

@@ -21,7 +21,9 @@ init();
 function chooseSpawn(file, args, options) {
   switch (file) {
     case 'git':
-      console.log(`node ${join(__dirname, 'test/mocks/git.js')}`);
-      return spawn('node', [`${join(__dirname, 'test/mocks/git.js')}`]);
+      return spawn('node', [
+        `${join(__dirname, 'test/mocks/git.js')}`,
+        process.env.PRELOAD_GIT_MOCK_FILE,
+      ]);
   }
 }
