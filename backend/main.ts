@@ -1,7 +1,7 @@
-const { app, BrowserWindow } = require("electron");
-const path = require("path");
+import path from 'path';
+import { app, BrowserWindow } from 'electron';
 
-const url = require("url");
+import url from 'url';
 
 /*
   load React-Dev-Server or build
@@ -9,9 +9,10 @@ const url = require("url");
 const REACT_URL =
   process.env.ELECTRON_START_URL ||
   url.format({
-    pathname: path.join(__dirname, "/../index.html"),
-    protocol: "file:",
-    slashes: true
+    // when building, the public folder and backend folder get merged build/index.html and build/backend/..
+    pathname: path.join(__dirname, '../index.html'),
+    protocol: 'file:',
+    slashes: true,
   });
 
 let mainWindow: Electron.BrowserWindow | null;
@@ -22,29 +23,20 @@ function createWindow() {
     height: 600,
     webPreferences: {
       // devTools: false,
-      nodeIntegration: process.env.NODE_ENV === "test" ? true : false,
-      preload: path.resolve(path.join(__dirname, "preload.js")),
-      webSecurity: false
+      nodeIntegration: process.env.NODE_ENV === 'test' ? true : false,
+      preload: path.resolve(path.join(__dirname, 'preload.js')),
+      webSecurity: false,
     },
-    show: false
+    show: false,
   });
   mainWindow.maximize();
 
-  const startUrl =
-    process.env.ELECTRON_START_URL ||
-    url.format({
-      //when building, the public folder and backend folder get merged build/index.html and build/backend/..
-      pathname: path.join(__dirname, "../index.html"),
-      protocol: "file:",
-      slashes: true
-    });
-
-  mainWindow.loadURL(startUrl);
-  mainWindow.once("ready-to-show", () => {
+  mainWindow.loadURL(REACT_URL);
+  mainWindow.once('ready-to-show', () => {
     mainWindow!.show();
   });
 
-  mainWindow.on("closed", () => {
+  mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -52,10 +44,10 @@ function createWindow() {
   });
 }
 
-app.on("ready", createWindow);
+app.on('ready', createWindow);
 
 // Quit when all windows are closed.
-app.on("window-all-closed", () => {
+app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   // if (process.platform !== 'darwin') {
@@ -63,7 +55,7 @@ app.on("window-all-closed", () => {
   // }
 });
 
-app.on("activate", () => {
+app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {

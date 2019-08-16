@@ -2,19 +2,27 @@
   "name": "Ghost",
   "version": "1.0.2",
   "description": "A Git analyser tool",
-  "main": "./public/electron.js",
+  "main": "./build/electron.js",
   "homepage": "./",
   "author": {
     "name": "Tamás Rusz, Heiko Lang"
   },
   "dependencies": {
     "@babel/core": "7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
     "@babel/register": "7.4.4",
     "@svgr/webpack": "4.1.0",
     "@types/jest": "24.0.13",
     "@types/node": "12.0.2",
     "@types/react": "16.8.17",
     "@types/react-dom": "16.8.4",
+    "@typescript-eslint/eslint-plugin": "1.6.0",
+    "@typescript-eslint/parser": "1.6.0",
+    "babel-eslint": "10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.5",
     "babel-plugin-named-asset-import": "^0.3.2",
@@ -51,8 +59,10 @@
     "semver": "6.0.0",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.3",
+    "ts-loader": "^6.0.4",
     "ts-pnp": "1.1.2",
     "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
     "typescript": "3.4.5",
     "url-loader": "1.1.2",
@@ -82,20 +92,19 @@
     "spectron-fake-dialog": "^0.0.1"
   },
   "scripts": {
-    "build": "npm run frontend-build && npm run backend-ts-build && npm run backend-build",
-    "build-test": "npm run frontend-build && npm run backend-ts-build ",
-    "react-dev": "node scripts/start.js",
+    "build": "npm run lint && npm run frontend-build && npm run backend-build",
+    "frontend-dev": "node scripts/start.js",
     "frontend-build": "node scripts/build.js",
-    "frontend-test": "node scripts/test.js",
-    "start": "concurrently \"yarn react-dev\" \"yarn backend-dev\"",
-    "test": "SET NODE_ENV=test&&SET CI=true &&npm run build-test && npm run test-backend&& node scripts/test.js",
-    "backend-dev-linux": "npm run backend-ts-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/electron.js",
-    "backend-dev": "npm run backend-ts-build && set ELECTRON_START_URL=http://localhost:3000 && electron ./build/electron.js",
-    "backend-ts-build": " tsc --build tsconfig.electron.json",
-    "backend-build": "build --win -c.extraMetadata.main=build/electron.js",
-    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "test-backend": "mocha --exit --require @babel/register",
-    "test-backend-rebuild": "npm run build && mocha "
+    "frontend-test": "node scripts/test.js --config jest.config.js",
+    "start": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
+    "test": "NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
+    "test-win": "SET NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
+    "backend-dev": "npm run backend-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/electron.js",
+    "backend-dev-win": "npm run backend-build && SET ELECTRON_START_URL=http://localhost:3000 && electron ./build/electron.js",
+    "backend-build": "npm run lint && tsc --build tsconfig.electron.json",
+    "pack": "electron-builder",
+    "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}'",
+    "test-backend": "mocha --exit --require @babel/register"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -119,57 +128,12 @@
     ]
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jest-environment-jsdom-fourteen",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ]
+    "verbose": true
   },
   "build": {
     "files": [
       "build/**/**/*",
       "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
+    ]
   }
 }

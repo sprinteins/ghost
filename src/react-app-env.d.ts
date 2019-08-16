@@ -3,7 +3,7 @@
 /// <reference types="react-dom" />
 
 declare namespace NodeJS {
-  interface ProcessEnv {
+  interface IProcessEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test';
     readonly PUBLIC_URL: string;
   }
@@ -35,8 +35,8 @@ declare module '*.png' {
 }
 
 declare module '*.webp' {
-    const src: string;
-    export default src;
+  const src: string;
+  export default src;
 }
 
 declare module '*.svg' {

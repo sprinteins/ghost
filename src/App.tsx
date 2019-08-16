@@ -3,8 +3,8 @@ import './App.css';
 import Start from './views/start/index';
 
 export default class App extends React.Component {
-  state = {};
-  render() {
+  public state = {};
+  public render() {
     return (
       <div className="App">
         <header className="App-header">
