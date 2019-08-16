@@ -2,31 +2,103 @@
   "name": "Ghost",
   "version": "1.0.2",
   "description": "A Git analyser tool",
+  "main": "./public/electron.js",
+  "homepage": "./",
   "author": {
     "name": "Tamás Rusz, Heiko Lang"
   },
-  "main": "main.js",
-  "scripts": {
-    "dev": "parcel ./src/index.html -d build/",
-    "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
-    "start-dev-win": "SET ELECTRON_START_URL=http://localhost:1234 & electron .",
-    "start": "electron .",
-    "build": "parcel build ./src/index.html -d build/ --public-url ./",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps",
-    "test": "NODE_ENV=test&& npm run build &&mocha --exit --require @babel/register",
-    "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit --require @babel/register"
+  "dependencies": {
+    "@babel/core": "7.4.3",
+    "@babel/register": "7.4.4",
+    "@svgr/webpack": "4.1.0",
+    "@types/jest": "24.0.13",
+    "@types/node": "12.0.2",
+    "@types/react": "16.8.17",
+    "@types/react-dom": "16.8.4",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "8.0.5",
+    "babel-plugin-named-asset-import": "^0.3.2",
+    "babel-preset-react-app": "^9.0.0",
+    "camelcase": "^5.2.0",
+    "case-sensitive-paths-webpack-plugin": "2.2.0",
+    "concurrently": "^4.1.1",
+    "css-loader": "2.1.1",
+    "dotenv": "6.2.0",
+    "dotenv-expand": "4.2.0",
+    "file-loader": "3.0.1",
+    "fs-extra": "7.0.1",
+    "html-webpack-plugin": "4.0.0-beta.5",
+    "identity-obj-proxy": "3.0.0",
+    "is-wsl": "^1.1.0",
+    "jest": "24.7.1",
+    "jest-environment-jsdom-fourteen": "0.1.0",
+    "jest-resolve": "24.7.1",
+    "jest-watch-typeahead": "0.3.0",
+    "mini-css-extract-plugin": "0.5.0",
+    "optimize-css-assets-webpack-plugin": "5.0.1",
+    "pnp-webpack-plugin": "1.2.1",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-normalize": "7.0.1",
+    "postcss-preset-env": "6.6.0",
+    "postcss-safe-parser": "4.0.1",
+    "react": "^16.8.6",
+    "react-app-polyfill": "^1.0.1",
+    "react-dev-utils": "^9.0.1",
+    "react-dom": "^16.8.6",
+    "resolve": "1.10.0",
+    "sass-loader": "7.1.0",
+    "semver": "6.0.0",
+    "style-loader": "0.23.1",
+    "terser-webpack-plugin": "1.2.3",
+    "ts-pnp": "1.1.2",
+    "tslint": "^5.18.0",
+    "tslint-react": "^4.0.0",
+    "typescript": "3.4.5",
+    "url-loader": "1.1.2",
+    "webpack": "4.29.6",
+    "webpack-dev-server": "3.2.1",
+    "webpack-manifest-plugin": "2.0.4",
+    "workbox-webpack-plugin": "4.2.0"
   },
-  "build": {
-    "appId": "com.sprinteins.ghost",
-    "files": [
-      "main.js",
-      "preload.js",
-      "assets/*",
-      "build/*"
-    ],
-    "icon": "./assets/ghost_pacman.png"
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "1.6.0",
+    "@typescript-eslint/parser": "1.6.0",
+    "babel-eslint": "10.0.1",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "electron": "~6.0.1",
+    "electron-builder": "^20.40.2",
+    "eslint": "^5.16.0",
+    "eslint-config-react-app": "^4.0.1",
+    "eslint-loader": "2.1.2",
+    "eslint-plugin-flowtype": "2.50.1",
+    "eslint-plugin-import": "2.16.0",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-react-hooks": "^1.5.0",
+    "mocha": "^6.1.4",
+    "spectron": "^8.0.0",
+    "spectron-fake-dialog": "^0.0.1"
+  },
+  "scripts": {
+    "build": "npm run frontend-build && npm run backend-ts-build && npm run backend-build",
+    "build-test": "npm run frontend-build && npm run backend-ts-build ",
+    "react-dev": "node scripts/start.js",
+    "frontend-build": "node scripts/build.js",
+    "frontend-test": "node scripts/test.js",
+    "start": "concurrently \"yarn react-dev\" \"yarn backend-dev\"",
+    "test": "SET NODE_ENV=test&&SET CI=true &&npm run build-test && npm run test-backend&& node scripts/test.js",
+    "backend-dev-linux": "npm run backend-ts-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/electron.js",
+    "backend-dev": "npm run backend-ts-build && set ELECTRON_START_URL=http://localhost:3000 && electron ./build/electron.js",
+    "backend-ts-build": " tsc --build tsconfig.electron.json",
+    "backend-build": "build --win -c.extraMetadata.main=build/electron.js",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "test-backend": "mocha --exit --require @babel/register",
+    "test-backend-rebuild": "npm run build && mocha "
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "keywords": [
     "git",
@@ -34,32 +106,70 @@
     "code"
   ],
   "license": "MIT",
-  "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
-  "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/register": "7.4.4",
-    "babel-eslint": "^10.0.2",
-    "babel-preset-env": "^1.6.1",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "electron": "~6.0.1",
-    "electron-builder": "^21.2.0",
-    "electron-reload": "^1.5.0",
-    "eslint": "^5.13.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4",
-    "mocha": "^6.2.0",
-    "parcel-bundler": "^1.12.3",
-    "spectron": "^8.0.0",
-    "spectron-fake-dialog": "^0.0.1"
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  },
+  "build": {
+    "files": [
+      "build/**/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }
