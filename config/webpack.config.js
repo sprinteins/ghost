@@ -293,7 +293,7 @@ module.exports = function(webpackEnv) {
               loader: 'tslint-loader',
               options: {
                 /* Loader options go here */
-                configFile: 'tslint.json',
+                configFile: './tslint.json',
               },
             },
           ],
