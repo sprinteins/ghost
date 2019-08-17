@@ -98,6 +98,7 @@
     "frontend-build": "node scripts/build.js",
     "frontend-test": "node scripts/test.js --config jest.config.js",
     "start": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
+    "start-win": "concurrently \"yarn frontend-dev\" \"yarn backend-dev-win\"",
     "test": "NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
     "test-win": "SET NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
     "backend-dev": "npm run backend-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/electron.js",

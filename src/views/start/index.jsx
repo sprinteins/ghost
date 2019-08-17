@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import gLog from "../../modules/git";
-import "./style.css";
+import React, { Component } from 'react';
+import gLog from '../../modules/git';
+import './style.css';
 
 const { dialog, BrowserWindow } = window.bridge;
-const url = require("url");
-const path = require("path");
+const url = require('url');
+const path = require('path');
 
 export default class Start extends Component {
   constructor(props) {
     super(props);
-    this.sortByCommits = _ => this.changeSorting(this.state.fileStats, "commits");
-    this.sortByFile = _ => this.changeSorting(this.state.fileStats, "file");
-    this.sortByDate = _ => this.changeSorting(this.state.fileStats, "latestDate");
+    this.sortByCommits = (_) => this.changeSorting(this.state.fileStats, 'commits');
+    this.sortByFile = (_) => this.changeSorting(this.state.fileStats, 'file');
+    this.sortByDate = (_) => this.changeSorting(this.state.fileStats, 'latestDate');
     this.state = {
       noOfFiles: 0,
-      fileStats: []
+      fileStats: [],
     };
   }
 
-  queryParameter = "bugfix";
+  queryParameter = 'bugfix';
 
   sortByAttribute = (array, attribute) => {
     array.sort((a, b) => {
@@ -32,10 +32,10 @@ export default class Start extends Component {
     });
   };
 
-  openFolderDialog = async queryParameter => {
+  openFolderDialog = async (queryParameter) => {
     this.state.noOfFiles = 0;
     const { canceled, filePaths } = await dialog.showOpenDialog({
-      properties: ["openFile", "openDirectory", "multiSelections"]
+      properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
     if (filePaths !== undefined && canceled !== true) {
       const givenpath = filePaths[0];
@@ -54,10 +54,10 @@ export default class Start extends Component {
     this.setState({ noOfFiles });
     const fileStats = this.convertfileMapToArray(fileMap);
 
-    this.changeSorting(fileStats, "commits");
+    this.changeSorting(fileStats, 'commits');
   };
 
-  convertfileMapToArray = fileMap => {
+  convertfileMapToArray = (fileMap) => {
     const fileStats = [];
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
@@ -67,7 +67,7 @@ export default class Start extends Component {
   };
 
   changeSorting = (fileStats, attribute) => {
-    this.sortByAttribute(fileStats, "file");
+    this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
   };
@@ -75,18 +75,18 @@ export default class Start extends Component {
   help = () => {
     let helpWindow = new BrowserWindow({
       width: 350,
-      height: 600
+      height: 600,
     });
 
     const helpUrl = url.format({
-      pathname: path.join(__dirname, "help.html"),
-      protocol: "file:",
-      slashes: true
+      pathname: path.join(__dirname, 'help.html'),
+      protocol: 'file:',
+      slashes: true,
     });
 
     helpWindow.loadURL(helpUrl);
 
-    helpWindow.on("closed", () => {
+    helpWindow.on('closed', () => {
       helpWindow = null;
     });
   };
@@ -132,7 +132,9 @@ export default class Start extends Component {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>;
+      showNumberOfFiles = (
+        <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>
+      );
     } else {
       showNumberOfFiles = <div> </div>;
     }
@@ -141,11 +143,26 @@ export default class Start extends Component {
       <div className="Start">
         <div>
           Query Parameter :
-          <input className="gitLogQuery" type="text" id="queryParameter" name="queryParameter" onChange={e => (this.queryParameter = e.target.value)} defaultValue="bugfix" />
+          <input
+            className="gitLogQuery"
+            type="text"
+            id="queryParameter"
+            name="queryParameter"
+            onChange={(e) => (this.queryParameter = e.target.value)}
+            defaultValue="bugfix"
+          />
           <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolder} type="button">
             Open Repo
           </button>
-          <img src={"./assets/helpIcon.png"} alt="help_icon" className="gitLogQuery" onClick={this.help} type="button" height="18px" style={{ margin: "-3px" }} />
+          <img
+            src={'./assets/helpIcon.png'}
+            alt="help_icon"
+            className="gitLogQuery"
+            onClick={this.help}
+            type="button"
+            height="18px"
+            style={{ margin: '-3px' }}
+          />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>

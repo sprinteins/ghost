@@ -18,5 +18,6 @@
     },
     "noUnusedLocals": true
   },
-  "include": ["backend/**/*"]
+  "include": ["backend/**/*"],
+  "files": ["./globalTypes/global.d.ts"]
 }

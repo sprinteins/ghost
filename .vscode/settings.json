@@ -1,8 +1,8 @@
 {
   "prettier.endOfLine": "crlf",
   "editor.formatOnSave": true,
-  "editor.wordWrapColumn": 180,
-  "prettier.printWidth": 180,
+  "editor.wordWrapColumn": 120,
+  "prettier.printWidth": 120,
   "prettier.jsxSingleQuote": false,
   "prettier.singleQuote": true,
   "prettier.useTabs": false,
