@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": true,
-    "outDir": "build/backend",
+    "outDir": "test/build",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,6 +19,6 @@
     "noUnusedLocals": true,
     "typeRoots": ["./types/**/*"]
   },
-  "include": ["backend/**/*"],
+  "include": ["test/**/*"],
   "files": ["./types/global.d.ts"]
 }

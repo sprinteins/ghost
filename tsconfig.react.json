@@ -14,8 +14,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "typeRoots": ["./types/**/*"]
   },
   "include": ["src"],
-  "files": ["./globalTypes/global.d.ts"]
+  "files": ["./types/global.d.ts"]
 }

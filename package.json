@@ -17,6 +17,7 @@
     "@babel/register": "7.4.4",
     "@svgr/webpack": "4.1.0",
     "@types/jest": "24.0.13",
+    "@types/mocha": "^5.2.7",
     "@types/node": "12.0.2",
     "@types/react": "16.8.17",
     "@types/react-dom": "16.8.4",
@@ -94,20 +95,21 @@
     "spectron-fake-dialog": "^0.0.1"
   },
   "scripts": {
-    "build": "npm run lint && npm run frontend-build && npm run backend-build",
+    "build": "npm run lint && npm run frontend-build && npm run backend-build&& npm run test-build",
     "frontend-dev": "node scripts/start.js",
     "frontend-build": "node scripts/build.js",
     "frontend-test": "node scripts/test.js --config jest.config.js",
     "start": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
     "start-win": "concurrently \"yarn frontend-dev\" \"yarn backend-dev-win\"",
     "test": "NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
+    "test-build": "npm run lint &&tsc --build tsconfig.test.json",
     "test-win": "SET NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
     "backend-dev": "npm run backend-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/electron.js",
     "backend-dev-win": "npm run backend-build && SET ELECTRON_START_URL=http://localhost:3000 && electron ./build/electron.js",
     "backend-build": "npm run lint && tsc --build tsconfig.electron.json",
     "pack": "electron-builder",
     "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}'",
-    "test-backend": "mocha --exit --require @babel/register"
+    "test-backend": "mocha"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -8,6 +8,6 @@ interface ElectronBridge {
   spawn: typeof spawn;
   electron: Electron.AllElectron;
   dialog: Electron.Dialog;
-  browserWindow: Electron.BrowserWindow;
+  BrowserWindow: Electron.BrowserWindow;
   remote: Electron.Remote;
 }

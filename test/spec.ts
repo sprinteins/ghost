@@ -1,14 +1,16 @@
+// @ts-ignore
+import mocha from 'mocha';
 import doTheCalculations, { fileMap } from '../src/modules/git/calculations';
 import formatting, { newFileMap } from '../src/modules/git/formatting';
 
-const { Application } = require('spectron');
-const assert = require('assert');
-const electronPath = require('electron'); // Require Electron from the binaries included in node_modules.
-const path = require('path');
-const fakeDialog = require('spectron-fake-dialog');
-const chaiAsPromised = require('chai-as-promised');
-const chai = require('chai');
-const appPath = path.join(__dirname, '../build/backend/main.js');
+import { Application } from 'spectron';
+import assert from 'assert';
+import electronPath from 'electron'; // Require Electron from the binaries included in node_modules.
+import path from 'path';
+import fakeDialog from 'spectron-fake-dialog';
+import chaiAsPromised from 'chai-as-promised';
+import chai from 'chai';
+const appPath = path.join(__dirname, '../../../build/backend/main.js');
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -20,8 +22,9 @@ const WAIT_FOR_ELEMENT = 5 * 1000;
 describe('Application launch', function() {
   this.timeout(10000);
   beforeEach(function() {
+    console.log(electronPath);
     this.app = new Application({
-      path: electronPath,
+      path: (electronPath as unknown) as string,
       env: {
         NODE_ENV: 'test',
       },
@@ -34,7 +37,9 @@ describe('Application launch', function() {
     fakeDialog.apply(this.app);
     const pwd = `${process.cwd()}/test/testrepo/git`;
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness;
-    return this.app.start().then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: { filePaths: [pwd], canceled: false } }]));
+    return this.app
+      .start()
+      .then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: { filePaths: [pwd], canceled: false } }]));
   });
 
   afterEach(function() {
@@ -43,7 +48,7 @@ describe('Application launch', function() {
     }
   });
 
-  it('shows an initial window', async function() {
+  it.only('shows an initial window', async function() {
     return this.app.client.getWindowCount().then((count) => {
       assert.equal(count, 1);
       // Please note that getWindowCount() will return 2 if `dev tools` are opened.
@@ -122,7 +127,10 @@ describe('Application launch', function() {
 // non UI tests
 describe('foramtting tests', () => {
   it('filenames are read correctly and assigned', () => {
-    const output = 'Wed, 6 Feb 2019 10:15:28 +0100\n\n3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n\n5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n\n3	1	Bugfix_1.txt';
+    const output = `Wed, 6 Feb 2019 10:15:28 +0100\n
+    3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n
+    5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n
+    3	1	Bugfix_1.txt`;
     formatting(output);
     const isValid = newFileMap[0].file;
     assert.equal(isValid, 'Bugfix_2.txt');
@@ -133,7 +141,10 @@ describe('foramtting tests', () => {
   });
 
   it('latestDates are read correctly formatted into the needed date format and assigned', () => {
-    const output = 'Wed, 6 Feb 2019 10:15:28 +0100\n\n3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n\n5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n\n3	1	Bugfix_1.txt';
+    const output = `Wed, 6 Feb 2019 10:15:28 +0100\n
+      3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n
+      5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n
+      3	1	Bugfix_1.txt`;
     formatting(output);
     const isValid = newFileMap[0].latestDate;
     assert.equal(isValid, '2019-02-06 T10:15:28');
@@ -144,7 +155,10 @@ describe('foramtting tests', () => {
   });
 
   it('stats are read correctly and assigned', () => {
-    const output = 'Wed, 6 Feb 2019 10:15:28 +0100\n\n3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n\n5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n\n3	1	Bugfix_1.txt';
+    const output = `Wed, 6 Feb 2019 10:15:28 +0100\n
+    3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n
+    5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n
+    3	1	Bugfix_1.txt`;
     formatting(output);
     const firstObjectAdditions = newFileMap[0].stats[0];
     assert.equal(firstObjectAdditions, 3);

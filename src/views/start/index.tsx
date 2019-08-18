@@ -3,24 +3,32 @@ import gLog from '../../modules/git';
 import './style.css';
 
 const { dialog, BrowserWindow } = window.bridge;
-const url = require('url');
-const path = require('path');
+import url from 'url';
+import path from 'path';
+import { IFileMapObject } from '../../modules/git/calculations';
 
-export default class Start extends Component {
+interface IStartState {
+  fileStats: IFileMapObject[];
+  noOfFiles: number;
+}
+
+export default class Start extends Component<{}, IStartState> {
+  public queryParameter = 'bugfix';
+  private sortByCommits: () => void;
+  private sortByFile: () => void;
+  private sortByDate: () => void;
   constructor(props) {
     super(props);
-    this.sortByCommits = (_) => this.changeSorting(this.state.fileStats, 'commits');
-    this.sortByFile = (_) => this.changeSorting(this.state.fileStats, 'file');
-    this.sortByDate = (_) => this.changeSorting(this.state.fileStats, 'latestDate');
+    this.sortByCommits = () => this.changeSorting(this.state.fileStats, 'commits');
+    this.sortByFile = () => this.changeSorting(this.state.fileStats, 'file');
+    this.sortByDate = () => this.changeSorting(this.state.fileStats, 'latestDate');
     this.state = {
       noOfFiles: 0,
       fileStats: [],
     };
   }
 
-  queryParameter = 'bugfix';
-
-  sortByAttribute = (array, attribute) => {
+  public sortByAttribute = (array, attribute) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
         return -1;
@@ -30,10 +38,9 @@ export default class Start extends Component {
       }
       return 0;
     });
-  };
+  }
 
-  openFolderDialog = async (queryParameter) => {
-    this.state.noOfFiles = 0;
+  public openFolderDialog = async (queryParameter) => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
@@ -44,35 +51,40 @@ export default class Start extends Component {
       ele.classList.add("loadingscreen-active");
       ele.classList.remove("loadingscreen-passive");*/
 
-      this.setState({ fileStats: {} });
+      this.setState({ noOfFiles: 0, fileStats: [] });
 
       gLog(givenpath, this.gLogDoneCB, queryParameter);
     }
-  };
+  }
 
-  gLogDoneCB = (fileMap, noOfFiles) => {
+  public gLogDoneCB = (fileMap, noOfFiles) => {
     this.setState({ noOfFiles });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
-  };
+  }
 
-  convertfileMapToArray = (fileMap) => {
-    const fileStats = [];
+  public convertfileMapToArray = (fileMap) => {
+    const fileStats = fileMap.map((item) => {
+      return item;
+    });
+    // tslint:disable-next-line: no-debugger
+    debugger;
+    // tslint:disable-next-line: forin
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
     }
 
     return fileStats;
-  };
+  }
 
-  changeSorting = (fileStats, attribute) => {
+  public changeSorting = (fileStats, attribute) => {
     this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
-  };
+  }
 
-  help = () => {
+  public help = () => {
     let helpWindow = new BrowserWindow({
       width: 350,
       height: 600,
@@ -89,15 +101,17 @@ export default class Start extends Component {
     helpWindow.on('closed', () => {
       helpWindow = null;
     });
-  };
+  }
 
-  showLoadingScreen = () => {};
-  openFolder = () => {
+  public showLoadingScreen = () => {
+    const c = 1 + 2;
+  }
+  public openFolder = () => {
     this.showLoadingScreen();
     this.openFolderDialog(this.queryParameter);
-  };
+  }
 
-  render() {
+  public render() {
     let fileTable;
     if (this.state.fileStats.length > 0) {
       fileTable = (
@@ -159,7 +173,6 @@ export default class Start extends Component {
             alt="help_icon"
             className="gitLogQuery"
             onClick={this.help}
-            type="button"
             height="18px"
             style={{ margin: '-3px' }}
           />
