@@ -65,17 +65,7 @@ export default class Start extends Component<{}, IStartState> {
   }
 
   public convertfileMapToArray = (fileMap) => {
-    const fileStats = fileMap.map((item) => {
-      return item;
-    });
-    // tslint:disable-next-line: no-debugger
-    debugger;
-    // tslint:disable-next-line: forin
-    for (const key in fileMap) {
-      fileStats.push(fileMap[key]);
-    }
-
-    return fileStats;
+    return Object.keys(fileMap).map((key) => fileMap[key]);
   }
 
   public changeSorting = (fileStats, attribute) => {
@@ -104,7 +94,7 @@ export default class Start extends Component<{}, IStartState> {
   }
 
   public showLoadingScreen = () => {
-    const c = 1 + 2;
+    const c = 'TODO';
   }
   public openFolder = () => {
     this.showLoadingScreen();

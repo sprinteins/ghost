@@ -22,7 +22,6 @@ const WAIT_FOR_ELEMENT = 5 * 1000;
 describe('Application launch', function() {
   this.timeout(10000);
   beforeEach(function() {
-    console.log(electronPath);
     this.app = new Application({
       path: (electronPath as unknown) as string,
       env: {
@@ -48,7 +47,7 @@ describe('Application launch', function() {
     }
   });
 
-  it.only('shows an initial window', async function() {
+  it('shows an initial window', async function() {
     return this.app.client.getWindowCount().then((count) => {
       assert.equal(count, 1);
       // Please note that getWindowCount() will return 2 if `dev tools` are opened.
