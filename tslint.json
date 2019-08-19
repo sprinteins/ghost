@@ -23,7 +23,8 @@
     "no-namespace": false,
     "no-internal-module": false,
     "no-submodule-imports": false,
-    "one-variable-per-declaration": false
+    "one-variable-per-declaration": false,
+    "typedef": [true, "parameter", "member-variable-declaration"]
   },
   "jsRules": {
     "max-line-length": {

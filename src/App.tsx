@@ -3,7 +3,6 @@ import './App.css';
 import Start from './views/start/index';
 
 export default class App extends React.Component {
-  public state = {};
   public render() {
     return (
       <div className="App">

@@ -87,7 +87,8 @@ describe('Application launch', function() {
   /*
   need fix pull request first
   async function prepareOrderTable(client) {
-    fakeDialog.mock([{ method: "showOpenDialog", value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false } }]);
+    fakeDialog.mock([{ method: "showOpenDialog",
+    value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false } }]);
     await client.waitForVisible("#queryParameter", WAIT_FOR_ELEMENT).click("#queryParameter");
     await client
       .element("#queryParameter")

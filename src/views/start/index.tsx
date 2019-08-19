@@ -13,11 +13,11 @@ interface IStartState {
 }
 
 export default class Start extends Component<{}, IStartState> {
-  public queryParameter = 'bugfix';
+  public queryParameter: string = 'bugfix';
   private sortByCommits: () => void;
   private sortByFile: () => void;
   private sortByDate: () => void;
-  constructor(props) {
+  constructor(props: object) {
     super(props);
     this.sortByCommits = () => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = () => this.changeSorting(this.state.fileStats, 'file');
@@ -28,7 +28,7 @@ export default class Start extends Component<{}, IStartState> {
     };
   }
 
-  public sortByAttribute = (array, attribute) => {
+  public sortByAttribute = (array: object[], attribute: string) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
         return -1;
@@ -40,7 +40,7 @@ export default class Start extends Component<{}, IStartState> {
     });
   }
 
-  public openFolderDialog = async (queryParameter) => {
+  public openFolderDialog = async (queryParameter: string) => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
@@ -57,18 +57,18 @@ export default class Start extends Component<{}, IStartState> {
     }
   }
 
-  public gLogDoneCB = (fileMap, noOfFiles) => {
+  public gLogDoneCB = (fileMap: object, noOfFiles: number) => {
     this.setState({ noOfFiles });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
   }
 
-  public convertfileMapToArray = (fileMap) => {
+  public convertfileMapToArray = (fileMap: object) => {
     return Object.keys(fileMap).map((key) => fileMap[key]);
   }
 
-  public changeSorting = (fileStats, attribute) => {
+  public changeSorting = (fileStats: IFileMapObject[], attribute: string) => {
     this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });

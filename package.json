@@ -108,7 +108,7 @@
     "backend-dev-win": "npm run backend-build && SET ELECTRON_START_URL=http://localhost:3000 && electron ./build/electron.js",
     "backend-build": "npm run lint && tsc --build tsconfig.electron.json",
     "pack": "electron-builder",
-    "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}'",
+    "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
     "test-backend": "mocha"
   },
   "eslintConfig": {
