@@ -3,7 +3,7 @@ import { fileMap, finalcount } from './calculations';
 
 const { spawn } = window.bridge;
 
-export default function gLog(path, doneCB, queryParameter, fileExtensionArray) {
+export default function gLog(path, doneCB, queryParameter, fileExtension) {
   const cmd = 'git';
   const cmdArgs = [
     'log',
@@ -20,13 +20,16 @@ export default function gLog(path, doneCB, queryParameter, fileExtensionArray) {
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
 
   const prefix = '*.';
+  if (fileExtension === '') {
+    fileExtension = '*';
+  }
+
+  const fileExtensionArray = fileExtension.split(',');
 
   const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
   const extensions = prefixString.split(',');
 
   const cmdArgsWithExtensions = cmdArgs.concat(extensions);
-
-  console.log('after concat cmdArgs', cmdArgsWithExtensions);
 
   const gitLog = spawn(cmd, cmdArgsWithExtensions, { cwd: path });
 
