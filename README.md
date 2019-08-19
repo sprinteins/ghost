@@ -1,4 +1,4 @@
-# Ghost
+# Ghost <img src="https://travis-ci.com/sprinteins/ghost.svg?branch=master" height="20px" />
 
 <img src="assets/ghost_pacman.png" height="150px" />
 
@@ -67,14 +67,6 @@ $ yarn dist
 ```
 
 ### Testing
-
-Before testing, change nodeIntegration to true in main.js
-
-run local web dev server
-
-```bash
-$ yarn dev
-```
 
 Run tests
 

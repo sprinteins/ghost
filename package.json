@@ -8,13 +8,15 @@
   "main": "main.js",
   "scripts": {
     "dev": "parcel ./src/index.html -d build/",
-    "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron . --inspect",
+    "start-dev": "ELECTRON_START_URL=http://localhost:1234 electron .",
+    "start-dev-win": "SET ELECTRON_START_URL=http://localhost:1234 & electron .",
     "start": "electron .",
     "build": "parcel build ./src/index.html -d build/ --public-url ./",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "test": "mocha"
+    "test": "NODE_ENV=test&& npm run build &&mocha --exit --require @babel/register",
+    "test-win": "SET NODE_ENV=test&&npm run build && mocha --exit --require @babel/register"
   },
   "build": {
     "appId": "com.sprinteins.ghost",
@@ -37,21 +39,27 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "babel-eslint": "^10.0.1",
+    "@babel/register": "7.4.4",
+    "babel-eslint": "^10.0.2",
     "babel-preset-env": "^1.6.1",
-    "electron": "~1.8.2",
-    "electron-builder": "^19.50.0",
-    "electron-reload": "^1.2.2",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "electron": "~6.0.1",
+    "electron-builder": "^21.2.0",
+    "electron-reload": "^1.5.0",
     "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
-    "mocha": "^5.2.0",
-    "parcel-bundler": "^1.3.1",
-    "spectron": "^3.8.0",
+    "mocha": "^6.2.0",
+    "parcel-bundler": "^1.12.3",
+    "spectron": "^8.0.0",
     "spectron-fake-dialog": "^0.0.1"
   }
 }

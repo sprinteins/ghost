@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import log from '../../modules/git';
+import gLog from '../../modules/git';
 import './style.css';
 import helpIcon from '../../../assets/helpIcon.png';
 
@@ -10,21 +10,16 @@ const path = require('path');
 export default class Start extends Component {
   constructor(props) {
     super(props);
-    this.openFolderDialog = this.openFolderDialog.bind(this);
-    this.logDoneCB = this.logDoneCB.bind(this);
-    this.logProgressCB = this.logProgressCB.bind(this);
     this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
-    this.help = this.help.bind(this);
-
     this.state = {
       noOfFiles: 0,
       fileStats: [],
     };
   }
 
-  sortByAttribute(array, attribute) {
+  sortByAttribute = (array, attribute) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
         return -1;
@@ -34,13 +29,13 @@ export default class Start extends Component {
       }
       return 0;
     });
-  }
+  };
 
-  openFolderDialog() {
+  openFolderDialog = async () => {
     const queryParameter = document.getElementById('queryParameter').value;
     let fileExtension = document.getElementById('fileExtension').value;
     this.state.noOfFiles = 0;
-    const filepath = dialog.showOpenDialog({
+    const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
 
@@ -50,50 +45,41 @@ export default class Start extends Component {
 
     const fileExtensionArray = fileExtension.split(',');
 
-    if (filepath !== undefined) {
-      const givenpath = filepath[0];
-
+    if (filePaths !== undefined && canceled !== true) {
+      const givenpath = filePaths[0];
       document.body.classList.add('busy-cursor');
       const ele = document.getElementById('loadingscreen');
       ele.classList.add('loadingscreen-active');
       ele.classList.remove('loadingscreen-passive');
 
       this.setState({ fileStats: {} });
-      log(
-        givenpath,
-        this.logDoneCB,
-        this.logProgressCB,
-        queryParameter,
-        fileExtensionArray,
-      );
-    }
-  }
 
-  logDoneCB(fileMap, noOfFiles) {
-    this.noOfFiles = noOfFiles;
+      gLog(givenpath, this.gLogDoneCB, queryParameter, fileExtensionArray);
+    }
+  };
+
+  gLogDoneCB = (fileMap, noOfFiles) => {
+    this.setState({ noOfFiles });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
-  }
+  };
 
-  logProgressCB(noOfFiles) {
-    this.setState({ noOfFiles });
-  }
-
-  convertfileMapToArray(fileMap) {
+  convertfileMapToArray = (fileMap) => {
     const fileStats = [];
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
     }
     return fileStats;
-  }
+  };
 
-  changeSorting(fileStats, attribute) {
+  changeSorting = (fileStats, attribute) => {
+    this.sortByAttribute(fileStats, 'file');
     this.sortByAttribute(fileStats, attribute);
     this.setState({ fileStats });
-  }
+  };
 
-  help() {
+  help = () => {
     let helpWindow = new BrowserWindow({
       width: 350,
       height: 600,
@@ -110,7 +96,7 @@ export default class Start extends Component {
     helpWindow.on('closed', () => {
       helpWindow = null;
     });
-  }
+  };
 
   render() {
     let fileTable;
@@ -120,9 +106,15 @@ export default class Start extends Component {
           <thead>
             <tr>
               <td>#</td>
-              <td onClick={this.sortByFile}>File</td>
-              <td onClick={this.sortByCommits}>Occassions per file</td>
-              <td onClick={this.sortByDate}>Date of last change</td>
+              <td id="sortByFile" onClick={this.sortByFile}>
+                File
+              </td>
+              <td id="sortByCommits" onClick={this.sortByCommits}>
+                Occassions per file
+              </td>
+              <td id="sortByDate" onClick={this.sortByDate}>
+                Date of last change
+              </td>
             </tr>
           </thead>
           <tbody>
@@ -143,10 +135,7 @@ export default class Start extends Component {
     if (this.state.noOfFiles) {
       showNumberOfFiles = (
         <div id="noOfFiles">
-          {`Overall number of files with query-parameter-ocassion : ${
-            this.state.noOfFiles
-            }`}
-
+          {`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}
         </div>
       );
     } else {
@@ -175,7 +164,7 @@ export default class Start extends Component {
           <button
             className="repo-button gitLogQuery"
             id="repo-button"
-            onClick={this.openFolderDialog.bind(this)}
+            onClick={this.openFolderDialog}
             type="button"
           >
             Open Repo
@@ -184,7 +173,7 @@ export default class Start extends Component {
             src={helpIcon}
             alt="help_icon"
             className="gitLogQuery"
-            onClick={this.help.bind(this)}
+            onClick={this.help}
             type="button"
             height="18px"
             style={{ margin: '-3px' }}
