@@ -17,8 +17,8 @@ export default class Start extends Component {
     this.openFolderDialogValue = '/';
     this.queryValue = "bugfix";
     this.fileExtension = '*';
-    this.currentPath = `${process.cwd()}../../`;
-    console.log('path', this.currentPath);
+    this.pathOfDirectory = __dirname;
+    this.currentPath = this.pathOfDirectory.substr(0, this.pathOfDirectory.length - 15);
     this.state = {
       noOfFiles: 0,
       fileStats: [],
@@ -53,7 +53,6 @@ export default class Start extends Component {
       this.setState({ fileStats: {} });
 
       gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
-      console.log('path', this.currentPath);
     }
   };
 
