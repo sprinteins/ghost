@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
 import Start from './views/start/index';
+import './App.css';
 
 export default class App extends React.Component {
   public render() {
@@ -12,7 +12,6 @@ export default class App extends React.Component {
             <span>Welcome to Ghost</span>
           </h1>
         </header>
-
         <Start />
       </div>
     );

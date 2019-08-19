@@ -26,6 +26,7 @@ describe('Application launch', function() {
       path: (electronPath as unknown) as string,
       env: {
         NODE_ENV: 'test',
+        PRELOAD_GIT_MOCK_FILE: 'glogExampleData.txt',
       },
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.
@@ -73,55 +74,60 @@ describe('Application launch', function() {
 
     const elementText = await this.app.client.getText('#noOfFiles');
 
-    assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 3');
+    assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 12');
   });
 
   it('should display the corresponding files', async function() {
     await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
     await this.app.client.waitForVisible('.file-table');
-
     const element = await this.app.client.getText('#stat01');
 
-    assert.equal(element, '1 Bugfix_2.txt 2 2019-02-06 T10:15:28');
+    assert.equal(element, '1 Bugfix_3.txt 4 2019-02-06 T10:15:28');
   });
-  /*
-  need fix pull request first
-  async function prepareOrderTable(client) {
-    fakeDialog.mock([{ method: "showOpenDialog",
-    value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false } }]);
-    await client.waitForVisible("#queryParameter", WAIT_FOR_ELEMENT).click("#queryParameter");
-    await client
-      .element("#queryParameter")
-      .setValue("")
-      .getText("#queryParameter")
-      .should.eventually.be.equal("");
 
-    await client.waitForVisible(".repo-button", WAIT_FOR_ELEMENT).click(".repo-button");
-    await client.waitForVisible(".file-table");
-    await client.getText("#stat01").should.eventually.be.contain("test/spec.js");
+  // Dont change the config just for one method.
+  //Maybe we need a second tslint config for testing
+  //tslint:disable-next-line: no-any
+  async function prepareOrderTable(client: any) {
+    fakeDialog.mock([
+      {
+        method: 'showOpenDialog',
+        value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false },
+      },
+    ]);
+    await client.waitForVisible('#queryParameter', WAIT_FOR_ELEMENT).click('#queryParameter');
+    await client
+      .element('#queryParameter')
+      .setValue('')
+      .getText('#queryParameter')
+      .should.eventually.be.equal('');
+
+    await client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
+    await client.waitForVisible('.file-table');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
   }
 
-  it("should order the repos by file once -> biggest on top", async function() {
+  it('should order the repos by file once -> biggest on top', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
-    await client.click("#sortByFile");
-    await client.getText("#stat01").should.eventually.be.contain("yarn.lock");
+    await client.click('#sortByFile');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_7.txt');
   });
 
-  it("should order the repos by Commits once -> biggest on top", async function() {
+  it('should order the repos by Commits once -> biggest on top', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
-    await client.click("#sortByCommits");
-    await client.getText("#stat01").should.eventually.be.contain("test/spec.js");
-    await client.getText("#stat31").should.eventually.be.contain("src/modules/git/index.js");
+    await client.click('#sortByCommits');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
+    await client.getText('#stat11').should.eventually.be.contain('Bugfix_7.txt');
   });
 
-  it("should order the repos by Date once -> biggest on top", async function() {
+  it('should order the repos by Date once -> biggest on top', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
-    await client.click("#sortByDate");
-    await client.getText("#stat01").should.eventually.be.contain("test/spec.js");
-  });*/
+    await client.click('#sortByDate');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_4.txt');
+  });
 });
 
 // non UI tests

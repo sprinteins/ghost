@@ -20,5 +20,6 @@
     "typeRoots": ["./types/**/*"]
   },
   "include": ["test/**/*"],
+  "exclude": ["test/mocks/**/*", "test/build/**/*"],
   "files": ["./types/global.d.ts"]
 }
