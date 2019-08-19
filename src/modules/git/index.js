@@ -24,8 +24,6 @@ export default function gLog(path, doneCB, queryParameter, fileExtensionArray) {
   const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
   const extensions = prefixString.split(',');
 
-  console.log('before concat cmdArgs', cmdArgs);
-
   const cmdArgsWithExtensions = cmdArgs.concat(extensions);
 
   console.log('after concat cmdArgs', cmdArgsWithExtensions);
