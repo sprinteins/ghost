@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  background-image: linear-gradient(90deg,#08223f,#005c6c);
+  background-image: linear-gradient(90deg, #08223f, #005c6c);
   height: 70px;
   padding: 20px;
   color: white;
@@ -23,7 +23,7 @@
   display: inline-block;
 }
 
-.header img{
+.header img {
   padding: 20px;
 }
 
@@ -32,33 +32,36 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-
-.file-table{
-  width:100%;
+.file-table {
+  width: 100%;
   padding: 0 20px;
   text-align: left;
   border-spacing: 0;
   border-collapse: collapse;
 }
 
-.file-table td{
-  border:thin solid black;
+.file-table td {
+  border: thin solid black;
   hyphens: auto;
 }
 
-#tablefield{
+#tablefield {
   padding: 20px;
 }
 
-.file-table thead td{
+.file-table thead td {
   cursor: pointer;
 }
 
-.file-table tr:nth-child(even){
+.file-table tr:nth-child(even) {
   background: lightgrey;
 }
 

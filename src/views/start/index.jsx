@@ -13,6 +13,12 @@ export default class Start extends Component {
     this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
+    this.help = this.help.bind(this);
+    this.openFolderDialogValue = '/';
+    this.queryValue = 'bugfix';
+    this.fileExtension = '*';
+    this.currentPath = path.join(__dirname, '..', '..', '..');
+
     this.state = {
       noOfFiles: 0,
       fileStats: [],
@@ -32,13 +38,13 @@ export default class Start extends Component {
   };
 
   openFolderDialog = async () => {
-    const queryParameter = document.getElementById('queryParameter').value;
     this.state.noOfFiles = 0;
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
+
     if (filePaths !== undefined && canceled !== true) {
-      const givenpath = filePaths[0];
+      this.currentPath = filePaths[0];
       document.body.classList.add('busy-cursor');
       const ele = document.getElementById('loadingscreen');
       ele.classList.add('loadingscreen-active');
@@ -46,7 +52,7 @@ export default class Start extends Component {
 
       this.setState({ fileStats: {} });
 
-      gLog(givenpath, this.gLogDoneCB, queryParameter);
+      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
     }
   };
 
@@ -62,7 +68,6 @@ export default class Start extends Component {
     for (const key in fileMap) {
       fileStats.push(fileMap[key]);
     }
-
     return fileStats;
   };
 
@@ -88,8 +93,33 @@ export default class Start extends Component {
 
     helpWindow.on('closed', () => {
       helpWindow = null;
-    });
-  };
+    })
+  }
+
+  onQueryKeyDown = (e) => {
+    //if keydown on enter reevaluate the query
+    if (e.keyCode === 13) {
+      if (this.currentPath) {
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+      }
+    }
+  }
+
+  setQueryValue = (e) => {
+    this.queryValue = e.target.value;
+  }
+
+  onFileExtensionKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      if (this.currentPath) {
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+      }
+    }
+  }
+
+  setFileExtensionValue = (e) => {
+    this.fileExtension = e.target.value;
+  }
 
   render() {
     let fileTable;
@@ -144,8 +174,21 @@ export default class Start extends Component {
             type="text"
             name="queryParameter"
             id="queryParameter"
-            defaultValue="bugfix"
+            autoFocus="autofocus"
+            defaultValue={this.queryValue}
+            onKeyDown={this.onQueryKeyDown}
+            onChange={this.setQueryValue}
           />
+          file Extension:
+          <input
+            className="fileExtensitonInput"
+            type="text"
+            name="fileExtension"
+            id="fileExtension"
+            onKeyDown={this.onFileExtensionKeyDown}
+            onChange={this.setFileExtensionValue}
+          />
+          split by ','
           <button
             className="repo-button gitLogQuery"
             id="repo-button"

@@ -25,7 +25,7 @@ describe('Application launch', function () {
       path: electronPath,
       env: {
         NODE_ENV: 'test',
-        PRELOAD_GIT_MOCK_FILE:'glogExampleData.txt'
+        PRELOAD_GIT_MOCK_FILE: 'glogExampleData.txt'
       },
       // The following line tells spectron to look and use the main.js file
       // and the package.json located 1 level above.
@@ -91,7 +91,7 @@ describe('Application launch', function () {
     fakeDialog.mock([
       {
         method: 'showOpenDialog',
-        value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false },
+        value: { filePaths: [`${process.cwd()}/`], canceled: false },
       },
     ]);
     await client.waitForVisible('#queryParameter', WAIT_FOR_ELEMENT).click('#queryParameter');
@@ -130,7 +130,7 @@ describe('Application launch', function () {
 });
 
 // non UI tests
-describe('foramtting tests', () => {
+describe('formatting tests', () => {
   it('filenames are read correctly and assigned', () => {
     const output = 'Wed, 6 Feb 2019 10:15:28 +0100\n\n3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n\n5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n\n3	1	Bugfix_1.txt';
     formatting(output);
