@@ -174,6 +174,7 @@ export default class Start extends Component {
             type="text"
             name="queryParameter"
             id="queryParameter"
+            autoFocus="autofocus"
             defaultValue={this.queryValue}
             onKeyDown={this.onQueryKeyDown}
             onChange={this.setQueryValue}
