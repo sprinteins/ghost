@@ -15,10 +15,10 @@ export default class Start extends Component {
     this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
     this.help = this.help.bind(this);
     this.openFolderDialogValue = '/';
-    this.queryValue = "bugfix";
+    this.queryValue = 'bugfix';
     this.fileExtension = '*';
-    this.pathOfDirectory = __dirname;
-    this.currentPath = this.pathOfDirectory.substr(0, this.pathOfDirectory.length - 15);
+    this.currentPath = path.join(__dirname, '..', '..', '..');
+
     this.state = {
       noOfFiles: 0,
       fileStats: [],
@@ -96,7 +96,7 @@ export default class Start extends Component {
     })
   }
 
-  onQueryKeyDown(e) {
+  onQueryKeyDown = (e) => {
     //if keydown on enter reevaluate the query
     if (e.keyCode === 13) {
       if (this.currentPath) {
@@ -105,11 +105,11 @@ export default class Start extends Component {
     }
   }
 
-  setQueryValue(e) {
+  setQueryValue = (e) => {
     this.queryValue = e.target.value;
   }
 
-  onFileExtensionKeyDown(e) {
+  onFileExtensionKeyDown = (e) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
@@ -117,7 +117,7 @@ export default class Start extends Component {
     }
   }
 
-  setFileExtensionValue(e) {
+  setFileExtensionValue = (e) => {
     this.fileExtension = e.target.value;
   }
 
@@ -175,8 +175,8 @@ export default class Start extends Component {
             name="queryParameter"
             id="queryParameter"
             defaultValue={this.queryValue}
-            onKeyDown={this.onQueryKeyDown.bind(this)}
-            onChange={this.setQueryValue.bind(this)}
+            onKeyDown={this.onQueryKeyDown}
+            onChange={this.setQueryValue}
           />
           file Extension:
           <input
@@ -184,8 +184,8 @@ export default class Start extends Component {
             type="text"
             name="fileExtension"
             id="fileExtension"
-            onKeyDown={this.onFileExtensionKeyDown.bind(this)}
-            onChange={this.setFileExtensionValue.bind(this)}
+            onKeyDown={this.onFileExtensionKeyDown}
+            onChange={this.setFileExtensionValue}
           />
           split by ','
           <button
