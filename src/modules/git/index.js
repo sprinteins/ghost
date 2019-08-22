@@ -3,9 +3,9 @@ import { fileMap, finalcount } from './calculations';
 
 const { spawn } = window.bridge;
 
-export default function gLog(path, doneCB, queryParameter, fileExtension) {
+export default function gLog(path, doneCB, queryParameter, fileExtension, fileExtentionExclusion) {
   const cmd = 'git';
-  const cmdArgs = [
+  let cmdArgs = [
     'log',
     '--merges',
     '--numstat',
@@ -19,19 +19,25 @@ export default function gLog(path, doneCB, queryParameter, fileExtension) {
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
 
-  const prefix = '*.';
-  if (fileExtension === '') {
-    fileExtension = '*';
+  if (fileExtentionExclusion === '') {
+    const prefix = '*.';
+    if (fileExtension === '') {
+      fileExtension = '*';
+    }
+    const fileExtensionArray = fileExtension.split(',');
+    const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
+    const extensions = prefixString.split(',');
+    cmdArgs = cmdArgs.concat(extensions);
+  } else {
+    const prefix = '';
+    const prefix2 = prefix.concat('--,', '.,', ':^*.')
+    const fileExtentionExclusionArray = fileExtentionExclusion.split(',');
+    const prefixString = prefix2.concat(fileExtentionExclusionArray.join(',:^*.'));
+    const exclusions = prefixString.split(',');
+    cmdArgs = cmdArgs.concat(exclusions);
   }
 
-  const fileExtensionArray = fileExtension.split(',');
-
-  const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
-  const extensions = prefixString.split(',');
-
-  const cmdArgsWithExtensions = cmdArgs.concat(extensions);
-
-  const gitLog = spawn(cmd, cmdArgsWithExtensions, { cwd: path });
+  const gitLog = spawn(cmd, cmdArgs, { cwd: path });
 
   let output = '';
 
