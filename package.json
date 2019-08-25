@@ -2,7 +2,7 @@
   "name": "Ghost",
   "version": "1.0.2",
   "description": "A Git analyser tool",
-  "main": "./build/electron.js",
+  "main": "./build/backend/main.js",
   "homepage": "./",
   "author": {
     "name": "Tamás Rusz, Heiko Lang"
@@ -105,8 +105,8 @@
     "frontend-build": "node scripts/build.js",
     "frontend-test": "node scripts/test.js --config jest.config.js",
     "test-win": "SET NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
-    "backend-dev": "npm run backend-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/electron.js",
-    "backend-dev-win": "npm run backend-build && SET ELECTRON_START_URL=http://localhost:3000 && electron ./build/electron.js",
+    "backend-dev": "npm run backend-build && ELECTRON_START_URL=http://localhost:3000 electron ./build/backend/main.js",
+    "backend-dev-win": "npm run backend-build && SET ELECTRON_START_URL=http://localhost:3000 && electron ./build/backend/main.js",
     "backend-build": "npm run lint && tsc --build tsconfig.electron.json",
     "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
     "test-backend": "mocha"
