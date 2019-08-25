@@ -18,7 +18,7 @@ const REACT_URL =
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
+  const createdWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -28,19 +28,20 @@ function createWindow() {
     },
     show: false,
   });
-  mainWindow.maximize();
+  createdWindow.maximize();
 
-  mainWindow.loadURL(REACT_URL);
-  mainWindow.once('ready-to-show', () => {
-    mainWindow!.show();
+  createdWindow.loadURL(REACT_URL);
+  createdWindow.once('ready-to-show', () => {
+    createdWindow.show();
   });
 
-  mainWindow.on('closed', () => {
+  createdWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+  mainWindow = createdWindow;
 }
 
 app.on('ready', createWindow);
