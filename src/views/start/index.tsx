@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gLog from '../../modules/git';
 import './style.css';
 
-const { dialog, BrowserWindow } = window.bridge;
+const { dialog, BrowserWindow, rootDir, isDev, devUrl } = window.bridge;
 import url from 'url';
 import path from 'path';
 import { IFileMapObject } from '../../modules/git/calculations';
@@ -80,12 +80,14 @@ export default class Start extends Component<{}, IStartState> {
       height: 600,
     });
 
-    const helpUrl = url.format({
-      pathname: path.join(__dirname, 'help.html'),
-      protocol: 'file:',
-      slashes: true,
-    });
-
+    console.log(isDev);
+    const helpUrl = isDev
+      ? url.format({
+          pathname: path.join(rootDir, '..\\help.html'),
+          protocol: 'file:',
+          slashes: true,
+        })
+      : path.join(devUrl, 'help.html');
     helpWindow.loadURL(helpUrl);
 
     helpWindow.on('closed', () => {
@@ -136,9 +138,7 @@ export default class Start extends Component<{}, IStartState> {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = (
-        <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>
-      );
+      showNumberOfFiles = <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>;
     } else {
       showNumberOfFiles = <div> </div>;
     }
@@ -147,25 +147,11 @@ export default class Start extends Component<{}, IStartState> {
       <div className="Start">
         <div>
           Query Parameter :
-          <input
-            className="gitLogQuery"
-            type="text"
-            id="queryParameter"
-            name="queryParameter"
-            onChange={(e) => (this.queryParameter = e.target.value)}
-            defaultValue="bugfix"
-          />
+          <input className="gitLogQuery" type="text" id="queryParameter" name="queryParameter" onChange={(e) => (this.queryParameter = e.target.value)} defaultValue="bugfix" />
           <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolder} type="button">
             Open Repo
           </button>
-          <img
-            src={'./assets/helpIcon.png'}
-            alt="help_icon"
-            className="gitLogQuery"
-            onClick={this.help}
-            height="18px"
-            style={{ margin: '-3px' }}
-          />
+          <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>

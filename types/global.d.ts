@@ -10,4 +10,7 @@ interface ElectronBridge {
   dialog: Electron.Dialog;
   BrowserWindow: Electron.BrowserWindow;
   remote: Electron.Remote;
+  isDev: boolean;
+  rootDir: string;
+  devUrl: string;
 }
