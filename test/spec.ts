@@ -37,9 +37,7 @@ describe('Application launch', function() {
     fakeDialog.apply(this.app);
     const pwd = `${process.cwd()}/test/testrepo/git`;
     chaiAsPromised.transferPromiseness = this.app.transferPromiseness;
-    return this.app
-      .start()
-      .then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: { filePaths: [pwd], canceled: false } }]));
+    return this.app.start().then(() => fakeDialog.mock([{ method: 'showOpenDialog', value: { filePaths: [pwd], canceled: false } }]));
   });
 
   afterEach(function() {
@@ -56,6 +54,9 @@ describe('Application launch', function() {
     });
   });
   it('has "Open Repo" button', async function() {
+    await new Promise((res, rej) => {
+      setTimeout(res, 100000);
+    });
     await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT);
   });
 
@@ -131,7 +132,7 @@ describe('Application launch', function() {
 });
 
 // non UI tests
-describe('foramtting tests', () => {
+describe('formatting tests', () => {
   it('filenames are read correctly and assigned', () => {
     const output = `Wed, 6 Feb 2019 10:15:28 +0100\n
     3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n

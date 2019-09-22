@@ -29,7 +29,6 @@ function createWindow() {
     show: false,
   });
   createdWindow.maximize();
-
   createdWindow.loadURL(REACT_URL);
   createdWindow.once('ready-to-show', () => {
     createdWindow.show();

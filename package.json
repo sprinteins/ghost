@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "A Git analyser tool",
   "main": "./build/backend/main.js",
-  "homepage": "https://github.com/sprinteins/ghost",
+  "homepage": "./",
   "author": {
     "name": "Tamás Rusz, Heiko Lang"
   },

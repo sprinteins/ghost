@@ -15,15 +15,20 @@ interface IStartState {
 }
 
 export default class Start extends Component<{}, IStartState> {
-  public queryParameter: string = 'bugfix';
+  public queryValue: string = 'bugfix';
   private sortByCommits: () => void;
   private sortByFile: () => void;
   private sortByDate: () => void;
+
+  private fileExtension: string = '*';
+  private currentPath: string = '.';
   constructor(props: object) {
     super(props);
     this.sortByCommits = () => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = () => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = () => this.changeSorting(this.state.fileStats, 'latestDate');
+    this.currentPath = path.join(__dirname, '..', '..', '..');
+
     this.state = {
       noOfFiles: 0,
       fileStats: [],
@@ -43,7 +48,7 @@ export default class Start extends Component<{}, IStartState> {
     });
   }
 
-  public openFolderDialog = async (queryParameter: string) => {
+  public openFolderDialog = async () => {
     this.setState({ loading: true });
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
@@ -52,10 +57,9 @@ export default class Start extends Component<{}, IStartState> {
       this.setState({ loading: false });
     }
     if (filePaths !== undefined && canceled !== true) {
-      const givenpath = filePaths[0];
+      this.currentPath = filePaths[0];
       this.setState({ noOfFiles: 0, fileStats: [] });
-
-      gLog(givenpath, this.gLogDoneCB, queryParameter);
+      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
     }
   }
 
@@ -97,12 +101,21 @@ export default class Start extends Component<{}, IStartState> {
     });
   }
 
-  public showLoadingScreen = () => {
-    const c = 'TODO';
+  public onQueryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    //if keydown on enter reevaluate the query
+    if (e.keyCode === 13) {
+      if (this.currentPath) {
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+      }
+    }
   }
-  public openFolder = () => {
-    this.showLoadingScreen();
-    this.openFolderDialog(this.queryParameter);
+
+  public onFileExtensionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      if (this.currentPath) {
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+      }
+    }
   }
 
   public render() {
@@ -152,11 +165,27 @@ export default class Start extends Component<{}, IStartState> {
       <div className="Start">
         <div>
           Query Parameter :
-          <input className="gitLogQuery" type="text" id="queryParameter" name="queryParameter" onChange={(e) => (this.queryParameter = e.target.value)} defaultValue="bugfix" />
-          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolder} type="button">
+          <input
+            className="gitLogQuery"
+            type="text"
+            id="queryParameter"
+            name="queryParameter"
+            onChange={(e) => (this.queryValue = e.target.value)}
+            defaultValue={this.queryValue}
+          />
+          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolderDialog} type="button">
             Open Repo
           </button>
-          <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
+          File Extension:
+          <input
+            className="fileExtensitonInput"
+            type="text"
+            name="fileExtension"
+            id="fileExtension"
+            onKeyDown={this.onFileExtensionKeyDown}
+            onChange={(e) => (this.fileExtension = e.target.value)}
+          />
+          split by ',' <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>

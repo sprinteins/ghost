@@ -3,15 +3,25 @@ import { fileMap, finalcount } from './calculations';
 
 const { spawn } = window.bridge;
 
-export default function gLog(path: string, doneCB: (fileMap: object, noOfFiles: number) => void, queryParameter: string) {
+export default function gLog(path: string, doneCB: (fileMap: object, noOfFiles: number) => void, queryParameter: string, fileExtension: string) {
   const cmd = 'git';
   const cmdArgs = ['log', '--merges', '--numstat', '-m', '--first-parent', 'master', '--pretty=%cD', `--grep=${queryParameter}/`];
 
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
-  console.log(path);
-  const gitLog = spawn(cmd, cmdArgs, { cwd: path });
-  console.log(gitLog);
+  const prefix = '*.';
+  if (fileExtension === '') {
+    fileExtension = '*';
+  }
+
+  const fileExtensionArray = fileExtension.split(',');
+
+  const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
+  const extensions = prefixString.split(',');
+
+  const cmdArgsWithExtensions = cmdArgs.concat(extensions);
+
+  const gitLog = spawn(cmd, cmdArgsWithExtensions, { cwd: path });
 
   let output = '';
 

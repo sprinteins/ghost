@@ -10,6 +10,8 @@
 <p>
   Just enter a branchname or branchtype you want to analyse and select your .git-repository.<br>
   Ghost will show all file occurrence within these branches and provide statistics for you.
+
+  If you want to search for a specific file type only, type the file extension(s) in the second textbox like this: js,jsx,json and so on.
 </p>
 
 ## About the project
