@@ -1,6 +1,6 @@
 # Ghost <img src="https://travis-ci.com/sprinteins/ghost.svg?branch=master" height="20px" />
 
-<img src="assets/ghost_pacman.png" height="150px" />
+<img src="./public/assets/ghost_pacman.png" height="150px" />
 
 ### Welcome
 
@@ -18,17 +18,21 @@
 As mentioned above Ghost is an analysing tool for git branches. The main purpose is to identify files which are relatively often part of bugfixes. This suggests that those files should be refactored.
 </p>
 
-## How to install
+## How to install Win + Linux
+
+<p> There are no special install instructions for windows and linux</p>
+
+## How to install (MacOS)
 
 <p> When you first download and install Ghost a warning message will appear, telling you that the application is from an unidentified dev and therefore can't be opened. </p>
 
-<img src="assets/cant_be_opened.png">
+<img src="./public/assets/cant_be_opened.png">
 
 <p> Until we get an open source license a work around is needed to install Ghost: <br>
 Go to your settings menu and select 'security & privacy'. In the 'General' Tab a note at the bottom will tell you, that the installation has been blocked. Tap the button 'Open Anyway' to allow the installation. </p>
 
-<img src="assets/general_settings.png">
-<img src="assets/security_and_privacy.png">
+<img src="./public/assets/general_settings.png">
+<img src="./public/assets/security_and_privacy.png">
 
 ## Initialize
 
@@ -40,13 +44,7 @@ $ yarn install
 
 ## Development
 
-Run local web development server
-
-```bash
-$ yarn dev
-```
-
-Start the electron development
+Starting ghost in development mode
 
 ```bash
 $ yarn start-dev
@@ -63,7 +61,7 @@ $ yarn build
 Package and create the app
 
 ```bash
-$ yarn dist
+$ yarn production
 ```
 
 ### Testing
@@ -76,4 +74,4 @@ $ yarn test
 
 If you come across a bug please tell as in the issues tab.
 Feel free to leave suggestions and feedback.
-![](assets/ghost_pacman_gif.gif)
+![](./public/assets/ghost_pacman_gif.gif)
