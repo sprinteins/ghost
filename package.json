@@ -1,5 +1,5 @@
 {
-  "name": "Ghost",
+  "name": "ghost",
   "version": "1.0.2",
   "description": "A Git analyser tool",
   "main": "./build/backend/main.js",
