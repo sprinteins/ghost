@@ -27,10 +27,6 @@
   padding: 20px;
 }
 
-.Start {
-  /* background: hsla(0,0%,96%,.5); */
-}
-
 .file-table {
   width: 100%;
   padding: 0 20px;
@@ -54,8 +50,4 @@
 
 .file-table tr:nth-child(even) {
   background: lightgrey;
-}
-
-body.busy-cursor {
-  cursor: progress;
 }

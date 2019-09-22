@@ -3,22 +3,9 @@ import { fileMap, finalcount } from './calculations';
 
 const { spawn } = window.bridge;
 
-export default function gLog(
-  path: string,
-  doneCB: (fileMap: object, noOfFiles: number) => void,
-  queryParameter: string,
-) {
+export default function gLog(path: string, doneCB: (fileMap: object, noOfFiles: number) => void, queryParameter: string) {
   const cmd = 'git';
-  const cmdArgs = [
-    'log',
-    '--merges',
-    '--numstat',
-    '-m',
-    '--first-parent',
-    'master',
-    '--pretty=%cD',
-    `--grep=${queryParameter}/`,
-  ];
+  const cmdArgs = ['log', '--merges', '--numstat', '-m', '--first-parent', 'master', '--pretty=%cD', `--grep=${queryParameter}/`];
 
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
@@ -40,12 +27,6 @@ export default function gLog(
     } else {
       console.log(`child process exited with code ${code}`);
     }
-
-    /*document.body.classList.remove('busy-cursor');
-    const ele = document.getElementById('loadingscreen');
-    ele.classList.add('loadingscreen-passive');
-    ele.classList.remove('loadingscreen-active');*/
-
     doneCB(fileMap, finalcount);
   });
 }

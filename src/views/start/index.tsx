@@ -6,10 +6,12 @@ const { dialog, BrowserWindow, rootDir, isDev, devUrl } = window.bridge;
 import url from 'url';
 import path from 'path';
 import { IFileMapObject } from '../../modules/git/calculations';
+import { Loading } from '../../components/Loading/Loading';
 
 interface IStartState {
   fileStats: IFileMapObject[];
   noOfFiles: number;
+  loading: boolean;
 }
 
 export default class Start extends Component<{}, IStartState> {
@@ -25,6 +27,7 @@ export default class Start extends Component<{}, IStartState> {
     this.state = {
       noOfFiles: 0,
       fileStats: [],
+      loading: false,
     };
   }
 
@@ -41,16 +44,15 @@ export default class Start extends Component<{}, IStartState> {
   }
 
   public openFolderDialog = async (queryParameter: string) => {
+    this.setState({ loading: true });
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
+    if (canceled === true) {
+      this.setState({ loading: false });
+    }
     if (filePaths !== undefined && canceled !== true) {
       const givenpath = filePaths[0];
-      /*document.body.classList.add("busy-cursor");
-      const ele = document.getElementById("loadingscreen");
-      ele.classList.add("loadingscreen-active");
-      ele.classList.remove("loadingscreen-passive");*/
-
       this.setState({ noOfFiles: 0, fileStats: [] });
 
       gLog(givenpath, this.gLogDoneCB, queryParameter);
@@ -58,7 +60,7 @@ export default class Start extends Component<{}, IStartState> {
   }
 
   public gLogDoneCB = (fileMap: object, noOfFiles: number) => {
-    this.setState({ noOfFiles });
+    this.setState({ noOfFiles, loading: false });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
@@ -104,6 +106,9 @@ export default class Start extends Component<{}, IStartState> {
   }
 
   public render() {
+    if (this.state.loading) {
+      return <Loading />;
+    }
     let fileTable;
     if (this.state.fileStats.length > 0) {
       fileTable = (
