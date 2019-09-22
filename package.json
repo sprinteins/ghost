@@ -1,9 +1,9 @@
 {
   "name": "ghost",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Git analyser tool",
   "main": "./build/backend/main.js",
-  "homepage": "./",
+  "homepage": "https://github.com/sprinteins/ghost",
   "author": {
     "name": "Tamás Rusz, Heiko Lang"
   },
