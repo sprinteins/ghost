@@ -54,9 +54,6 @@ describe('Application launch', function() {
     });
   });
   it('has "Open Repo" button', async function() {
-    await new Promise((res, rej) => {
-      setTimeout(res, 100000);
-    });
     await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT);
   });
 
