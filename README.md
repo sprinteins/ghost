@@ -79,6 +79,6 @@ Run tests
 $ yarn test
 ```
 
-If you come across a bug please tell us in the issues tab.
+If you come across a bug, please tell us in the issues tab.
 Feel free to leave suggestions and feedback.
 ![](assets/ghost_pacman_gif.gif)
