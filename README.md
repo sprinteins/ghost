@@ -45,6 +45,8 @@ $ yarn install
 
 ## Development
 
+You have to run the following two scripts in parallel:
+
 Run local web development server
 
 ```bash
