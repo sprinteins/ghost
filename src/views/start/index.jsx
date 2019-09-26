@@ -22,16 +22,20 @@ export default class Start extends Component {
     this.state = {
       noOfFiles: 0,
       fileStats: [],
+      orderBy: {
+        attribute: '',
+        order: ''
+      }
     };
   }
 
-  sortByAttribute = (array, attribute) => {
+  sortByAttribute = (array, attribute, order) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
-        return -1;
+        return order === 'asc' ? 1 : -1;
       }
       if (a[attribute] < b[attribute]) {
-        return 1;
+        return order === 'asc' ? -1 : 1;
       }
       return 0;
     });
@@ -72,9 +76,29 @@ export default class Start extends Component {
   };
 
   changeSorting = (fileStats, attribute) => {
+    // By default, sort by file path
     this.sortByAttribute(fileStats, 'file');
-    this.sortByAttribute(fileStats, attribute);
-    this.setState({ fileStats });
+
+    const order = (() => {
+      if (this.state.orderBy.attribute === attribute) {
+        switch (this.state.orderBy.order) {
+          case 'asc':
+            return 'desc';
+          case 'desc':
+            return 'asc';
+          default:
+            return 'desc';
+        }
+      } else {
+        return 'desc';
+      }
+    })();
+
+    this.sortByAttribute(fileStats, attribute, order);
+    this.setState({
+      fileStats,
+      orderBy: { attribute, order }
+    });
   };
 
   help = () => {
