@@ -182,7 +182,7 @@ export default class Start extends Component {
       <div className="Start">
         <div>
           Query parameter:
-          &nbsp;
+          {" "}
           <input
             className="gitLogQuery"
             type="text"
@@ -193,7 +193,7 @@ export default class Start extends Component {
             onKeyDown={this.onQueryKeyDown}
             onChange={this.setQueryValue}
           />
-          &nbsp;
+          {" "}
           file extension(s):
           &nbsp;
           <input
@@ -205,9 +205,9 @@ export default class Start extends Component {
             onKeyDown={this.onFileExtensionKeyDown}
             onChange={this.setFileExtensionValue}
           />
-          &nbsp;
+          {" "}
           exclusion(s):
-          &nbsp;
+          {" "}
           <input
             placeholder="disables file extensions!"
             className="fileExtensitonExclusion"
@@ -217,7 +217,7 @@ export default class Start extends Component {
             onKeyDown={this.onFileExtensionExclusionKeyDown}
             onChange={this.setFileExtensionExclusionValue}
           />
-          &nbsp;
+          {" "}
           split by ','
           <button
             className="repo-button gitLogQuery"

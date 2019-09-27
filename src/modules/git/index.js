@@ -20,20 +20,18 @@ export default function gLog(path, doneCB, queryParameter, fileExtension, fileEx
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
 
   if (fileExtentionExclusion === '') {
-    const prefix = '*.';
+    let prefix = '*.';
     if (fileExtension === '') {
       fileExtension = '*';
     }
     const fileExtensionArray = fileExtension.split(',');
-    const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
-    const extensions = prefixString.split(',');
+    prefix += fileExtensionArray.join(',*.');
+    const extensions = prefix.split(',');
     cmdArgs = cmdArgs.concat(extensions);
   } else {
-    const prefix = '';
-    const prefix2 = prefix.concat('--,', '.,', ':^*.')
-    const fileExtentionExclusionArray = fileExtentionExclusion.split(',');
-    const prefixString = prefix2.concat(fileExtentionExclusionArray.join(',:^*.'));
-    const exclusions = prefixString.split(',');
+    let prefix2 = '--,.,:^*.';
+    prefix2 += fileExtentionExclusion.replace(/,/g, ',:^*.');
+    const exclusions = prefix2.split(',');
     cmdArgs = cmdArgs.concat(exclusions);
   }
 
