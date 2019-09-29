@@ -17,6 +17,7 @@ export default class Start extends Component {
     this.openFolderDialogValue = '/';
     this.queryValue = 'bugfix';
     this.fileExtension = '*';
+    this.fileExtensionExclusion = '';
     this.currentPath = path.join(__dirname, '..', '..', '..');
 
     this.state = {
@@ -56,7 +57,7 @@ export default class Start extends Component {
 
       this.setState({ fileStats: {} });
 
-      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
   };
 
@@ -124,7 +125,7 @@ export default class Start extends Component {
     //if keydown on enter reevaluate the query
     if (e.keyCode === 13) {
       if (this.currentPath) {
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
   }
@@ -136,13 +137,25 @@ export default class Start extends Component {
   onFileExtensionKeyDown = (e) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
   }
 
   setFileExtensionValue = (e) => {
     this.fileExtension = e.target.value;
+  }
+
+  onFileExtensionExclusionKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      if (this.currentPath) {
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
+      }
+    }
+  }
+
+  setFileExtensionExclusionValue = (e) => {
+    this.fileExtensionExclusion = e.target.value;
   }
 
   render() {
@@ -192,7 +205,8 @@ export default class Start extends Component {
     return (
       <div className="Start">
         <div>
-          Query Parameter :
+          Query parameter:
+          {" "}
           <input
             className="gitLogQuery"
             type="text"
@@ -203,8 +217,11 @@ export default class Start extends Component {
             onKeyDown={this.onQueryKeyDown}
             onChange={this.setQueryValue}
           />
-          file Extension:
+          {" "}
+          file extension(s):
+          &nbsp;
           <input
+            placeholder="all"
             className="fileExtensitonInput"
             type="text"
             name="fileExtension"
@@ -212,6 +229,19 @@ export default class Start extends Component {
             onKeyDown={this.onFileExtensionKeyDown}
             onChange={this.setFileExtensionValue}
           />
+          {" "}
+          exclusion(s):
+          {" "}
+          <input
+            placeholder="disables file extensions!"
+            className="fileExtensitonExclusion"
+            type="text"
+            name="fileExtensionExclusion"
+            id="fileExtensionExclusion"
+            onKeyDown={this.onFileExtensionExclusionKeyDown}
+            onChange={this.setFileExtensionExclusionValue}
+          />
+          {" "}
           split by ','
           <button
             className="repo-button gitLogQuery"
