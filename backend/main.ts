@@ -1,7 +1,11 @@
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
-
+import reload from 'electron-reload';
 import url from 'url';
+
+if (process.env.ELECTRON_START_URL) {
+  reload(__dirname);
+}
 
 /*
   load React-Dev-Server or build
