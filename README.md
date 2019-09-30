@@ -13,6 +13,9 @@
 
   If you want to search for a specific file type only, type the file extension(s) in the second textbox like this: js,jsx,json and so on.
 </p>
+<p>
+  Come and join our discord https://discord.gg/JjereDw
+</p>
 
 ## About the project
 
@@ -41,6 +44,8 @@ $ yarn install
 ```
 
 ## Development
+
+You have to run the following two scripts in parallel:
 
 Run local web development server
 
@@ -76,6 +81,6 @@ Run tests
 $ yarn test
 ```
 
-If you come across a bug please tell as in the issues tab.
+If you come across a bug, please tell us in the issues tab.
 Feel free to leave suggestions and feedback.
 ![](assets/ghost_pacman_gif.gif)
