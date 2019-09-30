@@ -1,6 +1,6 @@
 {
   "name": "Ghost",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "description": "A Git analyser tool",
   "author": {
     "name": "Tamás Rusz, Heiko Lang"
