@@ -34,6 +34,10 @@ function createWindow() {
   });
   createdWindow.maximize();
   createdWindow.loadURL(REACT_URL);
+
+  createdWindow.webContents.on("did-fail-load", () => {
+    createdWindow.loadURL(REACT_URL);
+  });
   createdWindow.once('ready-to-show', () => {
     createdWindow.show();
   });
