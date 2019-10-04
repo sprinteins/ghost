@@ -1,6 +1,9 @@
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import url from 'url';
+import reload from './extras/reloader.js';
+
+reload(__dirname);
 
 /*
   load React-Dev-Server or build
