@@ -1,6 +1,6 @@
-import electron from 'electron';
-
-import { spawn } from 'child_process';
+//ONLY ES5 HERE ! or add a webpack entry
+const electron = require('electron');
+const { spawn } = require('child_process');
 const { remote } = electron;
 const { dialog } = remote;
 
@@ -9,7 +9,6 @@ function init() {
     electron,
     spawn,
     dialog,
-    //@ts-ignore
     BrowserWindow: remote.BrowserWindow,
     remote,
     isDev: process.env.ELECTRON_START_URL ? true : false,

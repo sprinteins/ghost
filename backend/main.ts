@@ -1,11 +1,6 @@
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
-import reload from 'electron-reload';
 import url from 'url';
-
-if (process.env.ELECTRON_START_URL) {
-  reload(__dirname);
-}
 
 /*
   load React-Dev-Server or build
@@ -19,6 +14,8 @@ const REACT_URL =
     slashes: true,
   });
 
+console.log(process.env);
+
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
@@ -28,15 +25,16 @@ function createWindow() {
     webPreferences: {
       // devTools: false,
       nodeIntegration: process.env.NODE_ENV === 'test',
-      preload: path.resolve(path.join(__dirname, process.env.NODE_ENV === 'test' ? 'testPreload.js' : 'preload.js')),
+      preload: path.resolve(path.join(__dirname, process.env.NODE_ENV === 'test' ? './testPreload.js' : './preload.js')),
     },
     show: false,
   });
   createdWindow.maximize();
   createdWindow.loadURL(REACT_URL);
 
-  createdWindow.webContents.on("did-fail-load", () => {
-    createdWindow.loadURL(REACT_URL);
+  createdWindow.webContents.on('did-fail-load', () => {
+    //temp bc i might get epilepsy
+    //createdWindow.loadURL(REACT_URL);
   });
   createdWindow.once('ready-to-show', () => {
     createdWindow.show();

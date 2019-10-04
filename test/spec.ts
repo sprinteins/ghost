@@ -10,7 +10,7 @@ import path from 'path';
 import fakeDialog from 'spectron-fake-dialog';
 import chaiAsPromised from 'chai-as-promised';
 import chai from 'chai';
-const appPath = path.join(__dirname, '../../../build/backend/main.js');
+const appPath = path.join(__dirname, '../../../build/backend/bundle.js');
 
 chai.should();
 chai.use(chaiAsPromised);

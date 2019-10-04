@@ -1,16 +1,16 @@
-import electron from 'electron';
-import { spawn, ChildProcess, SpawnOptions } from 'child_process';
-import { join } from 'path';
+//ONLY ES5 HERE ! or add a webpack entry
+
+const electron = require('electron');
+const { spawn } = require('child_process');
+const { join } = require('path');
 const { remote } = electron;
 const { dialog } = remote;
 
 function init() {
   window.bridge = {
     electron,
-    //@ts-ignore
     spawn: chooseSpawn,
     dialog,
-    //@ts-ignore
     BrowserWindow: remote.BrowserWindow,
     remote,
     isDev: process.env.ELECTRON_START_URL ? true : false,
@@ -21,11 +21,10 @@ function init() {
 
 init();
 
-// it seems to be not possible to require local modules
-function chooseSpawn(command: string, args?: string[] | undefined, options?: SpawnOptions | undefined): ChildProcess {
+function chooseSpawn(command) {
   switch (command) {
     case 'git':
-      const args: string[] = [`${join(__dirname, '../../test/mocks/git.js')}`, process.env.PRELOAD_GIT_MOCK_FILE!];
+      const args = [`${join(__dirname, '../../test/mocks/git.js')}`, process.env.PRELOAD_GIT_MOCK_FILE];
       return spawn('node', args, undefined);
     default:
       return spawn('node');
