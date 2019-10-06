@@ -2,6 +2,9 @@
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 const fs = require('fs-extra');
+var electron = require('electron');
+
+var proc = require('child_process');
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -57,9 +60,11 @@ const watching = compiler.watch(
           assets: false,
         }),
       );
-    } else {
+    }
+    if (!stats.hasErrors()) {
       clearConsole();
       console.log(chalk.green('Successful compiled'));
+      startElectron();
     }
   },
 );
@@ -68,4 +73,22 @@ function copyExtraFolder() {
     dereference: true,
     //filter: (file) => file !== paths.appHtml,
   });
+}
+
+function startElectron() {
+  var child = proc.spawn(electron, ['./build/backend/bundle.js'], { stdio: 'inherit', windowsHide: false });
+  child.on('close', function(code) {
+    process.exit(code);
+  });
+
+  const handleTerminationSignal = function(signal) {
+    process.on(signal, function signalHandler() {
+      if (!child.killed) {
+        child.kill(signal);
+      }
+    });
+  };
+
+  handleTerminationSignal('SIGINT');
+  handleTerminationSignal('SIGTERM');
 }

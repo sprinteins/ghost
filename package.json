@@ -34,7 +34,7 @@
     "chokidar": "^3.2.1",
     "concurrently": "^4.1.1",
     "css-loader": "2.1.1",
-    "dotenv": "6.2.0",
+    "dotenv": "^8.1.0",
     "dotenv-expand": "4.2.0",
     "file-loader": "3.0.1",
     "fs-extra": "7.0.1",
@@ -98,22 +98,17 @@
     "spectron-fake-dialog": "^0.0.1"
   },
   "scripts": {
-    "start": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
-    "start-win": "concurrently \"yarn frontend-dev\"  \"yarn backend-dev-win\"",
-    "test": "SET NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
-    "test-build": "npm run lint &&tsc --build tsconfig.test.json",
-    "production": "electron-builder .",
-    "build": "npm run lint && npm run frontend-build && npm run backend-build&& npm run test-build",
+    "dev": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
+    "test": "SET NODE_ENV=test&&  npm run test-build && npm run test-backend",
+    "production": "npm run frontend-build && npm run backend-build && electron-builder .",
     "frontend-dev": "node scripts/frontend/start.js",
     "frontend-build": "node scripts/frontend/build.js",
     "frontend-test": "node scripts/frontend/test.js --config jest.config.js",
-    "test-win": "SET NODE_ENV=test&& npm run build && npm run test-backend&& node scripts/test.js",
-    "backend-dev": "ELECTRON_START_URL=http://localhost:3000 && node scripts/backend/build.js && electron ./build/backend/bundle.js",
-    "backend-dev-win": "SET ELECTRON_START_URL=http://localhost:3000 && electron ./build/backend/bundle.js",
     "backend-build": "node scripts/backend/build.js",
-    "backend-build-watch": "node scripts/backend/start.js",
-    "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
-    "test-backend": "mocha"
+    "backend-dev": "node scripts/backend/start.js",
+    "test-build": "node scripts/backend/test.js && npm run lint &&tsc --build tsconfig.test.json",
+    "test-backend": "mocha",
+    "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": "react-app"

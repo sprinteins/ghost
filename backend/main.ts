@@ -2,14 +2,19 @@ import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import url from 'url';
 import reload from './extras/reloader.js';
+import dotenv from 'dotenv';
 
+let config;
+if (process.env.NODE_ENV === 'development') {
+  //currently .env file just gets used for the ELECTRON_START_URL
+  config = dotenv.config().parsed;
+}
 reload(__dirname);
-
 /*
   load React-Dev-Server or build
 */
 const REACT_URL =
-  process.env.ELECTRON_START_URL ||
+  (config && config.ELECTRON_START_URL) ||
   url.format({
     // when building, the public folder and backend folder get merged build/index.html and build/backend/..
     pathname: path.join(__dirname, '../index.html'),
@@ -17,7 +22,7 @@ const REACT_URL =
     slashes: true,
   });
 
-console.log(process.env);
+console.log(config);
 
 let mainWindow: Electron.BrowserWindow | null;
 
