@@ -99,7 +99,7 @@
   },
   "scripts": {
     "dev": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
-    "test": "SET NODE_ENV=test&&  npm run test-build && npm run test-backend",
+    "test": "npm run test-build && npm run test-backend",
     "production": "npm run frontend-build && npm run backend-build && electron-builder .",
     "frontend-dev": "node scripts/frontend/start.js",
     "frontend-build": "node scripts/frontend/build.js",
