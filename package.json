@@ -107,7 +107,7 @@
     "frontend-test": "node scripts/frontend/test.js --config jest.config.js",
     "backend-build": "node scripts/backend/build.js",
     "backend-dev": "node scripts/backend/start.js",
-    "test-build": "node scripts/backend/test.js && npm run lint &&tsc --build tsconfig.test.json",
+    "test-build": "node scripts/backend/test.js && node scripts/frontend/build.js && npm run lint &&tsc --build tsconfig.test.json",
     "test-backend": "mocha",
     "lint": "tslint 'backend/**/*.{ts,tsx}' 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'"
   },

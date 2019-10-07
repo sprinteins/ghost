@@ -42,7 +42,9 @@ function createWindow() {
   createdWindow.loadURL(REACT_URL);
 
   createdWindow.webContents.on('did-fail-load', () => {
-    createdWindow.loadURL(REACT_URL);
+    if (process.env.NODE_ENV === 'development') {
+      createdWindow.loadURL(REACT_URL);
+    }
   });
   createdWindow.once('ready-to-show', () => {
     createdWindow.show();
