@@ -11,7 +11,8 @@
   Just enter a branchname or branchtype you want to analyse and select your .git-repository.<br>
   Ghost will show all file occurrence within these branches and provide statistics for you.
 
-  If you want to search for a specific file type only, type the file extension(s) in the second textbox like this: js,jsx,json and so on.
+If you want to search for a specific file type only, type the file extension(s) in the second textbox like this: js,jsx,json and so on.
+
 </p>
 
 ## About the project
@@ -49,18 +50,18 @@ $ yarn install
 Starting ghost in development mode
 
 ```bash
-$ yarn start-dev
+$ yarn dev
+```
+
+Sometimes strange errors occur. Make sure you run and restart the app. This leads to the partial rebuilding of electron.
+
+```bash
+$ yarn install --force
 ```
 
 ## Production mode and packaging app
 
 Package the web content
-
-```bash
-$ yarn build
-```
-
-Package and create the app
 
 ```bash
 $ yarn production
