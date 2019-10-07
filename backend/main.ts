@@ -7,7 +7,8 @@ import dotenv from 'dotenv';
 let config;
 if (process.env.NODE_ENV === 'development') {
   //currently .env file just gets used for the ELECTRON_START_URL
-  config = dotenv.config().parsed;
+  config = dotenv.config({ path: path.join(__dirname, '.env') }).parsed;
+  console.log(config);
 }
 reload(__dirname);
 /*
@@ -41,8 +42,7 @@ function createWindow() {
   createdWindow.loadURL(REACT_URL);
 
   createdWindow.webContents.on('did-fail-load', () => {
-    //temp bc i might get epilepsy
-    //createdWindow.loadURL(REACT_URL);
+    createdWindow.loadURL(REACT_URL);
   });
   createdWindow.once('ready-to-show', () => {
     createdWindow.show();
