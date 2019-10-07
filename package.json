@@ -1,6 +1,6 @@
 {
   "name": "ghost",
-  "version": "1.0.3",
+  "version": "1.2.1",
   "description": "A Git analyser tool",
   "main": "./build/backend/bundle.js",
   "homepage": "./",

@@ -12,37 +12,47 @@ interface IStartState {
   fileStats: IFileMapObject[];
   noOfFiles: number;
   loading: boolean;
+  orderBy: {
+    attribute: string;
+    order: string;
+  };
 }
 
 export default class Start extends Component<{}, IStartState> {
-  public queryValue: string = 'bugfix';
   private sortByCommits: () => void;
   private sortByFile: () => void;
   private sortByDate: () => void;
-
+  private openFolderDialogValue: string = '/';
+  private queryValue: string = 'bugfix';
   private fileExtension: string = '*';
-  private currentPath: string = '.';
+  private fileExtensionExclusion: string = '';
+
+  private currentPath: string = path.join(__dirname, '..', '..', '..');
   constructor(props: object) {
     super(props);
     this.sortByCommits = () => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = () => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = () => this.changeSorting(this.state.fileStats, 'latestDate');
-    this.currentPath = path.join(__dirname, '..', '..', '..');
+    this.help = this.help.bind(this);
 
     this.state = {
       noOfFiles: 0,
       fileStats: [],
       loading: false,
+      orderBy: {
+        attribute: '',
+        order: '',
+      },
     };
   }
 
-  public sortByAttribute = (array: object[], attribute: string) => {
+  public sortByAttribute = (array: object[], attribute: string, order: string) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
-        return -1;
+        return order === 'asc' ? 1 : -1;
       }
       if (a[attribute] < b[attribute]) {
-        return 1;
+        return order === 'asc' ? -1 : 1;
       }
       return 0;
     });
@@ -59,7 +69,7 @@ export default class Start extends Component<{}, IStartState> {
     if (filePaths !== undefined && canceled !== true) {
       this.currentPath = filePaths[0];
       this.setState({ noOfFiles: 0, fileStats: [] });
-      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
   }
 
@@ -75,9 +85,29 @@ export default class Start extends Component<{}, IStartState> {
   }
 
   public changeSorting = (fileStats: IFileMapObject[], attribute: string) => {
-    this.sortByAttribute(fileStats, 'file');
-    this.sortByAttribute(fileStats, attribute);
-    this.setState({ fileStats });
+    // By default, sort by file path
+    let { order } = this.state.orderBy;
+    this.sortByAttribute(fileStats, 'file', order);
+    order = (() => {
+      if (this.state.orderBy.attribute === attribute) {
+        switch (this.state.orderBy.order) {
+          case 'asc':
+            return 'desc';
+          case 'desc':
+            return 'asc';
+          default:
+            return 'desc';
+        }
+      } else {
+        return 'desc';
+      }
+    })();
+
+    this.sortByAttribute(fileStats, attribute, order);
+    this.setState({
+      fileStats,
+      orderBy: { attribute, order },
+    });
   }
 
   public help = () => {
@@ -105,7 +135,7 @@ export default class Start extends Component<{}, IStartState> {
     //if keydown on enter reevaluate the query
     if (e.keyCode === 13) {
       if (this.currentPath) {
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
   }
@@ -113,9 +143,25 @@ export default class Start extends Component<{}, IStartState> {
   public onFileExtensionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension);
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
+  }
+
+  public setFileExtensionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.fileExtension = e.target.value;
+  }
+
+  public onFileExtensionExclusionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      if (this.currentPath) {
+        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
+      }
+    }
+  }
+
+  public setFileExtensionExclusionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.fileExtensionExclusion = e.target.value;
   }
 
   public render() {
@@ -164,7 +210,7 @@ export default class Start extends Component<{}, IStartState> {
     return (
       <div className="Start">
         <div>
-          Query Parameter :
+          Query parameter:{' '}
           <input
             className="gitLogQuery"
             type="text"
@@ -172,23 +218,35 @@ export default class Start extends Component<{}, IStartState> {
             name="queryParameter"
             onChange={(e) => (this.queryValue = e.target.value)}
             defaultValue={this.queryValue}
-          />
-          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolderDialog} type="button">
-            Open Repo
-          </button>
-          File Extension:
+          />{' '}
+          file extension(s): &nbsp;
           <input
+            placeholder="all"
             className="fileExtensitonInput"
             type="text"
             name="fileExtension"
             id="fileExtension"
             onKeyDown={this.onFileExtensionKeyDown}
-            onChange={(e) => (this.fileExtension = e.target.value)}
-          />
-          split by ',' <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
+            onChange={this.setFileExtensionValue}
+          />{' '}
+          exclusion(s):{' '}
+          <input
+            placeholder="disables file extensions!"
+            className="fileExtensitonExclusion"
+            type="text"
+            name="fileExtensionExclusion"
+            id="fileExtensionExclusion"
+            onKeyDown={this.onFileExtensionExclusionKeyDown}
+            onChange={this.setFileExtensionExclusionValue}
+          />{' '}
+          split by ','
+          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolderDialog} type="button">
+            Open Repo
+          </button>
+          <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
         </div>
         {showNumberOfFiles}
-        <div id="tablefield">{fileTable}</div>
+        <div id="tablefield">{fileTable}</div>;
       </div>
     );
   }

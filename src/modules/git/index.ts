@@ -3,25 +3,33 @@ import { fileMap, finalcount } from './calculations';
 
 const { spawn } = window.bridge;
 
-export default function gLog(path: string, doneCB: (fileMap: object, noOfFiles: number) => void, queryParameter: string, fileExtension: string) {
+type IgLogCallback = (fileMap: object, noOfFiles: number) => void;
+
+// think about an object instead of a lot of parameters
+export default function gLog(path: string, doneCB: IgLogCallback, queryParameter: string, fileExtension: string, fileExtentionExclusion: string) {
   const cmd = 'git';
-  const cmdArgs = ['log', '--merges', '--numstat', '-m', '--first-parent', 'master', '--pretty=%cD', `--grep=${queryParameter}/`];
+  let cmdArgs = ['log', '--merges', '--numstat', '-m', '--first-parent', 'master', '--pretty=%cD', `--grep=${queryParameter}/`];
 
   // git command:
   // git log --merges --numstat -m --first-parent master --pretty=%cD --grep=bugfix/
-  const prefix = '*.';
-  if (fileExtension === '') {
-    fileExtension = '*';
+
+  if (fileExtentionExclusion === '') {
+    let prefix = '*.';
+    if (fileExtension === '') {
+      fileExtension = '*';
+    }
+    const fileExtensionArray = fileExtension.split(',');
+    prefix += fileExtensionArray.join(',*.');
+    const extensions = prefix.split(',');
+    cmdArgs = cmdArgs.concat(extensions);
+  } else {
+    let prefix2 = '--,.,:^*.';
+    prefix2 += fileExtentionExclusion.replace(/,/g, ',:^*.');
+    const exclusions = prefix2.split(',');
+    cmdArgs = cmdArgs.concat(exclusions);
   }
 
-  const fileExtensionArray = fileExtension.split(',');
-
-  const prefixString = prefix.concat(fileExtensionArray.join(',*.'));
-  const extensions = prefixString.split(',');
-
-  const cmdArgsWithExtensions = cmdArgs.concat(extensions);
-
-  const gitLog = spawn(cmd, cmdArgsWithExtensions, { cwd: path });
+  const gitLog = spawn(cmd, cmdArgs, { cwd: path });
 
   let output = '';
 

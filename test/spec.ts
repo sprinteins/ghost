@@ -105,26 +105,36 @@ describe('Application launch', function() {
     await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
   }
 
-  it('should order the repos by file once -> biggest on top', async function() {
+  it('should order the repos by file descendingly and ascendingly', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
     await client.click('#sortByFile');
     await client.getText('#stat01').should.eventually.be.contain('Bugfix_7.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_1.txt');
+    await client.click('#sortByFile');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_1.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_7.txt');
   });
 
-  it('should order the repos by Commits once -> biggest on top', async function() {
+  it('should order the repos by Commits descendingly and ascendingly', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
-    await client.click('#sortByCommits');
     await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
-    await client.getText('#stat11').should.eventually.be.contain('Bugfix_7.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_1.txt');
+    await client.click('#sortByCommits');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_6.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_3.txt');
   });
 
-  it('should order the repos by Date once -> biggest on top', async function() {
+  it('should order the repos by Date descendingly and ascendingly', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
     await client.click('#sortByDate');
     await client.getText('#stat01').should.eventually.be.contain('Bugfix_4.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_7.txt');
+    await client.click('#sortByDate');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_7.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_4.txt');
   });
 });
 
