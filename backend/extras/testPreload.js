@@ -13,7 +13,7 @@ function init() {
     dialog,
     BrowserWindow: remote.BrowserWindow,
     remote,
-    isDev: process.env.ELECTRON_START_URL ? true : false,
+    isDev: process.env.NODE_ENV === 'development' ? true : false,
     rootDir: __dirname,
     devUrl: process.env.ELECTRON_START_URL || '',
   };

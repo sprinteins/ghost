@@ -22,19 +22,17 @@ export default class Start extends Component<{}, IStartState> {
   private sortByCommits: () => void;
   private sortByFile: () => void;
   private sortByDate: () => void;
-  private openFolderDialogValue: string = '/';
   private queryValue: string = 'bugfix';
   private fileExtension: string = '*';
   private fileExtensionExclusion: string = '';
 
-  private currentPath: string = path.join(__dirname, '..', '..', '..');
+  private currentPath: string = rootDir + '../../../';
   constructor(props: object) {
     super(props);
     this.sortByCommits = () => this.changeSorting(this.state.fileStats, 'commits');
     this.sortByFile = () => this.changeSorting(this.state.fileStats, 'file');
     this.sortByDate = () => this.changeSorting(this.state.fileStats, 'latestDate');
     this.help = this.help.bind(this);
-
     this.state = {
       noOfFiles: 0,
       fileStats: [],
@@ -116,14 +114,13 @@ export default class Start extends Component<{}, IStartState> {
       height: 600,
     });
 
-    console.log(isDev);
     const helpUrl = isDev
-      ? url.format({
+      ? path.join(devUrl, 'help.html')
+      : url.format({
           pathname: path.join(rootDir, '..\\help.html'),
           protocol: 'file:',
           slashes: true,
-        })
-      : path.join(devUrl, 'help.html');
+        });
     helpWindow.loadURL(helpUrl);
 
     helpWindow.on('closed', () => {
@@ -216,6 +213,7 @@ export default class Start extends Component<{}, IStartState> {
             type="text"
             id="queryParameter"
             name="queryParameter"
+            onKeyDown={this.onQueryKeyDown}
             onChange={(e) => (this.queryValue = e.target.value)}
             defaultValue={this.queryValue}
           />{' '}
@@ -246,7 +244,7 @@ export default class Start extends Component<{}, IStartState> {
           <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
         </div>
         {showNumberOfFiles}
-        <div id="tablefield">{fileTable}</div>;
+        <div id="tablefield">{fileTable}</div>
       </div>
     );
   }
