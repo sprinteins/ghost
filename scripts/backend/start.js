@@ -25,6 +25,7 @@ const clearConsole = require('react-dev-utils/clearConsole');
 const config = configFactory('development');
 
 const compiler = webpack(config);
+let electronHasStarted = false;
 
 const progressPlugin = new webpack.ProgressPlugin((percent, msg, addInfo) => {
   percent = Math.floor(percent * 100);
@@ -64,7 +65,10 @@ const watching = compiler.watch(
     if (!stats.hasErrors()) {
       clearConsole();
       console.log(chalk.green('Successful compiled'));
-      startElectron();
+      if (!electronHasStarted) {
+        startElectron();
+        electronHasStarted = true;
+      }
     }
   },
 );
