@@ -1,7 +1,6 @@
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import url from 'url';
-import reload from './extras/reloader.js';
 import dotenv from 'dotenv';
 
 let config;
@@ -10,7 +9,6 @@ if (process.env.NODE_ENV === 'development') {
   config = dotenv.config({ path: path.join(__dirname, '.env') }).parsed;
   console.log(config);
 }
-reload(__dirname);
 /*
   load React-Dev-Server or build
 */
