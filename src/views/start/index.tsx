@@ -132,6 +132,7 @@ export default class Start extends Component<{}, IStartState> {
     //if keydown on enter reevaluate the query
     if (e.keyCode === 13) {
       if (this.currentPath) {
+        this.setState({ loading: true });
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
@@ -140,6 +141,7 @@ export default class Start extends Component<{}, IStartState> {
   public onFileExtensionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
+        this.setState({ loading: true });
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
@@ -152,6 +154,7 @@ export default class Start extends Component<{}, IStartState> {
   public onFileExtensionExclusionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
+        this.setState({ loading: true });
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
