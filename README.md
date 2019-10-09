@@ -70,6 +70,8 @@ Package the web content
 $ yarn production
 ```
 
+if you run into errors check if you have everything for your plattform: https://github.com/nodejs/node-gyp
+
 ### Testing
 
 Run tests
