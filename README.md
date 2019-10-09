@@ -1,6 +1,6 @@
 # Ghost <img src="https://travis-ci.com/sprinteins/ghost.svg?branch=master" height="20px" />
 
-<img src="assets/ghost_pacman.png" height="150px" />
+<img src="./public/assets/ghost_pacman.png" height="150px" />
 
 ### Welcome
 
@@ -11,7 +11,8 @@
   Just enter a branchname or branchtype you want to analyse and select your .git-repository.<br>
   Ghost will show all file occurrence within these branches and provide statistics for you.
 
-  If you want to search for a specific file type only, type the file extension(s) in the second textbox like this: js,jsx,json and so on.
+If you want to search for a specific file type only, type the file extension(s) in the second textbox like this: js,jsx,json and so on.
+
 </p>
 <p>
   Come and join our discord https://discord.gg/JjereDw
@@ -23,17 +24,21 @@
 As mentioned above Ghost is an analysing tool for git branches. The main purpose is to identify files which are relatively often part of bugfixes. This suggests that those files should be refactored.
 </p>
 
-## How to install
+## How to install Win + Linux
+
+<p> There are no special install instructions for windows and linux</p>
+
+## How to install (MacOS)
 
 <p> When you first download and install Ghost a warning message will appear, telling you that the application is from an unidentified dev and therefore can't be opened. </p>
 
-<img src="assets/cant_be_opened.png">
+<img src="./public/assets/cant_be_opened.png">
 
 <p> Until we get an open source license a work around is needed to install Ghost: <br>
 Go to your settings menu and select 'security & privacy'. In the 'General' Tab a note at the bottom will tell you, that the installation has been blocked. Tap the button 'Open Anyway' to allow the installation. </p>
 
-<img src="assets/general_settings.png">
-<img src="assets/security_and_privacy.png">
+<img src="./public/assets/general_settings.png">
+<img src="./public/assets/security_and_privacy.png">
 
 ## Initialize
 
@@ -45,18 +50,16 @@ $ yarn install
 
 ## Development
 
-You have to run the following two scripts in parallel:
-
-Run local web development server
+Starting ghost in development mode
 
 ```bash
 $ yarn dev
 ```
 
-Start the electron development
+Sometimes strange errors occur. Make sure you run and restart the app. This leads to the partial rebuilding of electron.
 
 ```bash
-$ yarn start-dev
+$ yarn install --force
 ```
 
 ## Production mode and packaging app
@@ -64,14 +67,10 @@ $ yarn start-dev
 Package the web content
 
 ```bash
-$ yarn build
+$ yarn production
 ```
 
-Package and create the app
-
-```bash
-$ yarn dist
-```
+if you run into errors check if you have everything for your plattform: https://github.com/nodejs/node-gyp
 
 ### Testing
 
@@ -83,4 +82,4 @@ $ yarn test
 
 If you come across a bug, please tell us in the issues tab.
 Feel free to leave suggestions and feedback.
-![](assets/ghost_pacman_gif.gif)
+![](./public/assets/ghost_pacman_gif.gif)

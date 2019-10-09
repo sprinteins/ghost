@@ -27,10 +27,6 @@
   padding: 20px;
 }
 
-.Start {
-  /* background: hsla(0,0%,96%,.5); */
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -63,8 +59,4 @@
 
 .file-table tr:nth-child(even) {
   background: lightgrey;
-}
-
-body.busy-cursor {
-  cursor: progress;
 }

@@ -1,0 +1,16 @@
+#loadingScreen {
+  height: calc(100vh - 110px);
+  width: 100vw;
+  position: relative;
+}
+
+#loadingScreenGif {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 400px;
+  height: 400px;
+}

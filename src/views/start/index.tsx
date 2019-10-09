@@ -1,36 +1,50 @@
 import React, { Component } from 'react';
 import gLog from '../../modules/git';
 import './style.css';
-import helpIcon from '../../../assets/helpIcon.png';
 
-const { dialog, BrowserWindow } = window.bridge;
-const url = require('url');
-const path = require('path');
+const { dialog, BrowserWindow, rootDir, isDev, devUrl } = window.bridge;
+import url from 'url';
+import path from 'path';
+import { IFileMapObject } from '../../modules/git/calculations';
+import { Loading } from '../../components/Loading/Loading';
 
-export default class Start extends Component {
-  constructor(props) {
+interface IStartState {
+  fileStats: IFileMapObject[];
+  noOfFiles: number;
+  loading: boolean;
+  orderBy: {
+    attribute: string;
+    order: string;
+  };
+}
+
+export default class Start extends Component<{}, IStartState> {
+  private sortByCommits: () => void;
+  private sortByFile: () => void;
+  private sortByDate: () => void;
+  private queryValue: string = 'bugfix';
+  private fileExtension: string = '*';
+  private fileExtensionExclusion: string = '';
+
+  private currentPath: string = rootDir + '../../../';
+  constructor(props: object) {
     super(props);
-    this.sortByCommits = _ => this.changeSorting(this.state.fileStats, 'commits');
-    this.sortByFile = _ => this.changeSorting(this.state.fileStats, 'file');
-    this.sortByDate = _ => this.changeSorting(this.state.fileStats, 'latestDate');
+    this.sortByCommits = () => this.changeSorting(this.state.fileStats, 'commits');
+    this.sortByFile = () => this.changeSorting(this.state.fileStats, 'file');
+    this.sortByDate = () => this.changeSorting(this.state.fileStats, 'latestDate');
     this.help = this.help.bind(this);
-    this.openFolderDialogValue = '/';
-    this.queryValue = 'bugfix';
-    this.fileExtension = '*';
-    this.fileExtensionExclusion = '';
-    this.currentPath = path.join(__dirname, '..', '..', '..');
-
     this.state = {
       noOfFiles: 0,
       fileStats: [],
+      loading: false,
       orderBy: {
         attribute: '',
-        order: ''
-      }
+        order: '',
+      },
     };
   }
 
-  sortByAttribute = (array, attribute, order) => {
+  public sortByAttribute = (array: object[], attribute: string, order: string) => {
     array.sort((a, b) => {
       if (a[attribute] > b[attribute]) {
         return order === 'asc' ? 1 : -1;
@@ -40,47 +54,39 @@ export default class Start extends Component {
       }
       return 0;
     });
-  };
+  }
 
-  openFolderDialog = async () => {
-    this.state.noOfFiles = 0;
+  public openFolderDialog = async () => {
+    this.setState({ loading: true });
     const { canceled, filePaths } = await dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
     });
-
+    if (canceled === true) {
+      this.setState({ loading: false });
+    }
     if (filePaths !== undefined && canceled !== true) {
       this.currentPath = filePaths[0];
-      document.body.classList.add('busy-cursor');
-      const ele = document.getElementById('loadingscreen');
-      ele.classList.add('loadingscreen-active');
-      ele.classList.remove('loadingscreen-passive');
-
-      this.setState({ fileStats: {} });
-
+      this.setState({ noOfFiles: 0, fileStats: [] });
       gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
-  };
+  }
 
-  gLogDoneCB = (fileMap, noOfFiles) => {
-    this.setState({ noOfFiles });
+  public gLogDoneCB = (fileMap: object, noOfFiles: number) => {
+    this.setState({ noOfFiles, loading: false });
     const fileStats = this.convertfileMapToArray(fileMap);
 
     this.changeSorting(fileStats, 'commits');
-  };
+  }
 
-  convertfileMapToArray = (fileMap) => {
-    const fileStats = [];
-    for (const key in fileMap) {
-      fileStats.push(fileMap[key]);
-    }
-    return fileStats;
-  };
+  public convertfileMapToArray = (fileMap: object) => {
+    return Object.keys(fileMap).map((key) => fileMap[key]);
+  }
 
-  changeSorting = (fileStats, attribute) => {
+  public changeSorting = (fileStats: IFileMapObject[], attribute: string) => {
     // By default, sort by file path
-    this.sortByAttribute(fileStats, 'file');
-
-    const order = (() => {
+    let { order } = this.state.orderBy;
+    this.sortByAttribute(fileStats, 'file', order);
+    order = (() => {
       if (this.state.orderBy.attribute === attribute) {
         switch (this.state.orderBy.order) {
           case 'asc':
@@ -98,67 +104,70 @@ export default class Start extends Component {
     this.sortByAttribute(fileStats, attribute, order);
     this.setState({
       fileStats,
-      orderBy: { attribute, order }
+      orderBy: { attribute, order },
     });
-  };
+  }
 
-  help = () => {
+  public help = () => {
     let helpWindow = new BrowserWindow({
       width: 350,
       height: 600,
     });
 
-    const helpUrl = url.format({
-      pathname: path.join(__dirname, 'help.html'),
-      protocol: 'file:',
-      slashes: true,
-    });
-
+    const helpUrl = isDev
+      ? path.join(devUrl, 'help.html')
+      : url.format({
+          pathname: path.join(rootDir, '..\\help.html'),
+          protocol: 'file:',
+          slashes: true,
+        });
     helpWindow.loadURL(helpUrl);
 
     helpWindow.on('closed', () => {
       helpWindow = null;
-    })
+    });
   }
 
-  onQueryKeyDown = (e) => {
+  public onQueryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     //if keydown on enter reevaluate the query
     if (e.keyCode === 13) {
       if (this.currentPath) {
+        this.setState({ loading: true });
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
   }
 
-  setQueryValue = (e) => {
-    this.queryValue = e.target.value;
-  }
-
-  onFileExtensionKeyDown = (e) => {
+  public onFileExtensionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
+        this.setState({ loading: true });
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
   }
 
-  setFileExtensionValue = (e) => {
+  public setFileExtensionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.fileExtension = e.target.value;
   }
 
-  onFileExtensionExclusionKeyDown = (e) => {
+  public onFileExtensionExclusionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       if (this.currentPath) {
+        this.setState({ loading: true });
         gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
       }
     }
   }
 
-  setFileExtensionExclusionValue = (e) => {
+  public setFileExtensionExclusionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.fileExtensionExclusion = e.target.value;
   }
 
-  render() {
+  public render() {
+    if (this.state.loading) {
+      return <Loading />;
+    }
     let fileTable;
     if (this.state.fileStats.length > 0) {
       fileTable = (
@@ -193,11 +202,7 @@ export default class Start extends Component {
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
-      showNumberOfFiles = (
-        <div id="noOfFiles">
-          {`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}
-        </div>
-      );
+      showNumberOfFiles = <div id="noOfFiles">{`Overall number of files with query-parameter-ocassion : ${this.state.noOfFiles}`}</div>;
     } else {
       showNumberOfFiles = <div> </div>;
     }
@@ -205,21 +210,17 @@ export default class Start extends Component {
     return (
       <div className="Start">
         <div>
-          Query parameter:
-          {" "}
+          Query parameter:{' '}
           <input
             className="gitLogQuery"
             type="text"
-            name="queryParameter"
             id="queryParameter"
-            autoFocus="autofocus"
-            defaultValue={this.queryValue}
+            name="queryParameter"
             onKeyDown={this.onQueryKeyDown}
-            onChange={this.setQueryValue}
-          />
-          {" "}
-          file extension(s):
-          &nbsp;
+            onChange={(e) => (this.queryValue = e.target.value)}
+            defaultValue={this.queryValue}
+          />{' '}
+          file extension(s): &nbsp;
           <input
             placeholder="all"
             className="fileExtensitonInput"
@@ -228,10 +229,8 @@ export default class Start extends Component {
             id="fileExtension"
             onKeyDown={this.onFileExtensionKeyDown}
             onChange={this.setFileExtensionValue}
-          />
-          {" "}
-          exclusion(s):
-          {" "}
+          />{' '}
+          exclusion(s):{' '}
           <input
             placeholder="disables file extensions!"
             className="fileExtensitonExclusion"
@@ -240,26 +239,12 @@ export default class Start extends Component {
             id="fileExtensionExclusion"
             onKeyDown={this.onFileExtensionExclusionKeyDown}
             onChange={this.setFileExtensionExclusionValue}
-          />
-          {" "}
+          />{' '}
           split by ','
-          <button
-            className="repo-button gitLogQuery"
-            id="repo-button"
-            onClick={this.openFolderDialog}
-            type="button"
-          >
+          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolderDialog} type="button">
             Open Repo
           </button>
-          <img
-            src={helpIcon}
-            alt="help_icon"
-            className="gitLogQuery"
-            onClick={this.help}
-            type="button"
-            height="18px"
-            style={{ margin: '-3px' }}
-          />
+          <img src={'./assets/helpIcon.png'} alt="help_icon" className="gitLogQuery" onClick={this.help} height="18px" style={{ margin: '-3px' }} />
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{fileTable}</div>

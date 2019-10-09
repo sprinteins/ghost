@@ -1,7 +1,14 @@
 export let fileMap = {};
 export let finalcount = 0;
 
-export default function doTheCalculations(newFileMap) {
+export interface IFileMapObject {
+  file: string;
+  stats: Array<string | number>;
+  latestDate: string;
+  commits?: number;
+}
+
+export default function doTheCalculations(newFileMap: IFileMapObject[]) {
   finalcount = newFileMap.length;
   fileMap = {};
 
