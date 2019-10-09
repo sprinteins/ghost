@@ -25,7 +25,6 @@ const clearConsole = require('react-dev-utils/clearConsole');
 const config = configFactory('development');
 
 const compiler = webpack(config);
-let electronHasStarted = false;
 
 const progressPlugin = new webpack.ProgressPlugin((percent, msg, addInfo) => {
   percent = Math.floor(percent * 100);
@@ -65,10 +64,7 @@ const watching = compiler.watch(
     if (!stats.hasErrors()) {
       clearConsole();
       console.log(chalk.green('Successful compiled'));
-      if (!electronHasStarted) {
-        startElectron();
-        electronHasStarted = true;
-      }
+      restartElectron();
     }
   },
 );
@@ -79,13 +75,19 @@ function copyExtraFolder() {
   });
 }
 
-function startElectron() {
-  var child = proc.spawn(electron, ['./build/backend/bundle.js'], { stdio: 'inherit', windowsHide: false });
-  child.on('close', function(code) {
+let child;
+function restartElectron() {
+  console.log(child);
+  if (child) {
+    child.kill('SIGHUP');
+    console.log(child)
+  }
+  child = proc.spawn(electron, ['./build/backend/bundle.js'], { stdio: 'inherit', windowsHide: false });
+  child.on('close', function (code) {
     process.exit(code);
   });
 
-  const handleTerminationSignal = function(signal) {
+  const handleTerminationSignal = function (signal) {
     process.on(signal, function signalHandler() {
       if (!child.killed) {
         child.kill(signal);
