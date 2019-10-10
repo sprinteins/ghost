@@ -36,7 +36,7 @@ export class Search extends React.Component<ISearchProps, { value: string }> {
           </div>
           <p className="control">
             <button className="button" onClick={() => this.props.onSearch(this.state.value)}>
-              Suchen
+              Search
             </button>
           </p>
         </div>
