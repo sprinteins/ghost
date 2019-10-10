@@ -20,6 +20,6 @@ jobs:
     - name: Production Build
       run: |
         npm install
-        npm production
+        npm run production
       env:
         CI: true
