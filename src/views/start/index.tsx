@@ -5,6 +5,7 @@ const { dialog, rootDir } = window.bridge;
 import { IFileMapObject } from '../../modules/git/calculations';
 import { Loading } from '../../components/Loading/Loading';
 import { Table } from '../../components/Table/Table';
+import { Search } from '../../components/Search/Search';
 
 interface IStartState {
   fileStats: IFileMapObject[];
@@ -52,13 +53,11 @@ export default class Start extends Component<{}, IStartState> {
     return Object.keys(fileMap).map((key) => fileMap[key]);
   }
 
-  public onQueryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  public onSearch = (queryValue: string) => {
     //if keydown on enter reevaluate the query
-    if (e.keyCode === 13) {
-      if (this.currentPath) {
-        this.setState({ loading: true });
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
-      }
+    if (this.currentPath) {
+      this.setState({ loading: true });
+      gLog(this.currentPath, this.gLogDoneCB, queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
   }
 
@@ -92,9 +91,6 @@ export default class Start extends Component<{}, IStartState> {
     if (this.state.loading) {
       return <Loading />;
     }
-    let fileTable;
-    if (this.state.fileStats.length > 0) {
-    }
 
     let showNumberOfFiles;
     if (this.state.noOfFiles) {
@@ -104,46 +100,47 @@ export default class Start extends Component<{}, IStartState> {
     }
 
     return (
-      <div className="Start">
+      <>
         <div>
-          Query parameter:{' '}
-          <input
-            className="gitLogQuery"
-            type="text"
-            id="queryParameter"
-            name="queryParameter"
-            onKeyDown={this.onQueryKeyDown}
-            onChange={(e) => (this.queryValue = e.target.value)}
-            defaultValue={this.queryValue}
-          />{' '}
-          file extension(s): &nbsp;
-          <input
-            placeholder="all"
-            className="fileExtensitonInput"
-            type="text"
-            name="fileExtension"
-            id="fileExtension"
-            onKeyDown={this.onFileExtensionKeyDown}
-            onChange={this.setFileExtensionValue}
-          />{' '}
-          exclusion(s):{' '}
-          <input
-            placeholder="disables file extensions!"
-            className="fileExtensitonExclusion"
-            type="text"
-            name="fileExtensionExclusion"
-            id="fileExtensionExclusion"
-            onKeyDown={this.onFileExtensionExclusionKeyDown}
-            onChange={this.setFileExtensionExclusionValue}
-          />{' '}
-          split by ','
-          <button className="repo-button gitLogQuery" id="repo-button" onClick={this.openFolderDialog} type="button">
-            Open Repo
-          </button>
+          <div className="columns">
+            <div className="column" />
+            <div className="column">
+              <br />
+              <Search onSearch={this.onSearch} defaultValue="bugfix" />
+            </div>
+            <div className="column" />
+          </div>
         </div>
         {showNumberOfFiles}
         <div id="tablefield">{this.state.fileStats.length > 0 ? <Table fileStats={this.state.fileStats} /> : null}</div>
-      </div>
+      </>
     );
   }
 }
+/*
+
+              <input
+                placeholder="all"
+                className="input"
+                type="text"
+                name="fileExtension"
+                id="fileExtension"
+                onKeyDown={this.onFileExtensionKeyDown}
+                onChange={this.setFileExtensionValue}
+              />{' '}
+              exclusion(s):{' '}
+              <input
+                placeholder="disables file extensions!"
+                className="input"
+                type="text"
+                name="fileExtensionExclusion"
+                id="fileExtensionExclusion"
+                onKeyDown={this.onFileExtensionExclusionKeyDown}
+                onChange={this.setFileExtensionExclusionValue}
+              />{' '}
+              split by ','
+              <button className="button" id="repo-button" onClick={this.openFolderDialog} type="button">
+                Open Repo
+              </button>
+
+              */
