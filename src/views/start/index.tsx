@@ -6,7 +6,7 @@ import { IFileMapObject } from '../../modules/git/calculations';
 import { Loading } from '../../components/Loading/Loading';
 import { Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search/Search';
-import { StyledMaxwidthModal, ModalCardWrapper } from './styled';
+import { StyledMaxwidthModal, ModalCardWrapper, CenterContent } from './styled';
 import { Notification } from '../../components/Notification/Notification';
 
 interface IStartState {
@@ -117,9 +117,9 @@ export default class Start extends Component<{}, IStartState> {
                 Open Repo
               </a>
             </div>
-            <div className="column has-text-centered">
+            <CenterContent className="column is-flex">
               <Search onSearch={this.onSearch} defaultValue="bugfix" />
-            </div>
+            </CenterContent>
             <div className="column has-text-centered">
               <a className="button" onClick={() => this.setState({ openOptions: true })}>
                 Options
@@ -136,12 +136,12 @@ export default class Start extends Component<{}, IStartState> {
         </div>
         {this.state.openOptions && (
           <div className={`model`}>
-            <div className="modal-background"></div>
+            <div className="modal-background" />
             <ModalCardWrapper>
               <StyledMaxwidthModal className="modal-card">
                 <header className="modal-card-head">
                   <p className="modal-card-title">Einstellungen</p>
-                  <button className="delete" aria-label="close" onClick={this.closeModal}></button>
+                  <button className="delete" aria-label="close" onClick={this.closeModal} />
                 </header>
                 <section className="modal-card-body">{this.getEinstellungen()}</section>
                 <footer className="modal-card-foot">
