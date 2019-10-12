@@ -17,7 +17,6 @@ chai.use(chaiAsPromised);
 
 const WAIT_FOR_ELEMENT = 5 * 1000;
 
-// process.env.ELECTRON_START_URL = "http://localhost:1234";
 
 describe('Application launch', function() {
   this.timeout(10000);
