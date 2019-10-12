@@ -6,6 +6,7 @@
     },
     "new-parens": true,
     "no-arg": true,
+    "no-empty": false,
     "no-bitwise": true,
     "no-conditional-assignment": true,
     "no-consecutive-blank-lines": false,
@@ -25,7 +26,7 @@
     "no-submodule-imports": false,
     "no-shadowed-variable": false,
     "one-variable-per-declaration": false,
-    "typedef": [true, "parameter", "member-variable-declaration"]
+    "typedef": [true, "parameter"]
   },
   "jsRules": {
     "max-line-length": {
