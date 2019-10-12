@@ -76,7 +76,9 @@ export default class Start extends Component<{}, IStartState> {
     if (this.state.noOfFiles) {
       showNumberOfFiles = (
         <Notification header="Files" isVisible={true}>
-          We found <b>{this.state.noOfFiles}</b> files
+          <div id="noOfFiles">
+            We found <b>{this.state.noOfFiles}</b> files
+          </div>
         </Notification>
       );
     } else {

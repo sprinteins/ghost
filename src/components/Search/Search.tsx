@@ -26,7 +26,7 @@ export class Search extends React.Component<ISearchProps, { value: string }> {
         <div className="field has-addons">
           <div className="control">
             <input
-              className="input"
+              className="input queryParameter"
               type="text"
               placeholder="Branch-Prefix"
               onKeyDown={this.onKeyDown}

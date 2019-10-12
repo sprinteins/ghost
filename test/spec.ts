@@ -17,7 +17,6 @@ chai.use(chaiAsPromised);
 
 const WAIT_FOR_ELEMENT = 5 * 1000;
 
-
 describe('Application launch', function() {
   this.timeout(10000);
   beforeEach(function() {
@@ -53,33 +52,33 @@ describe('Application launch', function() {
     });
   });
   it('has "Open Repo" button', async function() {
-    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT);
+    await this.app.client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT);
   });
 
   it('should recognize the click on the "Open Repo" button"', async function() {
-    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
+    await this.app.client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT).click('#repo-button');
   });
 
   it('should show entries for the mocked repo', async function() {
-    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
-    await this.app.client.waitForVisible('.file-table');
+    await this.app.client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT).click('#repo-button');
+    await this.app.client.waitForVisible('.fileTable');
   });
 
   it('should display the corresponding number of number of files', async function() {
-    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
-    await this.app.client.waitForVisible('.file-table');
+    await this.app.client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT).click('#repo-button');
+    await this.app.client.waitForVisible('.fileTable');
 
     const elementText = await this.app.client.getText('#noOfFiles');
 
-    assert.equal(elementText, 'Overall number of files with query-parameter-ocassion : 12');
+    assert.equal(elementText, 'We found 12 files');
   });
 
   it('should display the corresponding files', async function() {
-    await this.app.client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
-    await this.app.client.waitForVisible('.file-table');
+    await this.app.client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT).click('#repo-button');
+    await this.app.client.waitForVisible('.fileTable');
     const element = await this.app.client.getText('#stat01');
 
-    assert.equal(element, '1 Bugfix_3.txt 4 2019-02-06 T10:15:28');
+    assert.equal(element, '1 Bugfix_1.txt 1 2019-02-06 T10:15:28');
   });
 
   // Dont change the config just for one method.
@@ -92,16 +91,16 @@ describe('Application launch', function() {
         value: { filePaths: [`${process.cwd()}/test/testrepo`], canceled: false },
       },
     ]);
-    await client.waitForVisible('#queryParameter', WAIT_FOR_ELEMENT).click('#queryParameter');
+    await client.waitForVisible('.queryParameter', WAIT_FOR_ELEMENT).click('.queryParameter');
     await client
-      .element('#queryParameter')
+      .element('.queryParameter')
       .setValue('')
-      .getText('#queryParameter')
+      .getText('.queryParameter')
       .should.eventually.be.equal('');
 
-    await client.waitForVisible('.repo-button', WAIT_FOR_ELEMENT).click('.repo-button');
-    await client.waitForVisible('.file-table');
-    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
+    await client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT).click('#repo-button');
+    await client.waitForVisible('.fileTable');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_1.txt');
   }
 
   it('should order the repos by file descendingly and ascendingly', async function() {
@@ -118,11 +117,11 @@ describe('Application launch', function() {
   it('should order the repos by Commits descendingly and ascendingly', async function() {
     const { client } = this.app;
     await prepareOrderTable(client);
-    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
-    await client.getText('#stat61').should.eventually.be.contain('Bugfix_1.txt');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_1.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_7.txt');
     await client.click('#sortByCommits');
-    await client.getText('#stat01').should.eventually.be.contain('Bugfix_6.txt');
-    await client.getText('#stat61').should.eventually.be.contain('Bugfix_3.txt');
+    await client.getText('#stat01').should.eventually.be.contain('Bugfix_3.txt');
+    await client.getText('#stat61').should.eventually.be.contain('Bugfix_6.txt');
   });
 
   it('should order the repos by Date descendingly and ascendingly', async function() {

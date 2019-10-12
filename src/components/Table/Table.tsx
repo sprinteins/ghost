@@ -3,6 +3,7 @@ import { IFileMapObject } from '../../modules/git/calculations';
 
 interface ITableProps {
   fileStats: IFileMapObject[];
+  id?: string;
 }
 
 interface ITableState {
@@ -81,7 +82,7 @@ export class Table extends React.Component<ITableProps, ITableState> {
     const { fileStats } = this.state;
     return (
       <>
-        <table className="table is-bordered is-hoverable is-fullwidth">
+        <table className="table is-bordered is-hoverable is-fullwidth fileTable">
           <thead>
             <tr>
               <td>#</td>
