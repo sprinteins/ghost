@@ -10,3 +10,9 @@ export const ModalCardWrapper = styled.div`
   right: 25%;
   left: 25%;
 `;
+
+export const SearchCenter = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex !important;
+`;

@@ -6,7 +6,7 @@ import { IFileMapObject } from '../../modules/git/calculations';
 import { Loading } from '../../components/Loading/Loading';
 import { Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search/Search';
-import { StyledMaxwidthModal, ModalCardWrapper } from './styled';
+import { StyledMaxwidthModal, ModalCardWrapper, SearchCenter } from './styled';
 import { Notification } from '../../components/Notification/Notification';
 
 interface IStartState {
@@ -117,9 +117,9 @@ export default class Start extends Component<{}, IStartState> {
                 Open Repo
               </a>
             </div>
-            <div className="column has-text-centered">
+            <SearchCenter className="column has-text-centered">
               <Search onSearch={this.onSearch} defaultValue="bugfix" />
-            </div>
+            </SearchCenter>
             <div className="column has-text-centered">
               <a className="button" onClick={() => this.setState({ openOptions: true })}>
                 Options
