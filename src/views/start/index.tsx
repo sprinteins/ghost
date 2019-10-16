@@ -6,8 +6,9 @@ import { IFileMapObject } from '../../modules/git/calculations';
 import { Loading } from '../../components/Loading/Loading';
 import { Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search/Search';
-import { StyledMaxwidthModal, ModalCardWrapper, SearchCenter } from './styled';
+import { StyledMaxwidthModal, ModalCardWrapper, CenterContent } from './styled';
 import { Notification } from '../../components/Notification/Notification';
+import { Options } from '../../components/Options/Options';
 
 interface IStartState {
   fileStats: IFileMapObject[];
@@ -59,36 +60,11 @@ export default class Start extends Component<{}, IStartState> {
 
   public onSearch = (queryValue: string) => {
     //if keydown on enter reevaluate the query
+    this.queryValue = queryValue;
     if (this.currentPath) {
-      this.setState({ loading: true });
+      this.setState({ noOfFiles: 0, loading: true });
       gLog(this.currentPath, this.gLogDoneCB, queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
-  }
-
-  public onFileExtensionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 13) {
-      if (this.currentPath) {
-        this.setState({ loading: true });
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
-      }
-    }
-  }
-
-  public setFileExtensionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.fileExtension = e.target.value;
-  }
-
-  public onFileExtensionExclusionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 13) {
-      if (this.currentPath) {
-        this.setState({ loading: true });
-        gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
-      }
-    }
-  }
-
-  public setFileExtensionExclusionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.fileExtensionExclusion = e.target.value;
   }
 
   public render() {
@@ -100,7 +76,9 @@ export default class Start extends Component<{}, IStartState> {
     if (this.state.noOfFiles) {
       showNumberOfFiles = (
         <Notification header="Files" isVisible={true}>
-          We found <b>{this.state.noOfFiles}</b> files
+          <div id="noOfFiles">
+            We found <b>{this.state.noOfFiles}</b> files
+          </div>
         </Notification>
       );
     } else {
@@ -117,9 +95,9 @@ export default class Start extends Component<{}, IStartState> {
                 Open Repo
               </a>
             </div>
-            <SearchCenter className="column has-text-centered">
+            <CenterContent className="column is-flex">
               <Search onSearch={this.onSearch} defaultValue="bugfix" />
-            </SearchCenter>
+            </CenterContent>
             <div className="column has-text-centered">
               <a className="button" onClick={() => this.setState({ openOptions: true })}>
                 Options
@@ -136,89 +114,22 @@ export default class Start extends Component<{}, IStartState> {
         </div>
         {this.state.openOptions && (
           <div className={`model`}>
-            <div className="modal-background"></div>
-            <ModalCardWrapper>
-              <StyledMaxwidthModal className="modal-card">
-                <header className="modal-card-head">
-                  <p className="modal-card-title">Einstellungen</p>
-                  <button className="delete" aria-label="close" onClick={this.closeModal}></button>
-                </header>
-                <section className="modal-card-body">{this.getEinstellungen()}</section>
-                <footer className="modal-card-foot">
-                  <button className="button is-success" onClick={this.closeModal}>
-                    Übernehmen
-                  </button>
-                </footer>
-              </StyledMaxwidthModal>
-            </ModalCardWrapper>
+            <div className="modal-background" />
+            <Options onSave={this.setOptions} closeModal={this.closeModal} />
           </div>
         )}
       </>
     );
   }
 
-  public closeModal = () => this.setState({ openOptions: false });
-
-  public getEinstellungen = () => {
-    return (
-      <>
-        <div className="field">
-          <div className="control">
-            <label>Include (File-Extension)</label>
-            <input
-              placeholder="File-Extension eg: js,jsx,ts"
-              className="input"
-              type="text"
-              name="fileExtension"
-              id="fileExtension"
-              defaultValue={this.fileExtension}
-              onChange={this.setFileExtensionValue}
-            />
-          </div>
-        </div>
-        <br />
-        <div className="field">
-          <div className="control">
-            <label>Exclude (File-Extension)</label>
-            <input
-              placeholder="File-Extension eg: js,jsx,ts"
-              className="input"
-              type="text"
-              name="fileExtensionExclusion"
-              id="fileExtensionExclusion"
-              defaultValue={this.fileExtensionExclusion}
-              onChange={this.setFileExtensionExclusionValue}
-            />
-          </div>
-        </div>
-      </>
-    );
+  public setOptions = (fileExt: string, fileExtExcl: string) => {
+    this.fileExtension = fileExt;
+    this.fileExtensionExclusion = fileExtExcl;
+    if (this.currentPath) {
+      gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
+    }
+    this.closeModal();
   }
+
+  public closeModal = () => this.setState({ openOptions: false });
 }
-/*
-
-              <input
-                placeholder="all"
-                className="input"
-                type="text"
-                name="fileExtension"
-                id="fileExtension"
-                onKeyDown={this.onFileExtensionKeyDown}
-                onChange={this.setFileExtensionValue}
-              />{' '}
-              exclusion(s):{' '}
-              <input
-                placeholder="disables file extensions!"
-                className="input"
-                type="text"
-                name="fileExtensionExclusion"
-                id="fileExtensionExclusion"
-                onKeyDown={this.onFileExtensionExclusionKeyDown}
-                onChange={this.setFileExtensionExclusionValue}
-              />{' '}
-              split by ','
-              <button className="button" id="repo-button" onClick={this.openFolderDialog} type="button">
-                Open Repo
-              </button>
-
-              */
