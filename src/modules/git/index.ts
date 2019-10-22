@@ -7,6 +7,9 @@ type IgLogCallback = (fileMap: object, noOfFiles: number) => void;
 
 // think about an object instead of a lot of parameters
 export default function gLog(path: string, doneCB: IgLogCallback, queryParameter: string, fileExtension: string, fileExtentionExclusion: string) {
+  if (!window) {
+    return;
+  }
   const cmd = 'git';
   let cmdArgs = ['log', '--merges', '--numstat', '-m', '--first-parent', 'master', '--pretty=%cD', `--grep=${queryParameter}/`];
 

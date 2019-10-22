@@ -27,8 +27,10 @@ let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
   const createdWindow = new BrowserWindow({
-    width: 800,
+    width: 806,
     height: 600,
+    minWidth: 806,
+    minHeight: 600,
     webPreferences: {
       // devTools: false,
       nodeIntegration: process.env.NODE_ENV === 'test',
