@@ -1,85 +1,96 @@
-import { IFileMapObject } from './calculations';
-
-export function parsing(output: string): IFileMapObject[] {
-  let newFileMap: IFileMapObject[];
-  let commitDate = 'commitDate';
-  const latestDate = '';
-  // creates Array, new element every linebreak
-  const lines = output.split('\n');
-
-  const requiredLines = lines.reduce((newArray: string[], value) => {
-    if (value !== '') {
-      return newArray.concat(value);
-    }
-    return newArray;
-  }, []);
-
-  newFileMap = requiredLines.reduce((accum: object[], line) => {
-    const stats = line.split('\t');
-
-    const file = stats[2];
-    // checks wether the filename is undefined or not, if so it has to be a date
-    if (file === undefined) {
-      if (
-        line.startsWith('Mon, ') ||
-        line.startsWith('Tue, ') ||
-        line.startsWith('Wed, ') ||
-        line.startsWith('Thu, ') ||
-        line.startsWith('Fri, ') ||
-        line.startsWith('Sat, ') ||
-        line.startsWith('Sun, ')
-      ) {
-        commitDate = line;
-      }
-      return accum;
-    }
-    // fills subFileMap with default values and filename
-    const subFileMap = {
-      file,
-      stats,
-      latestDate,
-    };
-
-    if (subFileMap.latestDate === undefined || subFileMap.latestDate === '') {
-      const unformattedDate = commitDate.slice(5, -5);
-
-      const formattedDate: string = formatDate(unformattedDate);
-
-      subFileMap.latestDate = formattedDate;
-      // adds object to the filemap without overriding if the same file already exists
-      return accum.concat(subFileMap);
-    }
-
-    return accum;
-  }, []) as IFileMapObject[];
-  return newFileMap;
+export interface IMergeWithDate {
+  date: Date;
+  lines: string[];
 }
 
-const formatDate = (unformattedDate: string) => {
-  const splittedDate = unformattedDate.split(' ');
-  let [day, month] = splittedDate;
-  const [_, __, year, time] = splittedDate;
-  if (day.length < 2) {
-    day = `0${day}`;
+export interface IStat {
+  additions: number;
+  deletions: number;
+  name: string;
+}
+
+export interface IMergeWithStats {
+  date: Date;
+  stats: IStat[];
+}
+
+export function parsing(output: string): IMergeWithStats[] {
+  const lines = output.split('\n');
+  const merges = splitIntoMergeCommits(lines);
+  const mergesWithDate = createMergesWithDate(merges);
+  const mergesWithStats = createMergesWithStats(mergesWithDate);
+  return mergesWithStats;
+}
+
+const splitIntoMergeCommits = (allLines: string[]): string[][] => {
+  const mergeCommits: string[][] = [];
+  let currentCommit: string[] = [];
+  let first = true;
+  for (const line of allLines) {
+    if (line === '') {
+      continue;
+    }
+    if (!first) {
+      if (startsWithDay(line)) {
+        mergeCommits.push(currentCommit);
+        currentCommit = [];
+      }
+    } else {
+      first = false;
+    }
+    currentCommit.push(line);
   }
-  month = translateMonth(month);
-  return `${day}.${month}.${year} ${time}`;
+  return mergeCommits;
 };
 
-const translateMonth = (stringWithMonth: string): string => {
-  const monthMapToNumber = {
-    Jan: '01',
-    Feb: '02',
-    Mar: '03',
-    Apr: '04',
-    May: '05',
-    Jun: '06',
-    Jul: '07',
-    Aug: '08',
-    Sep: '09',
-    Oct: '10',
-    Nov: '11',
-    Dec: '12',
-  };
-  return monthMapToNumber[stringWithMonth];
+const startsWithDay = (line: string): boolean => {
+  return (
+    line.startsWith('Mon, ') ||
+    line.startsWith('Tue, ') ||
+    line.startsWith('Wed, ') ||
+    line.startsWith('Thu, ') ||
+    line.startsWith('Fri, ') ||
+    line.startsWith('Sat, ') ||
+    line.startsWith('Sun, ')
+  );
+};
+
+const createMergesWithDate = (merges: string[][]): IMergeWithDate[] => {
+  const mergesWithDate: IMergeWithDate[] = [];
+  for (const merge of merges) {
+    const mergeWithDate: IMergeWithDate = {
+      date: new Date(merge[0]),
+      lines: merge.slice(1),
+    };
+    mergesWithDate.push(mergeWithDate);
+  }
+  return mergesWithDate;
+};
+
+const createMergesWithStats = (merges: IMergeWithDate[]) => {
+  const mergesWithStats: IMergeWithStats[] = [];
+  for (const merge of merges) {
+    const stats: IStat[] = [];
+    for (const line of merge.lines) {
+      const stat: IStat = {
+        additions: 0,
+        deletions: 0,
+        name: '',
+      };
+      const splitLine = line.split('\t');
+      if (splitLine.length > 3) {
+        console.error('Commitline splitted into more then 3 splits');
+      }
+      if (splitLine[0] !== '-') {
+        stat.additions = parseInt(splitLine[0], 10);
+      }
+      if (splitLine[1] !== '-') {
+        stat.deletions = parseInt(splitLine[1], 10);
+      }
+      stat.name = splitLine[2];
+      stats.push(stat);
+    }
+    mergesWithStats.push({ date: merge.date, stats });
+  }
+  return mergesWithStats;
 };

@@ -1,5 +1,5 @@
 import { parsing } from './parsing';
-import doTheCalculations from './calculations';
+import { doTheCalculations, IFileMapObject } from './calculations';
 
 const { spawn } = window.bridge;
 
@@ -49,13 +49,14 @@ export default function gLog(
   gitLog.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
     const parseResult = parsing(output);
-    console.log(output);
+    //console.log(output);
     if (code === 0) {
       console.log('child process complete.');
     } else {
       console.log(`child process exited with code ${code}`);
     }
-    const { fileMap, finalCount } = doTheCalculations(parseResult);
-    doneCB(fileMap, finalCount);
+    doTheCalculations(parseResult);
+    //const { fileMap, finalCount }
+    //doneCB(fileMap, finalCount);
   });
 }
