@@ -1,12 +1,18 @@
-import formatting from './formatting';
-import { fileMap, finalcount } from './calculations';
+import { parsing } from './parsing';
+import doTheCalculations from './calculations';
 
 const { spawn } = window.bridge;
 
 type IgLogCallback = (fileMap: object, noOfFiles: number) => void;
 
 // think about an object instead of a lot of parameters
-export default function gLog(path: string, doneCB: IgLogCallback, queryParameter: string, fileExtension: string, fileExtentionExclusion: string) {
+export default function gLog(
+  path: string,
+  doneCB: IgLogCallback,
+  queryParameter: string,
+  fileExtension: string,
+  fileExtentionExclusion: string,
+) {
   if (!window) {
     return;
   }
@@ -42,12 +48,14 @@ export default function gLog(path: string, doneCB: IgLogCallback, queryParameter
 
   gitLog.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
-    formatting(output);
+    const parseResult = parsing(output);
+    console.log(output);
     if (code === 0) {
       console.log('child process complete.');
     } else {
       console.log(`child process exited with code ${code}`);
     }
-    doneCB(fileMap, finalcount);
+    const { fileMap, finalCount } = doTheCalculations(parseResult);
+    doneCB(fileMap, finalCount);
   });
 }

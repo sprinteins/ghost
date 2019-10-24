@@ -1,8 +1,7 @@
-import doTheCalculations from './calculations';
+import { IFileMapObject } from './calculations';
 
-export let newFileMap;
-
-export default function formatting(output: string) {
+export function parsing(output: string): IFileMapObject[] {
+  let newFileMap: IFileMapObject[];
   let commitDate = 'commitDate';
   const latestDate = '';
   // creates Array, new element every linebreak
@@ -69,14 +68,12 @@ export default function formatting(output: string) {
       // swaps the months name for the equvalent number
       const monthAsNumber: string = monthMapToNumber[formatedSplittedDate[1]];
       // assignes the date value to the subFileMap param
-      subFileMap.latestDate = `${formatedSplittedDate[2]}-${monthAsNumber}-${formatedSplittedDate[0]} T${
-        formatedSplittedDate[3]
-      }`;
+      subFileMap.latestDate = `${formatedSplittedDate[2]}-${monthAsNumber}-${formatedSplittedDate[0]} T${formatedSplittedDate[3]}`;
       // adds object to the filemap without overriding if the same file already exists
       return accum.concat(subFileMap);
     }
 
     return accum;
-  }, []);
-  doTheCalculations(newFileMap);
+  }, []) as IFileMapObject[];
+  return newFileMap;
 }

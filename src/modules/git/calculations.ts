@@ -1,6 +1,3 @@
-export let fileMap = {};
-export let finalcount = 0;
-
 export interface IFileMapObject {
   file: string;
   stats: Array<string | number>;
@@ -8,11 +5,11 @@ export interface IFileMapObject {
   commits?: number;
 }
 
-export default function doTheCalculations(newFileMap: IFileMapObject[]) {
-  finalcount = newFileMap.length;
-  fileMap = {};
+export default function doTheCalculations(newFileMap: IFileMapObject[]): { fileMap: object; finalCount: number } {
+  const finalCount: number = newFileMap.length;
+  const fileMap: object = {};
 
-  for (let i = 0; i < finalcount; i += 1) {
+  for (let i = 0; i < finalCount; i += 1) {
     const { file } = newFileMap[i];
     if (!fileMap[file]) {
       fileMap[file] = {
@@ -31,4 +28,6 @@ export default function doTheCalculations(newFileMap: IFileMapObject[]) {
       fileMap[file].commits += 1;
     }
   }
+
+  return { fileMap, finalCount };
 }
