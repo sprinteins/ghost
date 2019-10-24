@@ -41,34 +41,11 @@ export function parsing(output: string): IFileMapObject[] {
     };
 
     if (subFileMap.latestDate === undefined || subFileMap.latestDate === '') {
-      const formatedDate = commitDate.slice(5, -5);
-      // splits the date where spaces exit into array so each elemet can be acessed
-      const formatedSplittedDate = formatedDate.split(' ');
-      // inserts 0s to single digits
-      if (formatedSplittedDate[0].length < 2) {
-        let formatedSplittedPaddedDate = formatedSplittedDate[0];
-        formatedSplittedPaddedDate = `0${formatedSplittedPaddedDate[0]}`;
-        formatedSplittedDate[0] = formatedSplittedPaddedDate;
-      }
+      const unformattedDate = commitDate.slice(5, -5);
 
-      const monthMapToNumber = {
-        Jan: '01',
-        Feb: '02',
-        Mar: '03',
-        Apr: '04',
-        May: '05',
-        Jun: '06',
-        Jul: '07',
-        Aug: '08',
-        Sep: '09',
-        Oct: '10',
-        Nov: '11',
-        Dec: '12',
-      };
-      // swaps the months name for the equvalent number
-      const monthAsNumber: string = monthMapToNumber[formatedSplittedDate[1]];
-      // assignes the date value to the subFileMap param
-      subFileMap.latestDate = `${formatedSplittedDate[2]}-${monthAsNumber}-${formatedSplittedDate[0]} T${formatedSplittedDate[3]}`;
+      const formattedDate: string = formatDate(unformattedDate);
+
+      subFileMap.latestDate = formattedDate;
       // adds object to the filemap without overriding if the same file already exists
       return accum.concat(subFileMap);
     }
@@ -77,3 +54,32 @@ export function parsing(output: string): IFileMapObject[] {
   }, []) as IFileMapObject[];
   return newFileMap;
 }
+
+const formatDate = (unformattedDate: string) => {
+  const splittedDate = unformattedDate.split(' ');
+  let [day, month] = splittedDate;
+  const [_, __, year, time] = splittedDate;
+  if (day.length < 2) {
+    day = `0${day}`;
+  }
+  month = translateMonth(month);
+  return `${day}.${month}.${year} ${time}`;
+};
+
+const translateMonth = (stringWithMonth: string): string => {
+  const monthMapToNumber = {
+    Jan: '01',
+    Feb: '02',
+    Mar: '03',
+    Apr: '04',
+    May: '05',
+    Jun: '06',
+    Jul: '07',
+    Aug: '08',
+    Sep: '09',
+    Oct: '10',
+    Nov: '11',
+    Dec: '12',
+  };
+  return monthMapToNumber[stringWithMonth];
+};
