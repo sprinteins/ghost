@@ -1,5 +1,4 @@
 import { IMergeWithStats } from './parsing';
-import { file } from '@babel/types';
 
 export interface IFileMapObject {
   file: string;

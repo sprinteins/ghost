@@ -3,7 +3,7 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "sourceMap": true,
-    "outDir": "test/build",
+    "outDir": "test/uitests/build",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,7 +19,7 @@
     "noUnusedLocals": true,
     "typeRoots": ["./types/**/*"]
   },
-  "include": ["test/**/*"],
-  "exclude": ["test/mocks/**/*", "test/build/**/*"],
+  "include": ["test/uitests/**/*"],
+  "exclude": ["test/mocks/**/*", "test/**/build/**/*"],
   "files": ["./types/global.d.ts"]
 }
