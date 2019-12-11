@@ -1,13 +1,6 @@
 import { IMergeWithStats } from './parsing';
 
-export interface IFileMapObject {
-  file: string;
-  stats: Array<string | number>;
-  latestDate: string;
-  commits?: number;
-}
-
-interface IFileStats {
+export interface IFileStats {
   lastChange: Date;
   additions: number;
   deletions: number;

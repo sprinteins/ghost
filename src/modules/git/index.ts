@@ -1,9 +1,9 @@
 import { parsing } from './parsing';
-import { groupStats, IFileMapObject } from './calculations';
+import { groupStats, IFileStats } from './calculations';
 
 const { spawn } = window.bridge;
 
-type IgLogCallback = (fileMap: object, noOfFiles: number) => void;
+type IgLogCallback = (fileMap: IFileStats[]) => void;
 
 // think about an object instead of a lot of parameters
 export default function gLog(
@@ -50,11 +50,13 @@ export default function gLog(
     console.log(`child process exited with code ${code}`);
     const parseResult = parsing(output);
     if (code === 0) {
+      const result = groupStats(parseResult);
+      doneCB(result);
       console.log('child process complete.');
     } else {
       console.log(`child process exited with code ${code}`);
     }
-    groupStats(parseResult);
+
     //const { fileMap, finalCount }
     //doneCB(fileMap, finalCount);
   });

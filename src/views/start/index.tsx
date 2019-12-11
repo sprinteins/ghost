@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import gLog from '../../modules/git';
 import './styled.tsx';
 const { dialog, rootDir } = window.bridge;
-import { IFileMapObject } from '../../modules/git/calculations';
 import { Loading } from '../../components/Loading/Loading';
 import { Table } from '../../components/Table/Table';
 import { Search } from '../../components/Search/Search';
 import { StyledMaxwidthModal, ModalCardWrapper, CenterContent } from './styled';
 import { Notification } from '../../components/Notification/Notification';
 import { Options } from '../../components/Options/Options';
+import { IFileStats } from '../../modules/git/calculations';
 
 interface IStartState {
-  fileStats: IFileMapObject[];
+  fileStats: IFileStats[];
   noOfFiles: number;
   loading: boolean;
   openOptions: boolean;
@@ -46,17 +46,15 @@ export default class Start extends Component<{}, IStartState> {
       this.setState({ noOfFiles: 0, fileStats: [] });
       gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
-  }
+  };
 
-  public gLogDoneCB = (fileMap: object, noOfFiles: number) => {
-    this.setState({ noOfFiles, loading: false });
-    const fileStats = this.convertfileMapToArray(fileMap);
-    this.setState({ fileStats });
-  }
+  public gLogDoneCB = (fileStats: IFileStats[]) => {
+    this.setState({ fileStats, noOfFiles: fileStats.length });
+  };
 
   public convertfileMapToArray = (fileMap: object) => {
     return Object.keys(fileMap).map((key) => fileMap[key]);
-  }
+  };
 
   public onSearch = (queryValue: string) => {
     //if keydown on enter reevaluate the query
@@ -65,14 +63,14 @@ export default class Start extends Component<{}, IStartState> {
       this.setState({ noOfFiles: 0, loading: true });
       gLog(this.currentPath, this.gLogDoneCB, queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
-  }
+  };
 
   public render() {
     /* if (this.state.loading) {
       return ;
     } */
 
-    let showNumberOfFiles;
+    let showNumberOfFiles: React.ReactElement;
     if (this.state.noOfFiles) {
       showNumberOfFiles = (
         <Notification header="Files" isVisible={true}>
@@ -129,7 +127,7 @@ export default class Start extends Component<{}, IStartState> {
       gLog(this.currentPath, this.gLogDoneCB, this.queryValue, this.fileExtension, this.fileExtensionExclusion);
     }
     this.closeModal();
-  }
+  };
 
   public closeModal = () => this.setState({ openOptions: false });
 }

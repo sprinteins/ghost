@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { IFileMapObject } from '../../modules/git/calculations';
+import { IFileStats } from '../../modules/git/calculations';
 
 interface ITableProps {
-  fileStats: IFileMapObject[];
+  fileStats: IFileStats[];
   id?: string;
 }
 
@@ -11,15 +11,16 @@ interface ITableState {
     attribute: string;
     order: string;
   };
-  fileStats: IFileMapObject[];
+  fileStats: IFileStats[];
 }
 
 export class Table extends React.Component<ITableProps, ITableState> {
   constructor(props: ITableProps) {
     super(props);
-    this.sortByCommits = () => this.changeSorting(this.props.fileStats, 'commits');
-    this.sortByFile = () => this.changeSorting(this.props.fileStats, 'file');
-    this.sortByDate = () => this.changeSorting(this.props.fileStats, 'latestDate');
+    this.sortByAdditions = () => this.changeSorting(this.props.fileStats, 'additions');
+    this.sortByDeletions = () => this.changeSorting(this.props.fileStats, 'deletions');
+    this.sortByName = () => this.changeSorting(this.props.fileStats, 'name');
+    this.sortByDate = () => this.changeSorting(this.props.fileStats, 'lastChange');
     this.state = {
       orderBy: {
         attribute: 'file',
@@ -27,10 +28,11 @@ export class Table extends React.Component<ITableProps, ITableState> {
       },
       fileStats: props.fileStats,
     };
-    setTimeout(this.sortByFile, 10);
+    setTimeout(this.sortByName, 10);
   }
-  public sortByCommits = () => {};
-  public sortByFile = () => {};
+  public sortByAdditions = () => {};
+  public sortByDeletions = () => {};
+  public sortByName = () => {};
   public sortByDate = () => {};
 
   public sortByAttribute = (array: object[], attribute: string, order: string) => {
@@ -43,9 +45,9 @@ export class Table extends React.Component<ITableProps, ITableState> {
       }
       return 0;
     });
-  }
+  };
 
-  public changeSorting = (fileStats: IFileMapObject[], attribute: string) => {
+  public changeSorting = (fileStats: IFileStats[], attribute: string) => {
     // By default, sort by file path
     const { orderBy } = this.state;
     let { order } = orderBy;
@@ -70,13 +72,13 @@ export class Table extends React.Component<ITableProps, ITableState> {
       fileStats,
       orderBy: { attribute, order },
     });
-  }
+  };
 
   public componentWillReceiveProps = (nextProps: ITableProps) => {
     if (nextProps.fileStats.length !== this.props.fileStats.length) {
       this.changeSorting(nextProps.fileStats, 'commits');
     }
-  }
+  };
 
   public render() {
     const { fileStats } = this.state;
@@ -86,11 +88,14 @@ export class Table extends React.Component<ITableProps, ITableState> {
           <thead>
             <tr>
               <td>#</td>
-              <td id="sortByFile" onClick={this.sortByFile}>
+              <td id="sortByFile" onClick={this.sortByName}>
                 File
               </td>
-              <td id="sortByCommits" onClick={this.sortByCommits}>
-                Occassions per file
+              <td id="sortByCommits" onClick={this.sortByAdditions}>
+                Additions per file
+              </td>
+              <td id="sortByCommits" onClick={this.sortByDeletions}>
+                Deletions per file
               </td>
               <td id="sortByDate" onClick={this.sortByDate}>
                 Date of last change
@@ -101,9 +106,10 @@ export class Table extends React.Component<ITableProps, ITableState> {
             {fileStats.map((stat, index) => (
               <tr key={Math.random()} id={`stat${index}${1}`}>
                 <td>{index + 1}</td>
-                <td>{stat.file}</td>
-                <td>{stat.commits}</td>
-                <td>{stat.latestDate}</td>
+                <td>{stat.name}</td>
+                <td>{stat.additions}</td>
+                <td>{stat.deletions}</td>
+                <td>{stat.lastChange.toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

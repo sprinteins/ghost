@@ -8,5 +8,8 @@
   "prettier.useTabs": false,
   "prettier.trailingComma": "all",
   "prettier.arrowParens": "always",
-  "javascript.updateImportsOnFileMove.enabled": "always"
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }
