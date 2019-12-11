@@ -67,13 +67,12 @@ export const doTheCalculations = (merges: IMergeWithStats[]): IFileStats[] => {
   }
 
   const fileStatsUnique = resolveRenaming(fileStats, fileNamesMap);
-  console.log(JSON.stringify(fileStatsUnique));
+  //console.log(JSON.stringify(fileStatsUnique));
   return fileStatsUnique;
 };
 
 const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, number>): IFileStats[] => {
   //backwards because the first items should be the newest ones
-  const indizesToDelte: number[] = [];
   for (let i = fileStats.length - 1; i >= 0; i--) {
     const name = fileStats[i].name;
     if (name.includes('=>')) {
@@ -85,7 +84,6 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
             .substring(0, name.indexOf('=>'))
             .replace('{', '')
             .replace(' ', '') + name.substr(name.indexOf('}') + 1);
-        const oldIndex = fileNamesMap.get(oldName); //index undefined if never changed before
 
         const newName =
           prefix +
@@ -93,39 +91,37 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
             .substring(name.indexOf('=>') + 2)
             .replace('}', '')
             .replace(' ', '');
-        const newIndex = fileNamesMap.get(newName);
-        console.log(name, newIndex, oldIndex);
-        if (oldIndex !== undefined) {
-          const oldFile = fileStats[oldIndex];
-          if (newIndex !== undefined) {
-            const newFile = fileStats[newIndex];
-            newFile.additions += oldFile.additions;
-            newFile.deletions += oldFile.deletions;
-            newFile.timesWorkedOn += oldFile.timesWorkedOn;
-            newFile.renamedTimes += oldFile.renamedTimes;
-            newFile.renamedTimes++;
-            fileStats[newIndex] = newFile;
-            indizesToDelte.push(oldIndex); // we wont infos about the old file anymore
-            console.log('update', oldName, newName);
-          } else {
-            const newFile = {
-              ...oldFile,
-              name: newName,
-            };
-            newFile.renamedTimes++;
-            fileStats[oldIndex] = newFile;
-            fileNamesMap.set(newName, oldIndex);
-            console.log('replace', oldName, newName);
-          }
-        } else {
-          const newFile: IFileStats = {
-            name: newName,
-            ...fileStats[i],
-          };
-          newFile.renamedTimes++;
-          fileStats[i] = newFile;
-          fileNamesMap.set(newName, i);
-          console.log('replace', oldName, newName);
+        const oldIndex = fileStats.findIndex((item) => item.name === oldName);
+        const newIndex = fileStats.findIndex((item) => item.name === newName);
+        const oldFile = fileStats[oldIndex] || {
+          additions: 0,
+          deletions: 0,
+          lastChange: new Date(),
+          name: oldName,
+          renamedTimes: 0,
+          timesWorkedOn: 0,
+        };
+        const newFile = fileStats[newIndex] || {
+          additions: 0,
+          deletions: 0,
+          lastChange: fileStats[i].lastChange,
+          name: newName,
+          renamedTimes: 0,
+          timesWorkedOn: 0,
+        };
+        newFile.name = newName;
+        newFile.additions += oldFile.additions + fileStats[i].additions;
+        newFile.deletions += oldFile.deletions + fileStats[i].deletions;
+        newFile.timesWorkedOn += oldFile.timesWorkedOn + fileStats[i].timesWorkedOn;
+        newFile.renamedTimes += oldFile.renamedTimes + fileStats[i].renamedTimes;
+        newFile.renamedTimes++;
+        fileStats.push(newFile);
+        fileStats[i].name = '=>'; //delete that
+        if (oldIndex >= 0) {
+          fileStats[oldIndex].name = '=>';
+        }
+        if (newIndex >= 0) {
+          fileStats[newIndex].name = '=>';
         }
       } else {
         // todo !
@@ -133,15 +129,8 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
       }
     }
   }
-  //remove every renaming file now. They havent been change since so they are not needed or already counted
-
-  const fileStatsUndifinale: Array<IFileStats | undefined> = [...fileStats];
-  for (const id of indizesToDelte) {
-    fileStatsUndifinale[id] = undefined;
-  }
-
-  const filesWithRenaming = fileStatsUndifinale.filter((item) => {
-    return !item || item.name.includes('=>') ? false : true;
+  const filesWithRenaming = fileStats.filter((item) => {
+    return item.name.includes('=>') ? false : true;
   }) as IFileStats[];
   return filesWithRenaming;
 };
