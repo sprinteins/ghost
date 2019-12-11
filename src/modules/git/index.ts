@@ -1,5 +1,5 @@
 import { parsing } from './parsing';
-import { filterOutRenamings, IFileMapObject } from './calculations';
+import { groupStats, IFileMapObject } from './calculations';
 
 const { spawn } = window.bridge;
 
@@ -49,13 +49,12 @@ export default function gLog(
   gitLog.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
     const parseResult = parsing(output);
-    //console.log(output);
     if (code === 0) {
       console.log('child process complete.');
     } else {
       console.log(`child process exited with code ${code}`);
     }
-    filterOutRenamings(parseResult);
+    groupStats(parseResult);
     //const { fileMap, finalCount }
     //doneCB(fileMap, finalCount);
   });

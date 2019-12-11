@@ -16,7 +16,7 @@ interface IFileStats {
   renamedTimes: number;
 }
 
-export const filterOutRenamings = (merges: IMergeWithStats[]): IFileStats[] => {
+export const groupStats = (merges: IMergeWithStats[]): IFileStats[] => {
   const fileStats: IFileStats[] = [];
   const fileNamesMap = new Map<string, number>();
   for (const merge of merges) {
@@ -48,59 +48,61 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
   for (let i = fileStats.length - 1; i >= 0; i--) {
     const name = fileStats[i].name;
     if (name.includes('=>')) {
+      let newName, oldName;
       if (name.includes('{') && name.includes('}')) {
         //deep rename: src/module/{ index.js => index.ts } for example
         const prefix = name.substring(0, name.indexOf('{'));
-        const oldName =
+        oldName =
           name
             .substring(0, name.indexOf('=>'))
             .replace('{', '')
             .replace(' ', '') + name.substr(name.indexOf('}') + 1);
 
-        const newName =
+        newName =
           prefix +
           name
             .substring(name.indexOf('=>') + 2)
             .replace('}', '')
             .replace(' ', '');
-        const oldIndex = fileStats.findIndex((item) => item.name === oldName);
-        const newIndex = fileStats.findIndex((item) => item.name === newName);
-        const oldFile = fileStats[oldIndex] || {
-          additions: 0,
-          deletions: 0,
-          lastChange: new Date(),
-          name: oldName,
-          renamedTimes: 0,
-          timesWorkedOn: 0,
-        };
-        const newFile = fileStats[newIndex] || {
-          additions: 0,
-          deletions: 0,
-          lastChange: fileStats[i].lastChange,
-          name: newName,
-          renamedTimes: 0,
-          timesWorkedOn: 0,
-        };
-        newFile.name = newName;
-        newFile.additions += oldFile.additions + fileStats[i].additions;
-        newFile.deletions += oldFile.deletions + fileStats[i].deletions;
-        newFile.timesWorkedOn += oldFile.timesWorkedOn + fileStats[i].timesWorkedOn;
-        newFile.renamedTimes += oldFile.renamedTimes + fileStats[i].renamedTimes;
-        newFile.renamedTimes++;
-        fileStats.push(newFile);
-        fileStats[i].name = '=>'; //delete that
-        if (oldIndex >= 0) {
-          fileStats[oldIndex].name = '=>';
-        }
-        if (newIndex >= 0) {
-          fileStats[newIndex].name = '=>';
-        }
       } else {
-        // todo !
-        // root rename: License.txt -> License
+        oldName = name.substring(0, name.indexOf('=>')).replace(' ', '');
+        newName = name.substring(name.indexOf('=>') + 2).replace(' ', '');
+      }
+      const oldIndex = fileStats.findIndex((item) => item.name === oldName);
+      const newIndex = fileStats.findIndex((item) => item.name === newName);
+      const oldFile = fileStats[oldIndex] || {
+        additions: 0,
+        deletions: 0,
+        lastChange: new Date(),
+        name: oldName,
+        renamedTimes: 0,
+        timesWorkedOn: 0,
+      };
+      const newFile = fileStats[newIndex] || {
+        additions: 0,
+        deletions: 0,
+        lastChange: fileStats[i].lastChange,
+        name: newName,
+        renamedTimes: 0,
+        timesWorkedOn: 0,
+      };
+      newFile.name = newName;
+      newFile.additions += oldFile.additions + fileStats[i].additions;
+      newFile.deletions += oldFile.deletions + fileStats[i].deletions;
+      newFile.timesWorkedOn += oldFile.timesWorkedOn + fileStats[i].timesWorkedOn;
+      newFile.renamedTimes += oldFile.renamedTimes + fileStats[i].renamedTimes;
+      newFile.renamedTimes++;
+      fileStats.push(newFile);
+      fileStats[i].name = '=>'; //delete that
+      if (oldIndex >= 0) {
+        fileStats[oldIndex].name = '=>';
+      }
+      if (newIndex >= 0) {
+        fileStats[newIndex].name = '=>';
       }
     }
   }
+
   const filesWithRenaming = fileStats.filter((item) => {
     return item.name.includes('=>') ? false : true;
   }) as IFileStats[];

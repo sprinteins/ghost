@@ -1,16 +1,29 @@
-import { filterOutRenamings } from '../../src/modules/git/calculations';
+import { groupStats } from '../../src/modules/git/calculations';
 import { IMergeWithStats, parsing } from '../../src/modules/git/parsing';
 import assert from 'assert';
 
 describe('Renaming files', () => {
-  it('should have one rename', () => {
+  it('should have one rename - easy rename', () => {
+    const merges: IMergeWithStats[] = [
+      {
+        date: new Date(),
+        stats: [{ additions: 0, deletions: 0, name: 'can_opened.jpg => cant_be_opened.png' }],
+      },
+    ];
+    const fileStats = groupStats(merges);
+    expect(fileStats).toHaveLength(1);
+    expect(fileStats[0].name).toBe('cant_be_opened.png');
+    expect(fileStats[0].timesWorkedOn).toBe(1);
+    expect(fileStats[0].renamedTimes).toBe(1);
+  });
+  it('should have one rename - complex rename', () => {
     const merges: IMergeWithStats[] = [
       {
         date: new Date(),
         stats: [{ additions: 0, deletions: 0, name: '{assets => public/assets}/cant_be_opened.png' }],
       },
     ];
-    const fileStats = filterOutRenamings(merges);
+    const fileStats = groupStats(merges);
     expect(fileStats).toHaveLength(1);
     expect(fileStats[0].name).toBe('public/assets/cant_be_opened.png');
     expect(fileStats[0].timesWorkedOn).toBe(1);
@@ -34,7 +47,7 @@ describe('Renaming files', () => {
         ],
       },
     ];
-    const fileStats = filterOutRenamings(merges);
+    const fileStats = groupStats(merges);
     const other = fileStats.find((item) => item.name === 'assets/other.png');
     const cantBeOpened = fileStats.find((item) => item.name === 'public/assets/x/cant_be_opened.png');
     expect(fileStats).toHaveLength(2);
@@ -68,7 +81,7 @@ describe('Renaming files', () => {
         ],
       },
     ];
-    const fileStats = filterOutRenamings(merges);
+    const fileStats = groupStats(merges);
     const other = fileStats.find((item) => item.name === 'assets/other.png');
     const cantBeOpened = fileStats.find((item) => item.name === 'public/assets/x/y/cant_be_opened.png');
     expect(fileStats).toHaveLength(2);
