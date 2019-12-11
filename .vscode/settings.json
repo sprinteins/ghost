@@ -8,7 +8,5 @@
   "prettier.useTabs": false,
   "prettier.trailingComma": "all",
   "prettier.arrowParens": "always",
-  "prettier.eslintIntegration": true,
-  "prettier.tslintIntegration": true,
   "javascript.updateImportsOnFileMove.enabled": "always"
 }
