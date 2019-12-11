@@ -1,5 +1,5 @@
 import { parsing } from './parsing';
-import { doTheCalculations, IFileMapObject } from './calculations';
+import { filterOutRenamings, IFileMapObject } from './calculations';
 
 const { spawn } = window.bridge;
 
@@ -55,7 +55,7 @@ export default function gLog(
     } else {
       console.log(`child process exited with code ${code}`);
     }
-    doTheCalculations(parseResult);
+    filterOutRenamings(parseResult);
     //const { fileMap, finalCount }
     //doneCB(fileMap, finalCount);
   });

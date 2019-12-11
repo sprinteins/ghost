@@ -40,6 +40,7 @@ const splitIntoMergeCommits = (allLines: string[]): string[][] => {
     }
     currentCommit.push(line);
   }
+  mergeCommits.push(currentCommit);
   return mergeCommits;
 };
 

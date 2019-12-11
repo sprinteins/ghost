@@ -1,5 +1,5 @@
-import { doTheCalculations } from '../../src/modules/git/calculations';
-import { IMergeWithStats } from '../../src/modules/git/parsing';
+import { filterOutRenamings } from '../../src/modules/git/calculations';
+import { IMergeWithStats, parsing } from '../../src/modules/git/parsing';
 import assert from 'assert';
 
 describe('Renaming files', () => {
@@ -10,7 +10,7 @@ describe('Renaming files', () => {
         stats: [{ additions: 0, deletions: 0, name: '{assets => public/assets}/cant_be_opened.png' }],
       },
     ];
-    const fileStats = doTheCalculations(merges);
+    const fileStats = filterOutRenamings(merges);
     expect(fileStats).toHaveLength(1);
     expect(fileStats[0].name).toBe('public/assets/cant_be_opened.png');
     expect(fileStats[0].timesWorkedOn).toBe(1);
@@ -34,7 +34,7 @@ describe('Renaming files', () => {
         ],
       },
     ];
-    const fileStats = doTheCalculations(merges);
+    const fileStats = filterOutRenamings(merges);
     const other = fileStats.find((item) => item.name === 'assets/other.png');
     const cantBeOpened = fileStats.find((item) => item.name === 'public/assets/x/cant_be_opened.png');
     expect(fileStats).toHaveLength(2);
@@ -68,7 +68,7 @@ describe('Renaming files', () => {
         ],
       },
     ];
-    const fileStats = doTheCalculations(merges);
+    const fileStats = filterOutRenamings(merges);
     const other = fileStats.find((item) => item.name === 'assets/other.png');
     const cantBeOpened = fileStats.find((item) => item.name === 'public/assets/x/y/cant_be_opened.png');
     expect(fileStats).toHaveLength(2);
@@ -79,6 +79,49 @@ describe('Renaming files', () => {
     expect(cantBeOpened.additions).toBe(20);
     expect(cantBeOpened.deletions).toBe(30);
     expect(cantBeOpened.renamedTimes).toBe(3);
+  });
+});
+
+describe('Merging commits', () => {
+  it('should have 3 commits', () => {
+    const output = parsing(`Wed, 6 Feb 2019 10:15:28 +0100\n
+    3	1	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n
+    5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n
+    3	2	Bugfix_1.txt`);
+    expect(output).toHaveLength(3);
+    const Bugfix2 = output[0];
+    const Bugfix21 = output[1];
+    const Bugfix1 = output[2];
+    expect(Bugfix2.stats).toHaveLength(1);
+    expect(Bugfix21.stats).toHaveLength(1);
+    expect(Bugfix1.stats).toHaveLength(1);
+    expect(Bugfix2.stats[0].additions).toBe(3);
+    expect(Bugfix2.stats[0].deletions).toBe(1);
+    expect(Bugfix21.stats[0].additions).toBe(5);
+    expect(Bugfix21.stats[0].deletions).toBe(0);
+    expect(Bugfix1.stats[0].additions).toBe(3);
+    expect(Bugfix1.stats[0].deletions).toBe(2);
+  });
+  it('should have 3 commits. One of them has 2 stats', () => {
+    const output = parsing(`Wed, 6 Feb 2019 10:15:28 +0100\n
+    3	1	Bugfix_2.txt\n4	4	Bugfix_2.txt\nWed, 6 Feb 2019 10:04:11 +0100\n
+    5	0	Bugfix_2.txt\nWed, 6 Feb 2019 10:00:42 +0100\n
+    3	2	Bugfix_1.txt`);
+    expect(output).toHaveLength(3);
+    const Bugfix2 = output[0];
+    const Bugfix21 = output[1];
+    const Bugfix1 = output[2];
+    expect(Bugfix2.stats).toHaveLength(2);
+    expect(Bugfix21.stats).toHaveLength(1);
+    expect(Bugfix1.stats).toHaveLength(1);
+    expect(Bugfix2.stats[0].additions).toBe(3);
+    expect(Bugfix2.stats[0].deletions).toBe(1);
+    expect(Bugfix2.stats[1].additions).toBe(4);
+    expect(Bugfix2.stats[1].deletions).toBe(4);
+    expect(Bugfix21.stats[0].additions).toBe(5);
+    expect(Bugfix21.stats[0].deletions).toBe(0);
+    expect(Bugfix1.stats[0].additions).toBe(3);
+    expect(Bugfix1.stats[0].deletions).toBe(2);
   });
 });
 

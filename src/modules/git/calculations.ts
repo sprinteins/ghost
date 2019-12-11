@@ -7,33 +7,6 @@ export interface IFileMapObject {
   commits?: number;
 }
 
-export function doTheCalculationsOld(newFileMap: IFileMapObject[]): { fileMap: object; finalCount: number } {
-  const finalCount: number = newFileMap.length;
-  const fileMap: object = {};
-
-  for (let i = 0; i < finalCount; i += 1) {
-    const { file } = newFileMap[i];
-    if (!fileMap[file]) {
-      fileMap[file] = {
-        file,
-        additions: +newFileMap[i].stats[0],
-        deletions: +newFileMap[i].stats[1],
-        changes: +newFileMap[i].stats[0] + +newFileMap[i].stats[1],
-        commits: 1,
-        latestDate: newFileMap[i].latestDate,
-      };
-    } else {
-      // no comparison of the dates, because the first appearance should be the newest one
-      fileMap[file].additions += +newFileMap[i].stats[0];
-      fileMap[file].deletions += +newFileMap[i].stats[1];
-      fileMap[file].changes += +newFileMap[i].stats[0] + +newFileMap[i].stats[1];
-      fileMap[file].commits += 1;
-    }
-  }
-
-  return { fileMap, finalCount };
-}
-
 interface IFileStats {
   lastChange: Date;
   additions: number;
@@ -43,7 +16,7 @@ interface IFileStats {
   renamedTimes: number;
 }
 
-export const doTheCalculations = (merges: IMergeWithStats[]): IFileStats[] => {
+export const filterOutRenamings = (merges: IMergeWithStats[]): IFileStats[] => {
   const fileStats: IFileStats[] = [];
   const fileNamesMap = new Map<string, number>();
   for (const merge of merges) {
@@ -67,7 +40,6 @@ export const doTheCalculations = (merges: IMergeWithStats[]): IFileStats[] => {
   }
 
   const fileStatsUnique = resolveRenaming(fileStats, fileNamesMap);
-  //console.log(JSON.stringify(fileStatsUnique));
   return fileStatsUnique;
 };
 
