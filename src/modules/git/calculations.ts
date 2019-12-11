@@ -79,12 +79,12 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
     if (name.includes('=>')) {
       if (name.includes('{') && name.includes('}')) {
         //deep rename: src/module/{ index.js => index.ts } for example
-
         const prefix = name.substring(0, name.indexOf('{'));
-        const oldName = name
-          .substring(0, name.indexOf('=>'))
-          .replace('{', '')
-          .replace(' ', '');
+        const oldName =
+          name
+            .substring(0, name.indexOf('=>'))
+            .replace('{', '')
+            .replace(' ', '') + name.substr(name.indexOf('}') + 1);
         const oldIndex = fileNamesMap.get(oldName); //index undefined if never changed before
 
         const newName =
@@ -94,6 +94,7 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
             .replace('}', '')
             .replace(' ', '');
         const newIndex = fileNamesMap.get(newName);
+        console.log(name, newIndex, oldIndex);
         if (oldIndex !== undefined) {
           const oldFile = fileStats[oldIndex];
           if (newIndex !== undefined) {
@@ -116,6 +117,15 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
             fileNamesMap.set(newName, oldIndex);
             console.log('replace', oldName, newName);
           }
+        } else {
+          const newFile: IFileStats = {
+            name: newName,
+            ...fileStats[i],
+          };
+          newFile.renamedTimes++;
+          fileStats[i] = newFile;
+          fileNamesMap.set(newName, i);
+          console.log('replace', oldName, newName);
         }
       } else {
         // todo !
