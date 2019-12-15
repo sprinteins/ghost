@@ -12,8 +12,6 @@ env:
 global:
   - ELECTRON_CACHE=$HOME/.cache/electron
   - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-  - LANG=de_DE.UTF-8
-  - LC_ALL=de_DE.UTF-8
 
 cache:
   yarn: true

@@ -78,8 +78,7 @@ describe('Application launch', function() {
   it('should display the corresponding files', async function() {
     await this.app.client.waitForVisible('#repo-button', WAIT_FOR_ELEMENT).click('#repo-button');
     await this.app.client.waitForVisible('.fileTable');
-    const element = await this.app.client.getText('#stat01');
-    assert.equal(element, '1 Bugfix_7.txt 20 3 3 0 5.2.2019');
+    await this.app.client.getText('#stat01').should.eventually.be.contain('1 Bugfix_7.txt 20 3 3 0 ');
   });
 
   // Dont change the config just for one method.
