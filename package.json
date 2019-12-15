@@ -103,7 +103,7 @@
   },
   "scripts": {
     "dev": "concurrently \"yarn frontend-dev\" \"yarn backend-dev\"",
-    "test": "npm run test-build && npm run test-unit",
+    "test": "npm run test-build && npm run test-unit && npm run test-ui",
     "production": "npm run frontend-build && npm run backend-build && electron-builder .",
     "frontend-dev": "node scripts/frontend/start.js",
     "frontend-build": "node scripts/frontend/build.js",

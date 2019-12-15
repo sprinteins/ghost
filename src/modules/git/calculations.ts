@@ -39,7 +39,7 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
   //backwards because the first items should be the newest ones
   for (let i = fileStats.length - 1; i >= 0; i--) {
     const name = fileStats[i].name;
-    if (name.includes('=>')) {
+    if (name && name.includes('=>')) {
       let newName, oldName;
       if (name.includes('{') && name.includes('}')) {
         //deep rename: src/module/{ index.js => index.ts } for example
