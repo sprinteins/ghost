@@ -20,12 +20,11 @@ export const groupStats = (merges: IMergeWithStats[]): IFileStats[] => {
         fileNamesMap.set(stat.name, newLength - 1);
       } else {
         const fileStat = fileStats[index];
-        //maybe also change date? but i think the first one is the the last date
         const newFileStat: IFileStats = {
           ...fileStat,
           additions: fileStat.additions + stat.additions,
           deletions: fileStat.deletions + stat.deletions,
-          timesWorkedOn: fileStat.timesWorkedOn++,
+          timesWorkedOn: ++fileStat.timesWorkedOn,
         };
         fileStats[index] = newFileStat;
       }
@@ -85,19 +84,19 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
       newFile.timesWorkedOn += oldFile.timesWorkedOn + fileStats[i].timesWorkedOn;
       newFile.renamedTimes += oldFile.renamedTimes + fileStats[i].renamedTimes;
       newFile.renamedTimes++;
-      fileStats.push(newFile);
-      fileStats[i].name = '=>'; //delete that
+      fileStats.push({ ...newFile });
+      fileStats[i].name = '!!!delete!!!'; //delete that
       if (oldIndex >= 0) {
-        fileStats[oldIndex].name = '=>';
+        fileStats[oldIndex].name = '!!!delete!!!';
       }
       if (newIndex >= 0) {
-        fileStats[newIndex].name = '=>';
+        fileStats[newIndex].name = '!!!delete!!!';
       }
     }
   }
 
   const filesWithRenaming = fileStats.filter((item) => {
-    return item.name.includes('=>') ? false : true;
+    return item.name.includes('!!!delete!!!') ? false : true;
   }) as IFileStats[];
   return filesWithRenaming;
 };

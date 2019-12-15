@@ -17,10 +17,6 @@ interface ITableState {
 export class Table extends React.Component<ITableProps, ITableState> {
   constructor(props: ITableProps) {
     super(props);
-    this.sortByAdditions = () => this.changeSorting(this.props.fileStats, 'additions');
-    this.sortByDeletions = () => this.changeSorting(this.props.fileStats, 'deletions');
-    this.sortByName = () => this.changeSorting(this.props.fileStats, 'name');
-    this.sortByDate = () => this.changeSorting(this.props.fileStats, 'lastChange');
     this.state = {
       orderBy: {
         attribute: 'file',
@@ -28,12 +24,8 @@ export class Table extends React.Component<ITableProps, ITableState> {
       },
       fileStats: props.fileStats,
     };
-    setTimeout(this.sortByName, 10);
+    setTimeout(() => this.changeSorting('name'), 10);
   }
-  public sortByAdditions = () => {};
-  public sortByDeletions = () => {};
-  public sortByName = () => {};
-  public sortByDate = () => {};
 
   public sortByAttribute = (array: object[], attribute: string, order: string) => {
     array.sort((a, b) => {
@@ -47,7 +39,8 @@ export class Table extends React.Component<ITableProps, ITableState> {
     });
   };
 
-  public changeSorting = (fileStats: IFileStats[], attribute: string) => {
+  public changeSorting = (attribute: string) => {
+    const fileStats = this.props.fileStats;
     // By default, sort by file path
     const { orderBy } = this.state;
     let { order } = orderBy;
@@ -76,7 +69,7 @@ export class Table extends React.Component<ITableProps, ITableState> {
 
   public componentWillReceiveProps = (nextProps: ITableProps) => {
     if (nextProps.fileStats.length !== this.props.fileStats.length) {
-      this.changeSorting(nextProps.fileStats, 'commits');
+      this.changeSorting('commits');
     }
   };
 
@@ -88,16 +81,22 @@ export class Table extends React.Component<ITableProps, ITableState> {
           <thead>
             <tr>
               <td>#</td>
-              <td id="sortByFile" onClick={this.sortByName}>
+              <td id="sortByFile" onClick={() => this.changeSorting('name')}>
                 File
               </td>
-              <td id="sortByCommits" onClick={this.sortByAdditions}>
+              <td id="sortByAddition" onClick={() => this.changeSorting('additions')}>
                 Additions per file
               </td>
-              <td id="sortByCommits" onClick={this.sortByDeletions}>
+              <td id="sortByDeletion" onClick={() => this.changeSorting('deletions')}>
                 Deletions per file
               </td>
-              <td id="sortByDate" onClick={this.sortByDate}>
+              <td id="sortByWorkedOn" onClick={() => this.changeSorting('timesWorkedOn')}>
+                Times worked on
+              </td>
+              <td id="sortByRenamed" onClick={() => this.changeSorting('renamedTimes')}>
+                Times renamed
+              </td>
+              <td id="sortByDate" onClick={() => this.changeSorting('lastChange')}>
                 Date of last change
               </td>
             </tr>
@@ -109,6 +108,8 @@ export class Table extends React.Component<ITableProps, ITableState> {
                 <td>{stat.name}</td>
                 <td>{stat.additions}</td>
                 <td>{stat.deletions}</td>
+                <td>{stat.timesWorkedOn}</td>
+                <td>{stat.renamedTimes}</td>
                 <td>{stat.lastChange.toLocaleDateString()}</td>
               </tr>
             ))}

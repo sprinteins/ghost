@@ -137,3 +137,49 @@ describe('Merging commits', () => {
     expect(Bugfix1.stats[0].deletions).toBe(2);
   });
 });
+describe('Grouping commits', () => {
+  it('Should have right number of times worked on', () => {
+    const merges: IMergeWithStats[] = [
+      {
+        date: new Date(),
+        stats: [{ additions: 0, deletions: 0, name: 'can_opened.jpg' }],
+      },
+      {
+        date: new Date(Date.now() - 1),
+        stats: [{ additions: 10, deletions: 0, name: 'can_opened.jpg' }],
+      },
+      {
+        date: new Date(Date.now() - 2),
+        stats: [{ additions: 20, deletions: 0, name: 'can_opened.jpg' }],
+      },
+    ];
+    const fileStats = groupStats(merges);
+    expect(fileStats).toHaveLength(1);
+    expect(fileStats[0].name).toBe('can_opened.jpg');
+    expect(fileStats[0].timesWorkedOn).toBe(3);
+    expect(fileStats[0].renamedTimes).toBe(0);
+  });
+
+  it.only('Should have right number of times worked on', () => {
+    const merges: IMergeWithStats[] = [
+      {
+        date: new Date(),
+        stats: [{ additions: 0, deletions: 0, name: 'can_opened.jpg' }],
+      },
+      {
+        date: new Date(Date.now() - 1),
+        stats: [{ additions: 0, deletions: 0, name: 'cant_be_opened.png => can_opened.jpg' }],
+      },
+      {
+        date: new Date(Date.now() - 2),
+        stats: [{ additions: 20, deletions: 0, name: 'cant_be_opened.png' }],
+      },
+    ];
+    const fileStats = groupStats(merges);
+    console.log(fileStats);
+    expect(fileStats).toHaveLength(1);
+    expect(fileStats[0].name).toBe('can_opened.jpg');
+    expect(fileStats[0].timesWorkedOn).toBe(3);
+    expect(fileStats[0].renamedTimes).toBe(1);
+  });
+});
