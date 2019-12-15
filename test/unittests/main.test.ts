@@ -160,7 +160,7 @@ describe('Grouping commits', () => {
     expect(fileStats[0].renamedTimes).toBe(0);
   });
 
-  it.only('Should have right number of times worked on', () => {
+  it('Should have right number of times worked on with renaming', () => {
     const merges: IMergeWithStats[] = [
       {
         date: new Date(),
@@ -176,7 +176,6 @@ describe('Grouping commits', () => {
       },
     ];
     const fileStats = groupStats(merges);
-    console.log(fileStats);
     expect(fileStats).toHaveLength(1);
     expect(fileStats[0].name).toBe('can_opened.jpg');
     expect(fileStats[0].timesWorkedOn).toBe(3);

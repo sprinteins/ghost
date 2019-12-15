@@ -85,7 +85,11 @@ const resolveRenaming = (fileStats: IFileStats[], fileNamesMap: Map<string, numb
       newFile.renamedTimes += oldFile.renamedTimes + fileStats[i].renamedTimes;
       newFile.renamedTimes++;
       fileStats.push({ ...newFile });
-      fileStats[i].name = '!!!delete!!!'; //delete that
+      fileStats[i].name = '!!!delete!!!';
+      /*
+      delete that. Maybe better solution -> new boolean?
+       Wasn't that easy so -> later ;)
+      */
       if (oldIndex >= 0) {
         fileStats[oldIndex].name = '!!!delete!!!';
       }
