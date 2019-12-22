@@ -1,8 +1,0 @@
-Datei für den ersten Bugfixbranch erstellt
-
-Veränderungen eingefügt in ersten Bugfixbranch
-- hier befanden sich gerade noch Codezeilen -
-
-Zeilen entfernt im ersten Bugfixbranch
-
-Änderungen eingefügt auf erstem Bugfixbranch mit zeitgleichen Änderungen auf dem Master

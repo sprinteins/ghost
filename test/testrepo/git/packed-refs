@@ -1,5 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-6c48d9a30d57f2f03650a100e3d4fa0a297ae3dd refs/remotes/origin/bugfix/dritter_Bugfixbranch
-9b9656badc03f95d95ac49c66b3724c267c28ae9 refs/remotes/origin/bugfix/erster_Bugfixbranch
-5768d3ee5e3ef3265f1ffb0f8d9fb770a14aeda2 refs/remotes/origin/bugfix/zweiter_Bugfixbranch
-92debb857b1a3f4a6b6e899add8c2e9a1c837896 refs/remotes/origin/master

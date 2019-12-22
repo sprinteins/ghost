@@ -1,3 +1,0 @@
-test/build/test/**/*.js
---exit
---require @babel/register
