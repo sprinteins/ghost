@@ -5,7 +5,7 @@
   "main": "./build/backend/bundle.js",
   "homepage": "./",
   "author": {
-    "name": "Tamás Rusz, Heiko Lang"
+    "name": "Tamás Rusz, Heiko Lang, Lars Bommersbach"
   },
   "dependencies": {
     "@babel/core": "7.4.3",
