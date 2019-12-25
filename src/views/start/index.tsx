@@ -9,6 +9,7 @@ import { StyledMaxwidthModal, ModalCardWrapper, CenterContent } from './styled';
 import { Notification } from '../../components/Notification/Notification';
 import { Options } from '../../components/Options/Options';
 import { IFileStats } from '../../modules/git/calculations';
+import { ToTop } from '../../components/ToTop/ToTop';
 
 interface IStartState {
   fileStats: IFileStats[];
@@ -116,6 +117,7 @@ export default class Start extends Component<{}, IStartState> {
             <Options onSave={this.setOptions} closeModal={this.closeModal} />
           </div>
         )}
+        <ToTop />
       </>
     );
   }
