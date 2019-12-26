@@ -27,7 +27,7 @@ export class Table extends React.Component<ITableProps, ITableState> {
     setTimeout(() => this.changeSorting('name'), 10);
   }
 
-  public UNSAFE_componentWillReceiveProps = (nextProps) => {
+  public componentWillReceiveProps = (nextProps) => {
     this.setState({
       fileStats: nextProps.fileStats,
     });
