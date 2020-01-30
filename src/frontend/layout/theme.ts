@@ -1,8 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { lightBlue as primaryColor } from '@material-ui/core/colors'
 
 
-export const theme = createMuiTheme({
+export const ghostTheme = createMuiTheme({
     palette: {
         primary: {
             main: '#111',

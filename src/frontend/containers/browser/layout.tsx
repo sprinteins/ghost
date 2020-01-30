@@ -1,4 +1,5 @@
 import { Box, Container, Grid } from '@material-ui/core'
+
 import * as React from 'react'
 
 export function Layout(props: Props) {
@@ -9,13 +10,14 @@ export function Layout(props: Props) {
         slotContent: SlotContent,
     } = props
 
+
     return (
         <Container maxWidth="xl">
             <Grid container spacing={3}>
-                <Grid item xs={11}>
+                <Grid item xs={9}>
                     {SlotBreadcrumbs}
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={3}>
                     {SlotProgress}
                 </Grid>
                 <Grid item xs={12}>

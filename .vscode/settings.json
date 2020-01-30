@@ -14,5 +14,7 @@
         "statusBarItem.hoverBackground": "#d4d4d4",
         "statusBar.foreground": "#15202b"
     },
-    "peacock.color": "#eeeeee"
+    "peacock.color": "#eeeeee",
+    "cSpell.language": "en,en-GB",
+    "cSpell.enabled": false
 }

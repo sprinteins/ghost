@@ -1,7 +1,9 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
-import isDev from './common/is-dev'
 import { Backend } from './backend'
+import { handleOpenFolderRequest } from './backend/common/messenger'
+import { setBrowserWindow } from './backend/common/messenger/sendmessage'
+import isDev from './common/is-dev'
 
 
 main()
@@ -9,7 +11,7 @@ main()
 
 function setupBackendListeners() {
     const be = new Backend()
-    ipcMain.on('asynchronous-message', be.runSomeNodeJSOnlyAPI)
+    handleOpenFolderRequest(be.handleOpenFolderRequest)
 }
 
 function main() {
@@ -20,7 +22,10 @@ function main() {
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
-    app.on('ready', () => mainWindow = createWindow())
+    app.on('ready', () => {
+        mainWindow = createWindow()
+        setBrowserWindow(mainWindow)
+    })
 
     // Quit when all windows are closed.
     app.on('window-all-closed', () => {
@@ -62,7 +67,7 @@ function createWindow(): Electron.BrowserWindow {
     mainWindow.loadURL(
         isDev
             ? 'http://localhost:1234'
-            : `file://${path.join(__dirname, '../build/index.html')}`
+            : `file://${path.join(__dirname, '../build/index.html')}`,
     )
 
     // Open the DevTools.

@@ -1,4 +1,4 @@
-import * as electron from 'electron'
+import * as electronOriginal from 'electron'
 
 export function getElectron() {
     const w = window as ExtendedWindow
@@ -6,9 +6,7 @@ export function getElectron() {
 }
 
 interface WindowWithElectron extends Window {
-    electron: typeof electron
+    electron: typeof electronOriginal
 }
 
 type ExtendedWindow = WindowWithElectron & typeof globalThis
-
-

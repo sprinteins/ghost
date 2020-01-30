@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "dev": "concurrently -k -n TSC,FE,BE, \"yarn electron-tsc\" \"yarn parcel-dev\" \"yarn electron-dev\"",
-    "parcel-dev": "parcel ./src/frontend/index.html -d build/",
+    "parcel-dev": "parcel ./src/frontend/index.html",
     "electron-dev": "ELECTRON_START_URL=http://localhost:1234 electron ./dist/main.js",
     "electron-tsc": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
@@ -35,6 +35,7 @@
     "@material-ui/core": "^4.9.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "src": "^1.1.2",
     "typescript-tslint-plugin": "^0.5.5"
   },
   "devDependencies": {

@@ -1,16 +1,10 @@
-import { IpcMainEvent } from 'electron'
-
-
-
-export function main() {
-    console.log('starting backend')
-}
+import { sendEventProgressUpdate } from './common/messenger/progressupdate'
 
 export class Backend {
 
-    runSomeNodeJSOnlyAPI(event: IpcMainEvent, ...args: any[]) {
-        console.log('runs in node')
-        // console.log("event:", event);
-        console.log('args:', args)
+    public handleOpenFolderRequest(folderPath: string) {
+        console.log('opening folders in backend', folderPath)
+        sendEventProgressUpdate(30)
+
     }
 }

@@ -1,10 +1,11 @@
-import * as React from 'react'
 import {
-    Box,
     AppBar,
+    Box,
     ThemeProvider,
 } from '@material-ui/core'
-import { theme } from './theme'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import * as React from 'react'
+import { ghostTheme } from './theme'
 
 
 export function PrimaryLayout(props: Props) {
@@ -14,9 +15,11 @@ export function PrimaryLayout(props: Props) {
         slotContent: SlotContent,
     } = props
 
+    const classes = useStyles()
+
     return (
-        <ThemeProvider theme={theme} >
-            <Box width={1}>
+        <ThemeProvider theme={ghostTheme} >
+            <Box width={1} className={classes.appBar}>
                 <AppBar position="static">
                     {SlotAppBar}
                 </AppBar>
@@ -31,4 +34,22 @@ export function PrimaryLayout(props: Props) {
 interface Props {
     slotAppBar: React.ReactNode
     slotContent: React.ReactNode
+}
+
+
+interface Props {
+    slotBreadcrumbs: React.ReactNode
+    slotProgress: React.ReactNode
+    slotContent: React.ReactNode
+}
+
+function useStyles() {
+    const styles = makeStyles((theme: Theme) =>
+        createStyles({
+            appBar: {
+                paddingBottom: `${theme.spacing(2)}px`,
+            },
+        }),
+    )
+    return styles()
 }

@@ -21,7 +21,8 @@
             true,
             "single",
             "jsx-double"
-        ]
+        ],
+        "no-empty": false
     },
     "jsRules": {
         "max-line-length": {

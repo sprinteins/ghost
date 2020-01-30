@@ -1,0 +1,1 @@
+export { getElectron } from './electron'

@@ -2,8 +2,8 @@ import * as electron from 'electron'
 
 function onDOMContentLoaded() {
     writeVersions()
-    const w = window as ExtendedWindow
-    w.electron = electron
+    //     const w = window as ExtendedWindow
+    //     w.electron = electron
 }
 
 function writeVersions() {
@@ -22,6 +22,8 @@ function writeVersions() {
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', onDOMContentLoaded)
+const w = window as ExtendedWindow
+w.electron = electron
 
 export interface WindowWithElectron extends Window {
     electron: typeof electron

@@ -1,20 +1,26 @@
 import * as React from 'react'
 import { Breadcrumbs, BrowserTable } from '../../components'
 import { Layout } from './layout'
+import { Progress } from './progress'
 
 
-export function Browser() {
+export function Browser(props: Props) {
 
     const path = ['src', 'something', 'index.ts']
+    const { progress = 0 } = props
 
     return (
         <Layout
             slotBreadcrumbs={<Breadcrumbs path={path} clickHandler={logBreadcrumbClicks} />}
-            slotProgress={<div>40%</div>}
+            slotProgress={<Progress progress={progress} />}
             slotContent={<BrowserTable blocks={rows} />}
         />
     )
 
+}
+
+interface Props {
+    progress?: number
 }
 
 
