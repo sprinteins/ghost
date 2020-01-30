@@ -1,0 +1,1 @@
+export { BrowserTable } from './browsertable'

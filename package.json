@@ -1,0 +1,55 @@
+{
+  "name": "Ghost",
+  "version": "2.0.0",
+  "description": "Ghost",
+  "main": "main.js",
+  "scripts": {
+    "dev": "concurrently -k -n TSC,FE,BE, \"yarn electron-tsc\" \"yarn parcel-dev\" \"yarn electron-dev\"",
+    "parcel-dev": "parcel ./src/frontend/index.html -d build/",
+    "electron-dev": "ELECTRON_START_URL=http://localhost:1234 electron ./dist/main.js",
+    "electron-tsc": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "electron .",
+    "build": "parcel build ./src/index.html -d build/ --public-url ./",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "_postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "parcel.reactjs.electron",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "files": [
+      "main.js",
+      "build/*"
+    ]
+  },
+  "keywords": [
+    "parcel",
+    "react"
+  ],
+  "contributors": [],
+  "license": "MIT",
+  "dependencies": {
+    "@material-ui/core": "^4.9.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "typescript-tslint-plugin": "^0.5.5"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "concurrently": "^5.0.2",
+    "electron": "^7.1.7",
+    "electron-builder": "^21.2.0",
+    "electron-reload": "^1.5.0",
+    "parcel-bundler": "^1.12.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  }
+}
