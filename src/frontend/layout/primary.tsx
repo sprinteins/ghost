@@ -36,13 +36,6 @@ interface Props {
     slotContent: React.ReactNode
 }
 
-
-interface Props {
-    slotBreadcrumbs: React.ReactNode
-    slotProgress: React.ReactNode
-    slotContent: React.ReactNode
-}
-
 function useStyles() {
     const styles = makeStyles((theme: Theme) =>
         createStyles({

@@ -1,21 +1,32 @@
 import * as React from 'react'
+import { FileBlock } from '../common'
 import './App.css'
 import { sendOpenRepoRequest } from './common/messenger'
+import { handleFileTree } from './common/messenger/handlefiletree'
 import { handleProgressUpdate } from './common/messenger/handleprogressupdate'
 import { HeaderBar } from './components'
 import { Browser } from './containers'
+import { Status as BrowserStatus } from './containers/browser/browser'
 import { PrimaryLayout } from './layout/primary'
 
 export function App() {
 
   const [progress, setProgress] = React.useState(0)
+  const [fileTree, setFileTree] = React.useState<FileBlock[]>([])
+
+  let browserStatus: BrowserStatus = 'loading'
+
+  if (fileTree.length > 0) {
+    browserStatus = 'ready'
+  }
 
   handleProgressUpdate(makeOnProgressUpdate(setProgress))
+  handleFileTree(makeHandleFileTree(setFileTree))
 
   return (
     <PrimaryLayout
       slotAppBar={<HeaderBar onOpenFolder={onOpenFolder} />}
-      slotContent={<Browser progress={progress} />}
+      slotContent={<Browser progress={progress} fileTree={fileTree} status={browserStatus} />}
     />
   )
 }
@@ -32,6 +43,16 @@ function makeOnProgressUpdate(setProgress: (progress: number) => void) {
     console.log('progress:', progress)
     setProgress(progress)
 
+  }
+
+}
+
+function makeHandleFileTree(setFileTree: (blocks: FileBlock[]) => void) {
+
+  return function onFileTreeUpdate(blocks: FileBlock[]) {
+    console.log('blocks:', blocks)
+    console.log('setting file tree', blocks)
+    setFileTree(blocks)
   }
 
 }
