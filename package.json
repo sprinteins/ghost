@@ -9,11 +9,13 @@
     "electron-dev": "ELECTRON_START_URL=http://localhost:1234 electron ./dist/main.js",
     "electron-tsc": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
+    "fix": "tslint --fix --config tslint.json --project .",
     "start": "electron .",
     "build": "parcel build ./src/index.html -d build/ --public-url ./",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "_postinstall": "electron-builder install-app-deps"
+    "_postinstall": "electron-builder install-app-deps",
+    "spec": "scripts/npm/spec.sh"
   },
   "build": {
     "appId": "parcel.reactjs.electron",
@@ -40,16 +42,20 @@
     "typescript-tslint-plugin": "^0.5.5"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.8",
+    "@types/mocha": "^7.0.1",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.2.0",
     "concurrently": "^5.0.2",
     "electron": "^7.1.7",
     "electron-builder": "^21.2.0",
     "electron-reload": "^1.5.0",
+    "mocha": "^7.0.1",
     "parcel-bundler": "^1.12.4",
     "tslint": "^5.20.1",
     "typescript": "^3.7.4"

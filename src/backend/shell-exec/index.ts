@@ -1,0 +1,1 @@
+export { exec } from "./shell-exec"
