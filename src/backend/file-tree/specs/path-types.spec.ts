@@ -1,22 +1,21 @@
-import { describe, it } from "mocha"
-import { expect } from "chai"
-import { FileTree } from "../file-tree"
-import { TestFile } from "./test-file"
-import { File } from "../file/file"
-import { Folder } from "../folder"
+import { expect } from 'chai'
+import { describe, it } from 'mocha'
+import { FileTree } from '../file-tree'
+import { File } from '../file/file'
+import { TestFile } from './test-file'
 
-describe("Module: FileTree / Path Types", () => {
+describe('Module: FileTree / Path Types', () => {
 
     const pathTypeTests: Test[] = [
         {
-            desc: "accepts file in root",
-            paths: ["index.html"],
-            exceptedOccurrences: { "index.html": new TestFile("index.html", 1) }
+            desc: 'accepts file in root',
+            paths: ['index.html'],
+            exceptedOccurrences: { 'index.html': new TestFile('index.html', 1) },
         },
         {
-            desc: "accepts file in a folder",
-            paths: ["public/www/index.html"],
-            exceptedOccurrences: { "public/www/index.html": new TestFile("public/www/index.html", 1) }
+            desc: 'accepts file in a folder',
+            paths: ['public/www/index.html'],
+            exceptedOccurrences: { 'public/www/index.html': new TestFile('public/www/index.html', 1) },
         },
     ]
 
@@ -26,7 +25,7 @@ describe("Module: FileTree / Path Types", () => {
     function testPathTypes(t: Test) {
         it(t.desc, () => {
             const ft = new FileTree()
-            t.paths.forEach(path => ft.addFile(path))
+            t.paths.forEach((path) => ft.addFile(path))
             const occurrences = ft.getAllFiles()
 
             // somehow `occurrences` and `exceptedOccurrences` are not equal

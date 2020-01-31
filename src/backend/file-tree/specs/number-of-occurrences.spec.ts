@@ -1,21 +1,21 @@
-import { describe, it } from "mocha"
-import { expect } from "chai"
-import { FileTree } from "../file-tree"
-import { TestFile } from "./test-file"
+import { expect } from 'chai'
+import { describe, it } from 'mocha'
+import { FileTree } from '../file-tree'
+import { TestFile } from './test-file'
 
-describe("Module: FileTree / Number of Occurrence", () => {
+describe('Module: FileTree / Number of Occurrence', () => {
 
     const numberOfOccurrencesTests: Test[] = [
         {
-            desc: "add file once counts as one",
-            paths: ["index.html"],
-            exceptedOccurrences: { "index.html": new TestFile("index.html", 1) }
+            desc: 'add file once counts as one',
+            paths: ['index.html'],
+            exceptedOccurrences: { 'index.html': new TestFile('index.html', 1) },
         },
         {
-            desc: "add files twice counts as two",
-            paths: ["index.html", "index.html"],
-            exceptedOccurrences: { "index.html": new TestFile("index.html", 2) }
-        }
+            desc: 'add files twice counts as two',
+            paths: ['index.html', 'index.html'],
+            exceptedOccurrences: { 'index.html': new TestFile('index.html', 2) },
+        },
     ]
 
     numberOfOccurrencesTests.forEach(testNumberOfOccurrences)
@@ -24,7 +24,7 @@ describe("Module: FileTree / Number of Occurrence", () => {
     function testNumberOfOccurrences(t: Test) {
         it(t.desc, () => {
             const ft = new FileTree()
-            t.paths.forEach(path => ft.addFile(path))
+            t.paths.forEach((path) => ft.addFile(path))
             const occurrences = ft.getAllFiles()
 
             // somehow `occurrences` and `exceptedOccurrences` are not equal
@@ -42,7 +42,7 @@ describe("Module: FileTree / Number of Occurrence", () => {
         desc: string,
         paths: string[],
         exceptedOccurrences: {
-            [path: string]: TestFile
+            [path: string]: TestFile,
         }
     }
 

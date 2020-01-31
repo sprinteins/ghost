@@ -1,29 +1,29 @@
-import { describe, it } from "mocha"
-import { expect } from "chai";
-import { File } from "..";
+import { describe, it } from 'mocha'
+import { expect } from 'chai'
+import { File } from '..'
 
-describe("Module: File Tree / File", () => {
+describe('Module: File Tree / File', () => {
 
-    describe("Occurrences", () => {
+    describe('Occurrences', () => {
 
         const occurrencesTests: Test[] = [
             {
-                desc: "no occurrence",
+                desc: 'no occurrence',
                 occurrenceIncreases: [0],
                 expectedEndOccurrences: 0,
             },
             {
-                desc: "single occurrence",
+                desc: 'single occurrence',
                 occurrenceIncreases: [1],
                 expectedEndOccurrences: 1
             },
             {
-                desc: "multiple occurrences",
+                desc: 'multiple occurrences',
                 occurrenceIncreases: [4],
                 expectedEndOccurrences: 4
             },
             {
-                desc: "increasing occurrences",
+                desc: 'increasing occurrences',
                 occurrenceIncreases: [4, 6],
                 expectedEndOccurrences: 10
             },
@@ -33,7 +33,7 @@ describe("Module: File Tree / File", () => {
 
         function testOccurrences(t: Test) {
             it(t.desc, () => {
-                const f = new File("/public/index.html")
+                const f = new File('/public/index.html')
 
                 t.occurrenceIncreases
                     .forEach(inc => f.inc(inc))
@@ -49,9 +49,9 @@ describe("Module: File Tree / File", () => {
 
 
     interface Test {
-        desc: string;
-        occurrenceIncreases: number[];
-        expectedEndOccurrences: number;
+        desc: string
+        occurrenceIncreases: number[]
+        expectedEndOccurrences: number
     }
 
 })

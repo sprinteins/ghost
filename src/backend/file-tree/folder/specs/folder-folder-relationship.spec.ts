@@ -1,38 +1,38 @@
-import { describe, it } from "mocha"
-import { Folder } from ".."
-import { expect } from "chai";
-import { inspect } from "util";
+import { describe, it } from 'mocha'
+import { Folder } from '..'
+import { expect } from 'chai'
+import { inspect } from 'util'
 
-describe("Module: File Tree / Folder", () => {
+describe('Module: File Tree / Folder', () => {
 
-    describe("Folder-Folder Relationship", () => {
+    describe('Folder-Folder Relationship', () => {
 
         const folderRelTests: Test[] = [
             {
-                desc: "one level, single child",
+                desc: 'one level, single child',
                 folder: {
-                    name: "root",
-                    folders: [{ name: "child" }]
+                    name: 'root',
+                    folders: [{ name: 'child' }]
                 }
             },
             {
-                desc: "one level, multiple children",
+                desc: 'one level, multiple children',
                 folder: {
-                    name: "root",
+                    name: 'root',
                     folders: [
-                        { name: "child 1" },
-                        { name: "child 2" },
+                        { name: 'child 1' },
+                        { name: 'child 2' },
                     ]
                 }
             },
             {
-                desc: "multiple levels, single child",
+                desc: 'multiple levels, single child',
                 folder: {
-                    name: "root",
+                    name: 'root',
                     folders: [
                         {
-                            name: "level-1 child",
-                            folders: [{ name: "level-2 child " }]
+                            name: 'level-1 child',
+                            folders: [{ name: 'level-2 child ' }]
                         },
                     ]
                 }
@@ -80,7 +80,7 @@ describe("Module: File Tree / Folder", () => {
 
 
     interface Test {
-        desc: string;
+        desc: string
         folder: TestFolder
     }
 

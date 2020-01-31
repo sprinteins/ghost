@@ -1,1 +1,1 @@
-export { FileTree } from "./file-tree"
+export { FileTree } from './file-tree'

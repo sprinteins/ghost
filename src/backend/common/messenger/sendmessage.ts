@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, ipcMain, webContents } from 'electron'
+import { BrowserWindow } from 'electron'
 import { Package } from '../../../common/messages'
 
 let browserWindow: BrowserWindow

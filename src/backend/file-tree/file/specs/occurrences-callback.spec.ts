@@ -1,21 +1,21 @@
-import { describe, it } from "mocha"
-import { expect } from "chai";
-import { File } from "..";
+import { describe, it } from 'mocha'
+import { expect } from 'chai'
+import { File } from '..'
 
-describe("Module: File Tree / File", () => {
+describe('Module: File Tree / File', () => {
 
-    describe("Occurrences callback", () => {
+    describe('Occurrences callback', () => {
 
         const occurrencesTests: Test[] = [
             {
-                desc: "single occurrence increase",
+                desc: 'single occurrence increase',
                 occurrenceIncreases: [1],
                 expectedStoreStates: [
                     { from: 0, to: 1 }
                 ]
             },
             {
-                desc: "multiple occurrence increase",
+                desc: 'multiple occurrence increase',
                 occurrenceIncreases: [3, 7],
                 expectedStoreStates: [
                     { from: 0, to: 3 },
@@ -28,7 +28,7 @@ describe("Module: File Tree / File", () => {
 
         function testOccurrences(t: Test) {
             it(t.desc, () => {
-                const f = new File("/public/index.html")
+                const f = new File('/public/index.html')
 
                 t.occurrenceIncreases.forEach((occInc, index) => {
                     const store: occStore = { from: 0, to: 0 }
@@ -47,19 +47,19 @@ describe("Module: File Tree / File", () => {
 
     function makeOnInc(store: occStore) {
         return function (from: number, to: number) {
-            store.from = from;
-            store.to = to;
+            store.from = from
+            store.to = to
         }
     }
 
     interface occStore {
-        from: number;
+        from: number
         to: number
     }
 
     interface Test {
-        desc: string;
-        occurrenceIncreases: number[];
+        desc: string
+        occurrenceIncreases: number[]
         expectedStoreStates: occStore[]
     }
 

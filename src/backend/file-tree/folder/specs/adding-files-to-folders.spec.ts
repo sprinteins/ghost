@@ -1,27 +1,27 @@
-import { describe, it } from "mocha"
-import { Folder } from ".."
-import { expect } from "chai";
-import { File } from "../../file/file";
-import * as path from "path"
+import { describe, it } from 'mocha'
+import { Folder } from '..'
+import { expect } from 'chai'
+import { File } from '../../file/file'
+import * as path from 'path'
 
-describe("Module: File Tree / Folder", () => {
+describe('Module: File Tree / Folder', () => {
 
-    describe("Adding Files to Folder", () => {
+    describe('Adding Files to Folder', () => {
 
         const folderFileRelTests: Test[] = [
             {
-                desc: "no file",
+                desc: 'no file',
                 filePaths: []
             },
             {
-                desc: "single file",
-                filePaths: ["/public/index.html"]
+                desc: 'single file',
+                filePaths: ['/public/index.html']
             },
             {
-                desc: "multiple files",
+                desc: 'multiple files',
                 filePaths: [
-                    "/public/index.html",
-                    "/public/style.css",
+                    '/public/index.html',
+                    '/public/style.css',
                 ]
             },
         ]
@@ -53,7 +53,7 @@ describe("Module: File Tree / Folder", () => {
 
 
     interface Test {
-        desc: string;
+        desc: string
         filePaths: string[]
     }
 

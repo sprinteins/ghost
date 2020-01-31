@@ -1,20 +1,20 @@
-import { describe, it } from "mocha"
-import { expect } from "chai"
-import { FileTree } from "../file-tree"
+import { expect } from 'chai'
+import { describe, it } from 'mocha'
+import { FileTree } from '../file-tree'
 
-describe("Module: FileTree / Moving Files Affects Folders", () => {
+describe('Module: FileTree / Moving Files Affects Folders', () => {
 
     const movingFilesTests: Test[] = [
         {
-            desc: "empty folder gets removed",
-            initPath: ["src/index.html"],
+            desc: 'empty folder gets removed',
+            initPath: ['src/index.html'],
             movements: [
                 {
-                    old: "src/index.html",
-                    new: "public/index.html",
-                }
+                    old: 'src/index.html',
+                    new: 'public/index.html',
+                },
             ],
-            folderToFindExclusively: ["public"]
+            folderToFindExclusively: ['public'],
         },
     ]
 
@@ -24,11 +24,11 @@ describe("Module: FileTree / Moving Files Affects Folders", () => {
     function testMovingFiles(t: Test) {
         it(t.desc, () => {
             const ft = new FileTree()
-            t.initPath.forEach(path => ft.addFile(path))
-            t.movements.forEach(movement => ft.move(movement.old, movement.new))
+            t.initPath.forEach((path) => ft.addFile(path))
+            t.movements.forEach((movement) => ft.move(movement.old, movement.new))
 
             const folders = ft.getAllFolders()
-            const folderPaths = Object.keys(folders);
+            const folderPaths = Object.keys(folders)
             expect(folderPaths).to.include.members(t.folderToFindExclusively)
             expect(folderPaths).to.have.length(t.folderToFindExclusively.length)
 
@@ -41,7 +41,7 @@ describe("Module: FileTree / Moving Files Affects Folders", () => {
         initPath: string[],
         movements: {
             old: string,
-            new: string
+            new: string,
         }[],
         folderToFindExclusively: string[]
     }

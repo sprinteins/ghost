@@ -1,7 +1,7 @@
 
 export class FileChanges {
     constructor(
-        readonly path: string
+        readonly path: string,
     ) { }
 
 }

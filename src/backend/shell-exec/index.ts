@@ -1,1 +1,1 @@
-export { exec } from "./shell-exec"
+export { exec } from './shell-exec'

@@ -1,23 +1,23 @@
-import { describe, it } from "mocha"
-import { Folder } from ".."
-import { expect } from "chai";
-import { File } from "../../file/file";
+import { describe, it } from 'mocha'
+import { Folder } from '..'
+import { expect } from 'chai'
+import { File } from '../../file/file'
 
-describe("Module: File Tree / Folder", () => {
+describe('Module: File Tree / Folder', () => {
 
-    describe("Adding folders with occurrences to folders", () => {
+    describe('Adding folders with occurrences to folders', () => {
 
         const folderOccAccTests: Test[] = [
             {
-                desc: "no child folder",
+                desc: 'no child folder',
                 folderOccurrences: [],
                 expectedFolderOccurrence: 0
             },
             {
-                desc: "child folders' occurrences count against parent folders' occurrences (single)",
+                desc: 'child folders\' occurrences count against parent folders\' occurrences (single)',
                 folderOccurrences: [
                     {
-                        name: "public",
+                        name: 'public',
                         occurrenceAfterAddition: 1,
                         occurrenceBeforeAddition: 1
                     }
@@ -25,29 +25,29 @@ describe("Module: File Tree / Folder", () => {
                 expectedFolderOccurrence: 2
             },
             {
-                desc: "overwriting a folder resets occurrences",
+                desc: 'overwriting a folder resets occurrences',
                 folderOccurrences: [
                     {
-                        name: "public",
+                        name: 'public',
                         occurrenceAfterAddition: 1,
                         occurrenceBeforeAddition: 2
                     },
                     {
-                        name: "public",
+                        name: 'public',
                     },
                 ],
                 expectedFolderOccurrence: 0
             },
             {
-                desc: "child folders' occurrences count against parent folders' occurrences (multiple)",
+                desc: 'child folders\' occurrences count against parent folders\' occurrences (multiple)',
                 folderOccurrences: [
                     {
-                        name: "public",
+                        name: 'public',
                         occurrenceAfterAddition: 1,
                         occurrenceBeforeAddition: 2
                     },
                     {
-                        name: "src",
+                        name: 'src',
                         occurrenceAfterAddition: 3,
                         occurrenceBeforeAddition: 4
                     },
@@ -60,7 +60,7 @@ describe("Module: File Tree / Folder", () => {
 
         function testFolderOccAcc(t: Test) {
             it(t.desc, () => {
-                const root = new Folder("/");
+                const root = new Folder('/')
 
                 t.folderOccurrences.forEach(occ => {
                     const childFolder = new Folder(occ.name)
@@ -80,7 +80,7 @@ describe("Module: File Tree / Folder", () => {
                 return
             }
 
-            const file = new File("/public/index.html")
+            const file = new File('/public/index.html')
             file.inc(occ)
             f.addFile(file)
         }
@@ -90,9 +90,9 @@ describe("Module: File Tree / Folder", () => {
 
 
     interface Test {
-        desc: string;
-        folderOccurrences: FolderOcc[];
-        expectedFolderOccurrence: number;
+        desc: string
+        folderOccurrences: FolderOcc[]
+        expectedFolderOccurrence: number
     }
 
     interface FolderOcc {

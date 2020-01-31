@@ -1,11 +1,11 @@
-import EventEmitter from 'events'
+import { EventEmitter } from 'events'
 import { inspect } from 'util'
 import { File } from '../file/file'
 
 
-class MyEmitter extends EventEmitter {
+// class MyEmitter extends EventEmitter {
 
-}
+// }
 
 enum Events {
     FileRemoved = 'FileRemoved',
@@ -25,11 +25,11 @@ export class Folder {
     private folders: Folder[] = []
 
     private parent?: Folder
-    private eventEmitter: EventEmitter = new MyEmitter()
+    private eventEmitter: EventEmitter = new EventEmitter()
 
     constructor(
         name: string,
-        parent?: Folder
+        parent?: Folder,
     ) {
         this.name = name
         this.parent = parent

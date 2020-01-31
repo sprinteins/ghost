@@ -1,16 +1,16 @@
-import { describe, it } from "mocha"
-import { Folder } from ".."
-import { expect } from "chai";
-import { File } from "../../file/file";
-import * as path from "path"
+import { describe, it } from 'mocha'
+import { Folder } from '..'
+import { expect } from 'chai'
+import { File } from '../../file/file'
+import * as path from 'path'
 
-describe("Module: File Tree / Folder", () => {
+describe('Module: File Tree / Folder', () => {
 
-    describe("Clean up empty folders", () => {
+    describe('Clean up empty folders', () => {
 
         const cleanUpEmptyFoldersTests: Test[] = [
             {
-                desc: "empty child folder gets deleted",
+                desc: 'empty child folder gets deleted',
             },
         ]
 
@@ -18,16 +18,16 @@ describe("Module: File Tree / Folder", () => {
 
         function testCleanUpEmptyFolders(t: Test) {
             it(t.desc, () => {
-                const root = new Folder("root")
-                const child = new Folder("child")
-                const file = new File("/root/child/index.html")
+                const root = new Folder('root')
+                const child = new Folder('child')
+                const file = new File('/root/child/index.html')
 
-                child.addFile(file);
-                root.addFolder(child);
+                child.addFile(file)
+                root.addFolder(child)
 
-                child.removeFileByName("index.html");
+                child.removeFileByName('index.html')
 
-                const folders = root.getFolders();
+                const folders = root.getFolders()
 
                 expect(folders).to.be.empty
 
@@ -39,7 +39,7 @@ describe("Module: File Tree / Folder", () => {
 
 
     interface Test {
-        desc: string;
+        desc: string
     }
 
 })
