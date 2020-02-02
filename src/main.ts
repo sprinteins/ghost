@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { Backend } from './backend'
 import { handleOpenFolderRequest } from './backend/common/messenger'
@@ -7,7 +7,6 @@ import isDev from './common/is-dev'
 
 
 main()
-
 
 function setupBackendListeners() {
     const be = new Backend()
@@ -58,7 +57,7 @@ function createWindow(): Electron.BrowserWindow {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
         },
-        width: 800,
+        width: 1024,
     })
 
     // and load the index.html of the app.
@@ -71,7 +70,7 @@ function createWindow(): Electron.BrowserWindow {
     )
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {

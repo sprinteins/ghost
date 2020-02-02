@@ -1,17 +1,18 @@
 
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process'
-// const { spawn } = window.bridge;
+
 
 
 
 export async function exec(cmd: string, path: string): Promise<string> {
+    // console.log('running command:', cmd)
     const sh = 'sh'
     try {
         const proc = spawn(sh, ['-c', cmd], { cwd: path })
         const result = await captureOutput(proc)
         return result
     } catch (err) {
-        console.error(err)
+        console.error(`🔥 ${err}`)
     }
 
     return ''

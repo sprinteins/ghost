@@ -1,8 +1,10 @@
 import * as path from 'path'
+import { inspect } from 'util'
 import { File } from './file/file'
 import { Folder } from './folder'
 
 export class FileTree {
+
 
     private files: FilesByPath = {}
     private folders: FoldersByPath = {}
@@ -13,10 +15,17 @@ export class FileTree {
     }
 
     /**
+     * return the root folder
+     */
+    public getRoot(): Folder {
+        return this.root
+    }
+
+    /**
      * addFile increases the occurrence number of given path of a file
      * @param filePath the path of the file
      */
-    public addFile(filePath: string) {
+    public addFile(filePath: string, line?: string) {
         this.addFileWithOccurrence(filePath)
     }
 
@@ -26,14 +35,30 @@ export class FileTree {
      * @param oldFilePath the old path of the file
      * @param newFilePath the new path of the file
      */
-    public move(oldFilePath: string, newFilePath: string) {
-        const oldFile = this.getFileByPath(oldFilePath)
-        const oldFolder = this.getFolderByPath(oldFile.getParentFolderPath())
+    public move(oldFilePath: string, newFilePath: string, line?: string) {
+        let oldFile = this.findFileByPath(oldFilePath)
 
-        this.addFileWithOccurrence(newFilePath, oldFile.getOccurrences())
+        if (!oldFile) {
+            this.addFile(oldFilePath, line)
+            oldFile = this.getFileByPath(oldFilePath)
+            console.log('🐞 force create line:', line)
+        }
 
-        oldFolder.removeFileByName(oldFile.getName())
-        this.removeFileByPath(oldFilePath)
+
+        try {
+            const oldFolder = this.getFolderByPath(oldFile.getParentFolderPath())
+
+            this.addFileWithOccurrence(newFilePath, oldFile.getOccurrences())
+
+            oldFolder.removeFileByName(oldFile.getName())
+            this.removeFileByPath(oldFilePath)
+
+        } catch (e) {
+
+            console.log('🔥 line:', line)
+            throw e
+        }
+
 
     }
 
@@ -56,8 +81,18 @@ export class FileTree {
     }
 
     private addFileWithOccurrence(filePath: string, occurrence?: number) {
+        if (filePath === 'web-main/statistic/src/publish/test/index.ts') {
+            // console.log(' === createing it !!! ===')
+        }
+
+
         const file = new File(filePath)
         const parentFolderPath = file.getParentFolderPath()
+
+        if (filePath === 'web-main/statistic/src/publish/test/index.ts') {
+            // console.log('file:', file)
+            // console.log('parentFolderPath', parentFolderPath)
+        }
 
         this.ensureFolderPathExists(parentFolderPath)
         this.ensureFileExistsInStorage(file)
@@ -76,10 +111,12 @@ export class FileTree {
         return file
     }
 
+
+
     private getFolderByPath(folderPath: string): Folder {
         const folder = this.findFolderByPath(folderPath)
         if (!folder) {
-            throw new Error(`folder could not be found at :${folderPath}`)
+            throw new Error(`folder could not be found at: ${folderPath}`)
         }
 
         return folder
@@ -104,18 +141,24 @@ export class FileTree {
 
         const wantedFolder = this.folders[folderPath]
         if (wantedFolder) {
+            // console.log('🆗 folder exists ', folderPath)
             return
         }
 
+        // console.log('⚠️ folder path created:', folderPath)
         const folderNames = folderPath.split(path.sep)
         const pathGrow: string[] = []
         let parentFolder: Folder = this.root
         for (const folderName of folderNames) {
             pathGrow.push(folderName)
-            const newPath = pathGrow.join(path.sep)
-            const folder = this.makeFolder(folderName, newPath)
-            parentFolder.addFolder(folder)
-            parentFolder = folder
+            let childFolder = parentFolder.findFolderByName(folderName)
+            if (!childFolder) {
+                const newPath = pathGrow.join(path.sep)
+                childFolder = this.makeFolder(folderName, newPath)
+                parentFolder.addFolder(childFolder)
+
+            }
+            parentFolder = childFolder
         }
     }
 
@@ -127,7 +170,11 @@ export class FileTree {
         const folder = new Folder(name)
         folder.onFolderRemove(this.removeFolderIfEmpty.bind(this, folder, folderPath))
         folder.onFileRemove(this.removeFolderIfEmpty.bind(this, folder, folderPath))
+
         this.folders[folderPath] = folder
+
+
+
         return folder
     }
 

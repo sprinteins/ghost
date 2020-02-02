@@ -16,7 +16,8 @@ export function Progress(props: Props) {
     }
 
     return (
-        <LinearProgress variant="determinate" className={showOrHide} value={progress} />
+        // <LinearProgress variant="determinate" className={showOrHide} value={progress} />
+        <LinearProgress className={showOrHide} value={progress} />
     )
 }
 

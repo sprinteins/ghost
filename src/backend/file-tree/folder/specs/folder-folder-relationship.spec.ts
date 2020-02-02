@@ -1,7 +1,7 @@
-import { describe, it } from 'mocha'
-import { Folder } from '..'
 import { expect } from 'chai'
+import { describe, it } from 'mocha'
 import { inspect } from 'util'
+import { Folder } from '..'
 
 describe('Module: File Tree / Folder', () => {
 
@@ -12,8 +12,8 @@ describe('Module: File Tree / Folder', () => {
                 desc: 'one level, single child',
                 folder: {
                     name: 'root',
-                    folders: [{ name: 'child' }]
-                }
+                    folders: [{ name: 'child' }],
+                },
             },
             {
                 desc: 'one level, multiple children',
@@ -22,8 +22,8 @@ describe('Module: File Tree / Folder', () => {
                     folders: [
                         { name: 'child 1' },
                         { name: 'child 2' },
-                    ]
-                }
+                    ],
+                },
             },
             {
                 desc: 'multiple levels, single child',
@@ -32,10 +32,10 @@ describe('Module: File Tree / Folder', () => {
                     folders: [
                         {
                             name: 'level-1 child',
-                            folders: [{ name: 'level-2 child ' }]
+                            folders: [{ name: 'level-2 child ' }],
                         },
-                    ]
-                }
+                    ],
+                },
             },
         ]
 
@@ -69,7 +69,7 @@ describe('Module: File Tree / Folder', () => {
             return
         }
 
-        testFolder.folders.forEach(childTestFolder => {
+        testFolder.folders.forEach((childTestFolder) => {
             const childFolder = folder.findFolderByName(childTestFolder.name)
             expect(childFolder).to.be.an.instanceof(Folder)
             expectToHaveAllChildrenRecursive(childFolder, childTestFolder)

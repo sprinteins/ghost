@@ -4,10 +4,12 @@
   "description": "Ghost",
   "main": "main.js",
   "scripts": {
-    "dev": "concurrently -k -n TSC,FE,BE, \"yarn electron-tsc\" \"yarn parcel-dev\" \"yarn electron-dev\"",
+    "dev": "scripts/dev.sh",
+    "dev-watchers": "concurrently -k -n TSC,FE,BE, \"yarn electron-tsc\" \"yarn parcel-dev\" \"yarn electron-dev\"",
     "parcel-dev": "parcel ./src/frontend/index.html",
     "electron-dev": "ELECTRON_START_URL=http://localhost:1234 electron ./dist/main.js",
     "electron-tsc": "tsc -w",
+    "tsc": "tsc",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "fix": "tslint --fix --config tslint.json --project .",
     "start": "electron .",
@@ -15,7 +17,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "_postinstall": "electron-builder install-app-deps",
-    "spec": "scripts/npm/spec.sh"
+    "spec": "scripts/spec.sh"
   },
   "build": {
     "appId": "parcel.reactjs.electron",
@@ -59,6 +61,7 @@
     "electron-reload": "^1.5.0",
     "mocha": "^7.0.1",
     "parcel-bundler": "^1.12.4",
+    "ts-node": "^8.6.2",
     "tslint": "^5.20.1",
     "tslint-no-unused-expression-chai": "^0.1.4",
     "typescript": "^3.7.4"

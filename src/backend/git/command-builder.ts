@@ -8,6 +8,7 @@ export class CommandBuilder {
         return normalizedBranchName
     }
     private parameters: string[] = [
+        '--reverse',
         '--merges',
         '--numstat',
         '-m',

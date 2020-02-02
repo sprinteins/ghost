@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
+import { inspect } from 'util'
 import { FileChanges } from './file-changes'
 import { FileMovement } from './file-movement'
 import { LineNotParsable, parse } from './parser'
@@ -12,7 +13,7 @@ describe('Module: Parser', () => {
             {
                 desc: 'returns file path for normal occurrence',
                 line: '19\t0\tsrc/App.tsx',
-                fileOccurrence: new FileChanges('src/App.tsx'),
+                fileOccurrence: new FileChanges('src/App.tsx', '19\t0\tsrc/App.tsx'),
             },
         ]
 
@@ -40,17 +41,47 @@ describe('Module: Parser', () => {
             {
                 desc: 'can detect movement at the beginning of path',
                 line: '-\t-\t{assets => public/assets}/favicon.ico',
-                fileMovement: new FileMovement('assets/favicon.ico', 'public/assets/favicon.ico'),
+                fileMovement: new FileMovement(
+                    'assets/favicon.ico',
+                    'public/assets/favicon.ico',
+                    '-\t-\t{assets => public/assets}/favicon.ico',
+                ),
             },
             {
                 desc: 'can detect movement at the end of path',
                 line: '-\t-\tpublic/assets/{favicon.ico => favicon2.ico}',
-                fileMovement: new FileMovement('public/assets/favicon.ico', 'public/assets/favicon2.ico'),
+                fileMovement: new FileMovement(
+                    'public/assets/favicon.ico',
+                    'public/assets/favicon2.ico',
+                    '-\t-\tpublic/assets/{favicon.ico => favicon2.ico}',
+                ),
             },
             {
                 desc: 'can detect movement in the middle of the path',
                 line: '-\t-\tpublic/{assets => assets2}/favicon.ico',
-                fileMovement: new FileMovement('public/assets/favicon.ico', 'public/assets2/favicon.ico'),
+                fileMovement: new FileMovement(
+                    'public/assets/favicon.ico',
+                    'public/assets2/favicon.ico',
+                    '-\t-\tpublic/{assets => assets2}/favicon.ico',
+                ),
+            },
+            {
+                desc: 'can detect movement with "0" instead "-" ',
+                line: '0\t0\t{.vscode => email/.vscode}/launch.json',
+                fileMovement: new FileMovement(
+                    '.vscode/launch.json',
+                    'email/.vscode/launch.json',
+                    '0\t0\t{.vscode => email/.vscode}/launch.json',
+                ),
+            },
+            {
+                desc: 'can detect movement with "0" instead "-" ',
+                line: '0\t0\ttechnical-data/deployment/{autoscale.json => autoscale.service.json}',
+                fileMovement: new FileMovement(
+                    'technical-data/deployment/autoscale.json',
+                    'technical-data/deployment/autoscale.service.json',
+                    '0\t0\ttechnical-data/deployment/{autoscale.json => autoscale.service.json}',
+                ),
             },
         ]
 
@@ -60,7 +91,7 @@ describe('Module: Parser', () => {
         function testFileMovement(t: Test) {
             it(t.desc, () => {
                 const parsedLine = parse(t.line)
-                expect(parsedLine).to.be.a.instanceOf(FileMovement)
+                expect(parsedLine, inspect(parsedLine)).to.be.a.instanceOf(FileMovement)
                 expect(parsedLine).to.be.deep.equal(t.fileMovement)
             })
         }

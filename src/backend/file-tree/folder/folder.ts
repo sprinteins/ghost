@@ -165,7 +165,6 @@ export class Folder {
      * @param folder the folder to add as child folder
      */
     public addFolder(folder: Folder) {
-        this.removeFolderByName(folder.name)
         this.foldersMap[folder.name] = folder
         this.generateFolders()
 
@@ -193,6 +192,16 @@ export class Folder {
         delete this.foldersMap[name]
         this.generateFolders()
         this.eventEmitter.emit(Folder.Events.FolderRemoved)
+    }
+
+    /**
+     * hasFolder returns true if the folder alredy has a child folder
+     * by the given name
+     * @param name name of the folder
+     */
+    public hasFolder(name: string): boolean {
+        const hasFolder = this.findFolderByName(name) !== undefined
+        return hasFolder
     }
 
     protected setParent(folder: Folder) {

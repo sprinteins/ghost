@@ -1,8 +1,7 @@
+import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { Folder } from '..'
-import { expect } from 'chai'
 import { File } from '../../file/file'
-import * as path from 'path'
 
 describe('Module: File Tree / Folder', () => {
 
@@ -26,8 +25,8 @@ describe('Module: File Tree / Folder', () => {
                 root.addFolder(child)
 
                 child.removeFileByName('index.html')
-
                 const folders = root.getFolders()
+
 
                 expect(folders).to.be.empty
 

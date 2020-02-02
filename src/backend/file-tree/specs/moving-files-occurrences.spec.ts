@@ -45,6 +45,17 @@ describe('Module: FileTree / Moving Files Effect on Occurrences', () => {
             ],
             expectedFiles: { 'www/index.html': new TestFile('www/index.html', 1) },
         },
+        {
+            desc: 'create file if old one not found',
+            initialOccurrences: [],
+            movements: [
+                {
+                    old: 'public/index.html',
+                    new: 'www/index.html',
+                },
+            ],
+            expectedFiles: { 'www/index.html': new TestFile('www/index.html', 1) },
+        },
     ]
 
     movingFilesTests.forEach(testMovingFiles)

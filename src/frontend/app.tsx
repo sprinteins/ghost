@@ -25,16 +25,21 @@ export function App() {
 
   return (
     <PrimaryLayout
-      slotAppBar={<HeaderBar onOpenFolder={onOpenFolder} />}
+      slotAppBar={<HeaderBar onOpenFolder={makeOnOpenFolder(setFileTree)} />}
       slotContent={<Browser progress={progress} fileTree={fileTree} status={browserStatus} />}
     />
   )
 }
 
-function onOpenFolder(folderPaths: string[]) {
-  console.log('opening', folderPaths)
-  sendOpenRepoRequest(folderPaths[0])
+function makeOnOpenFolder(setFileTree: (blocks: FileBlock[]) => void) {
+  return function onOpenFolder(folderPaths: string[]) {
+    console.log('opening', folderPaths)
+    sendOpenRepoRequest(folderPaths[0])
+    setFileTree([])
+  }
 }
+
+
 
 
 function makeOnProgressUpdate(setProgress: (progress: number) => void) {

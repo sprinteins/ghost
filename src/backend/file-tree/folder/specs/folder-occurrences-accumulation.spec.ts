@@ -1,6 +1,6 @@
+import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { Folder } from '..'
-import { expect } from 'chai'
 import { File } from '../../file/file'
 
 describe('Module: File Tree / Folder', () => {
@@ -11,7 +11,7 @@ describe('Module: File Tree / Folder', () => {
             {
                 desc: 'no child folder',
                 folderOccurrences: [],
-                expectedFolderOccurrence: 0
+                expectedFolderOccurrence: 0,
             },
             {
                 desc: 'child folders\' occurrences count against parent folders\' occurrences (single)',
@@ -19,24 +19,24 @@ describe('Module: File Tree / Folder', () => {
                     {
                         name: 'public',
                         occurrenceAfterAddition: 1,
-                        occurrenceBeforeAddition: 1
-                    }
+                        occurrenceBeforeAddition: 1,
+                    },
                 ],
-                expectedFolderOccurrence: 2
+                expectedFolderOccurrence: 2,
             },
             {
-                desc: 'overwriting a folder resets occurrences',
+                desc: 'adding the same folder leaves occurrences the same',
                 folderOccurrences: [
                     {
                         name: 'public',
                         occurrenceAfterAddition: 1,
-                        occurrenceBeforeAddition: 2
+                        occurrenceBeforeAddition: 2,
                     },
                     {
                         name: 'public',
                     },
                 ],
-                expectedFolderOccurrence: 0
+                expectedFolderOccurrence: 3,
             },
             {
                 desc: 'child folders\' occurrences count against parent folders\' occurrences (multiple)',
@@ -44,15 +44,15 @@ describe('Module: File Tree / Folder', () => {
                     {
                         name: 'public',
                         occurrenceAfterAddition: 1,
-                        occurrenceBeforeAddition: 2
+                        occurrenceBeforeAddition: 2,
                     },
                     {
                         name: 'src',
                         occurrenceAfterAddition: 3,
-                        occurrenceBeforeAddition: 4
+                        occurrenceBeforeAddition: 4,
                     },
                 ],
-                expectedFolderOccurrence: 10
+                expectedFolderOccurrence: 10,
             },
         ]
 
@@ -62,13 +62,12 @@ describe('Module: File Tree / Folder', () => {
             it(t.desc, () => {
                 const root = new Folder('/')
 
-                t.folderOccurrences.forEach(occ => {
+                t.folderOccurrences.forEach((occ) => {
                     const childFolder = new Folder(occ.name)
                     incFolderOccurrence(childFolder, occ.occurrenceBeforeAddition)
                     root.addFolder(childFolder)
                     incFolderOccurrence(childFolder, occ.occurrenceAfterAddition)
                 })
-
 
                 expect(root.getOccurrences()).to.be.equal(t.expectedFolderOccurrence)
 

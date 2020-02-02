@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import { FileTree } from '../file-tree'
-import { Controller } from './controller'
+import { Inspector } from './inspector'
 
 describe('Module: Controller ', () => {
 
@@ -54,7 +54,7 @@ describe('Module: Controller ', () => {
         function testOccurrences(t: Test) {
             it(t.desc, async () => {
                 const exec = makeTestExec(t.lines)
-                const ctrl = new Controller(exec)
+                const ctrl = new Inspector(exec)
                 const fileTree = await ctrl.analyse('/')
                 const actualFilePathChanges = mapFileTreeToFilePathChanges(fileTree)
                 expect(actualFilePathChanges).to.be.deep.equal(t.expectedChanges)

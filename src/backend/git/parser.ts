@@ -5,15 +5,15 @@ import { FileMovement } from './file-movement'
 export function parse(line: string): FileChanges | FileMovement | LineNotParsable {
 
     if (!isLineParsable(line)) {
-        return new LineNotParsable()
+        return new LineNotParsable(line)
     }
 
     const components = createComponents(line)
     if (isFileMovement(components)) {
-        return createFileMovement(components)
+        return createFileMovement(components, line)
     }
 
-    return createFileChanges(components)
+    return createFileChanges(components, line)
 }
 
 function createComponents(line: string): Components {
@@ -26,7 +26,7 @@ function isLineParsable(line: string): boolean {
     return comps.length === 3
 }
 
-function createFileMovement(components: Components): FileMovement {
+function createFileMovement(components: Components, line: string): FileMovement {
     const path = components[2]
     const regex = /(.*){(.*)}(.*)/g
     const matches = defaultTo(regex.exec(path), ['', '', ''])
@@ -42,25 +42,31 @@ function createFileMovement(components: Components): FileMovement {
     const oldPath = `${pathBeforeChangedPart}${oldPathPart}${pathAfterChangedPart}`
     const newPath = `${pathBeforeChangedPart}${newPathPart}${pathAfterChangedPart}`
 
-    return new FileMovement(oldPath, newPath)
+    return new FileMovement(oldPath, newPath, line)
 }
 
-function createFileChanges(components: Components): FileChanges {
+function createFileChanges(components: Components, line: string): FileChanges {
     const path = components[2]
 
-    return new FileChanges(path)
+    return new FileChanges(path, line)
 }
 
 function isFileMovement(components: Components): boolean {
 
     return (
         components.length === 3 &&
-        components[0] === '-' &&
-        components[1] === '-' &&
+        // components[0] === '-' &&
+        // components[1] === '-' &&
+        components[2].indexOf('{') >= 0 &&
+        components[2].indexOf('}') >= 0 &&
         components[2].indexOf('=>') >= 0
     )
 
 }
 type Components = string[]
 
-export class LineNotParsable { }
+export class LineNotParsable {
+    constructor(
+        readonly line: string,
+    ) { }
+}

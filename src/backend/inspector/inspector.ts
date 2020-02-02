@@ -6,8 +6,7 @@ import { LineNotParsable, parse } from '../git/parser'
 import { exec as ShellExec } from '../shell-exec'
 
 
-// I don't have a better name yet.
-export class Controller {
+export class Inspector {
 
     private commandBuilder: CommandBuilder = new CommandBuilder()
     private parse = parse
@@ -16,6 +15,11 @@ export class Controller {
         private exec: CommandExecutor = ShellExec,
     ) { }
 
+    /**
+     * Analyses the given Git repo
+     * @param path the absolute path to the git repo
+     * @param branchPrefix is to query branch names
+     */
     public async analyse(path: string, branchPrefix?: string): Promise<FileTree> {
         if (branchPrefix) {
             this.commandBuilder.addBranchPrefix(branchPrefix)
@@ -23,15 +27,16 @@ export class Controller {
 
         const command = this.commandBuilder.done()
         const result = await this.exec(command, path)
-        const lines = result.split('\n')
+        const lines = result
+            .split('\n')
 
         // TODO: maybe rename "occurrence" to "change"
         const trios = lines.map(this.parse)
         const [changes, movements] = this.makeBuckets(trios)
 
         const fileTree = new FileTree()
-        changes.forEach((change) => fileTree.addFile(change.path))
-        movements.forEach((movement) => fileTree.move(movement.oldPath, movement.newPath))
+        changes.forEach((change) => fileTree.addFile(change.path, change.line))
+        movements.forEach((movement) => fileTree.move(movement.oldPath, movement.newPath, movement.line))
 
         return fileTree
 
