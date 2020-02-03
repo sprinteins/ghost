@@ -10,7 +10,7 @@ export function Browser(props: Props) {
     const path = ['src', 'something', 'index.ts']
     const {
         progress = 0,
-        status = 'loading',
+        status = 'init',
         fileTree = [],
     } = props
 
@@ -30,7 +30,7 @@ interface Props {
     fileTree?: FileBlock[]
 }
 
-export type Status = 'loading' | 'ready'
+export type Status = 'loading' | 'ready' | 'init'
 
 function logBreadcrumbClicks(path: string[]) {
     console.info('You clicked a breadcrumb: ', path)

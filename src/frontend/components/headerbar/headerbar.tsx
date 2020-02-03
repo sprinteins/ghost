@@ -6,6 +6,7 @@ import {
     Typography,
 } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { log } from '../../../common'
 import { getElectron } from '../../common'
 
 
@@ -47,7 +48,7 @@ function makeOpenDialog(onOpenFolder: HandlerOnOpenFolder) {
                 onOpenFolder(result.filePaths)
 
             }).catch((err) => {
-                console.log(err)
+                log.error(err)
             })
     }
 

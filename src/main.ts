@@ -3,6 +3,7 @@ import * as path from 'path'
 import { Backend } from './backend'
 import { handleOpenFolderRequest } from './backend/common/messenger'
 import { setBrowserWindow } from './backend/common/messenger/sendmessage'
+import { log } from './common'
 import isDev from './common/is-dev'
 
 
@@ -62,7 +63,6 @@ function createWindow(): Electron.BrowserWindow {
 
     // and load the index.html of the app.
     // mainWindow.loadFile(path.join(__dirname, "../index.html"));
-    console.log('isDev:', isDev)
     mainWindow.loadURL(
         isDev
             ? 'http://localhost:1234'

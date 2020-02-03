@@ -1,11 +1,7 @@
 
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process'
 
-
-
-
 export async function exec(cmd: string, path: string): Promise<string> {
-    // console.log('running command:', cmd)
     const sh = 'sh'
     try {
         const proc = spawn(sh, ['-c', cmd], { cwd: path })

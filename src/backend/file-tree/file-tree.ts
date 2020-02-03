@@ -1,5 +1,6 @@
 import * as path from 'path'
 import { inspect } from 'util'
+import { log } from '../../common'
 import { File } from './file/file'
 import { Folder } from './folder'
 
@@ -41,9 +42,7 @@ export class FileTree {
         if (!oldFile) {
             this.addFile(oldFilePath, line)
             oldFile = this.getFileByPath(oldFilePath)
-            console.log('🐞 force create line:', line)
         }
-
 
         try {
             const oldFolder = this.getFolderByPath(oldFile.getParentFolderPath())
@@ -54,8 +53,7 @@ export class FileTree {
             this.removeFileByPath(oldFilePath)
 
         } catch (e) {
-
-            console.log('🔥 line:', line)
+            log.error('line:', line)
             throw e
         }
 
@@ -81,18 +79,8 @@ export class FileTree {
     }
 
     private addFileWithOccurrence(filePath: string, occurrence?: number) {
-        if (filePath === 'web-main/statistic/src/publish/test/index.ts') {
-            // console.log(' === createing it !!! ===')
-        }
-
-
         const file = new File(filePath)
         const parentFolderPath = file.getParentFolderPath()
-
-        if (filePath === 'web-main/statistic/src/publish/test/index.ts') {
-            // console.log('file:', file)
-            // console.log('parentFolderPath', parentFolderPath)
-        }
 
         this.ensureFolderPathExists(parentFolderPath)
         this.ensureFileExistsInStorage(file)
@@ -141,11 +129,9 @@ export class FileTree {
 
         const wantedFolder = this.folders[folderPath]
         if (wantedFolder) {
-            // console.log('🆗 folder exists ', folderPath)
             return
         }
 
-        // console.log('⚠️ folder path created:', folderPath)
         const folderNames = folderPath.split(path.sep)
         const pathGrow: string[] = []
         let parentFolder: Folder = this.root

@@ -6,31 +6,68 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
 } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Skeleton from '@material-ui/lab/Skeleton'
 import * as React from 'react'
-import { FileBlock } from '../../../common'
+import { useState } from 'react'
+import { FileBlock, log } from '../../../common'
+import { sortBlocks } from './blocksorter'
+import { HeaderID } from './headers'
+import { Init } from './init'
+import { NameCell } from './namecell'
+import { Sorting, SortingDirection } from './sorting'
 
 export function BrowserTable(props: Props) {
+
     const classes = useStyles()
     const { blocks, status } = props
-    console.log('rendering with status:', status)
+    const [sorting, setSorting] = useState<Sorting>({ headerId: HeaderID.None, direction: undefined })
+
+    if (status === 'init') {
+        return (<Init />)
+    }
+
+    const headerClickName = makeHeaderOnClick(HeaderID.Name, sorting, setSorting)
+    const headerClickOcc = makeHeaderOnClick(HeaderID.NoOfOccurrences, sorting, setSorting)
+
+    const sortedBlocks = sortBlocks(blocks, sorting)
+
     return (
         <TableContainer component={Paper}>
             <Table className={classes.root} size="small" aria-label="Browser Table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right">Number of Occurrence</TableCell>
+                        <TableCell sortDirection={sorting.direction}>
+                            <TableSortLabel
+                                active={sorting.headerId === HeaderID.Name}
+                                direction={sorting.direction}
+                                onClick={headerClickName}
+                            >
+                                Name
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                            align="right"
+                            sortDirection={sorting.direction}
+                        >
+                            <TableSortLabel
+                                active={sorting.headerId === HeaderID.NoOfOccurrences}
+                                direction={sorting.direction}
+                                onClick={headerClickOcc}
+                            >
+                                Number of Occurrence
+                            </TableSortLabel>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(status === 'ready') && generateRows(blocks)}
+                    {(status === 'ready') && generateRows(sortedBlocks)}
                     {(status === 'loading') && generateRowSkeletons(10)}
                 </TableBody>
             </Table>
-        </TableContainer>
+        </TableContainer >
     )
 }
 
@@ -39,22 +76,66 @@ interface Props {
     status: Status
 }
 
-type Status = 'loading' | 'ready'
+type Status = 'loading' | 'ready' | 'init'
 
+
+function makeHeaderOnClick(
+    newHeaderId: HeaderID,
+    currSort: Sorting,
+    setSorting: (sorting: Sorting) => void,
+) {
+    return function onHeaderClick() {
+        const newSorting = determineSorting(currSort, newHeaderId)
+
+        setSorting(newSorting)
+
+    }
+}
+
+function determineSorting(currSort: Sorting, headerId: HeaderID): Sorting {
+    const sortingSM: { [key: string]: SortingDirection } = {
+        asc: undefined,
+        desc: 'asc',
+        undefined: 'desc',
+    }
+
+    if (headerId !== currSort.headerId) {
+        return {
+            direction: 'desc',
+            headerId,
+        }
+    }
+
+    const direction: SortingDirection = sortingSM[currSort.direction]
+    let newHeaderId = headerId
+
+    if (direction === undefined) {
+        newHeaderId = HeaderID.None
+    }
+
+    return {
+        direction,
+        headerId: newHeaderId,
+    }
+
+
+}
 
 function generateRows(blocks: FileBlock[]) {
 
     return blocks.map((block) => (
-        <TableRow key={block.name}>
-            <TableCell component="th" scope="row">
-                {block.name}
+        <TableRow hover key={block.name}>
+            <TableCell component="td" scope="row">
+                <NameCell
+                    name={block.name}
+                    type={block.type}
+                />
             </TableCell>
             <TableCell align="right">
                 {block.noOfOccurrence}
             </TableCell>
         </TableRow>
     ))
-
 }
 
 function generateRowSkeletons(no: number): React.ReactNode[] {
@@ -68,7 +149,7 @@ function generateRowSkeletons(no: number): React.ReactNode[] {
                 <TableCell align="right">
                     <Skeleton />
                 </TableCell>
-            </TableRow>
+            </TableRow>,
         )
     }
 

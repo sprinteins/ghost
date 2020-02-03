@@ -20,7 +20,11 @@ export class Inspector {
      * @param path the absolute path to the git repo
      * @param branchPrefix is to query branch names
      */
-    public async analyse(path: string, branchPrefix?: string): Promise<FileTree> {
+    public async analyse(
+        path: string,
+        progressHandler: HandlerAnalyseProgress = noopHandleAnalyseProgress,
+        branchPrefix?: string,
+    ): Promise<FileTree> {
         if (branchPrefix) {
             this.commandBuilder.addBranchPrefix(branchPrefix)
         }
@@ -30,8 +34,19 @@ export class Inspector {
         const lines = result
             .split('\n')
 
+        const noOfLines = lines.length
+        let currProgress = 0
         // TODO: maybe rename "occurrence" to "change"
-        const trios = lines.map(this.parse)
+        const trios = lines.map((line, index) => {
+            const trio = this.parse(line)
+            const progress = Math.round(((index + 1) / noOfLines) * 100)
+            const maxProgress = Math.min(progress, 99)
+            if (currProgress !== maxProgress) {
+                currProgress = maxProgress
+                progressHandler(currProgress)
+            }
+            return trio
+        })
         const [changes, movements] = this.makeBuckets(trios)
 
         const fileTree = new FileTree()
@@ -39,7 +54,6 @@ export class Inspector {
         movements.forEach((movement) => fileTree.move(movement.oldPath, movement.newPath, movement.line))
 
         return fileTree
-
     }
 
     private makeBuckets(trios: Trio[]): [FileChanges[], FileMovement[]] {
@@ -60,5 +74,8 @@ export class Inspector {
 }
 
 type Trio = FileChanges | FileMovement | LineNotParsable
+type HandlerAnalyseProgress = (progress: number) => void
+
+function noopHandleAnalyseProgress() { }
 
 export type CommandExecutor = (cmd: string, path: string) => Promise<string>

@@ -1,10 +1,10 @@
 import { FileBlock, MessageKey } from '../../../common'
+import { log } from '../../../common'
 import { Package } from '../../../common/messages/package'
 import { sendMessage } from './sendmessage'
 
 export function sendEventFileTree(blocks: FileBlock[]) {
     const event = new EventFileTree(blocks)
-    console.log('sending file tree:', event)
     sendMessage(event)
 }
 

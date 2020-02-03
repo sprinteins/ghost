@@ -1,10 +1,9 @@
-import { MessageKey } from '../../../common'
+import { log, MessageKey } from '../../../common'
 import { Package } from '../../../common/messages/package'
 import { sendMessage } from './sendmessage'
 
 export function sendEventProgressUpdate(progress: number) {
     const event = new EventProgressUpdate(progress)
-    console.log('sending progressupdate:', event)
     sendMessage(event)
 }
 

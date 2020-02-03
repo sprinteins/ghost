@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FileBlock } from '../common'
+import { FileBlock, log } from '../common'
 import './App.css'
 import { sendOpenRepoRequest } from './common/messenger'
 import { handleFileTree } from './common/messenger/handlefiletree'
@@ -14,9 +14,17 @@ export function App() {
   const [progress, setProgress] = React.useState(0)
   const [fileTree, setFileTree] = React.useState<FileBlock[]>([])
 
-  let browserStatus: BrowserStatus = 'loading'
+  let browserStatus: BrowserStatus = 'init'
 
-  if (fileTree.length > 0) {
+  if (progress === 0) {
+    browserStatus = 'init'
+  }
+
+  if (progress > 0) {
+    browserStatus = 'loading'
+  }
+
+  if (fileTree.length > 0 && progress === 100) {
     browserStatus = 'ready'
   }
 
@@ -33,7 +41,6 @@ export function App() {
 
 function makeOnOpenFolder(setFileTree: (blocks: FileBlock[]) => void) {
   return function onOpenFolder(folderPaths: string[]) {
-    console.log('opening', folderPaths)
     sendOpenRepoRequest(folderPaths[0])
     setFileTree([])
   }
@@ -45,7 +52,6 @@ function makeOnOpenFolder(setFileTree: (blocks: FileBlock[]) => void) {
 function makeOnProgressUpdate(setProgress: (progress: number) => void) {
 
   return function onProgressUpdate(progress: number) {
-    console.log('progress:', progress)
     setProgress(progress)
 
   }
@@ -55,8 +61,6 @@ function makeOnProgressUpdate(setProgress: (progress: number) => void) {
 function makeHandleFileTree(setFileTree: (blocks: FileBlock[]) => void) {
 
   return function onFileTreeUpdate(blocks: FileBlock[]) {
-    console.log('blocks:', blocks)
-    console.log('setting file tree', blocks)
     setFileTree(blocks)
   }
 

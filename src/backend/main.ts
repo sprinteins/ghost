@@ -1,4 +1,4 @@
-import { BlockType, FileBlock } from '../common'
+import { BlockType, FileBlock, log } from '../common'
 import { sendEventFileTree, sendEventProgressUpdate } from './common/messenger'
 import { File } from './file-tree/file'
 import { Folder } from './file-tree/folder'
@@ -7,7 +7,6 @@ import { Inspector } from './inspector'
 export class Backend {
 
     public async handleOpenFolderRequest(folderPath: string) {
-        console.log('opening folders in backend', folderPath)
         sendEventProgressUpdate(1)
 
 
@@ -17,7 +16,6 @@ export class Backend {
         const root = fileTree.getRoot()
         const blocks = mapFolderChildrenToFileBlocks(root)
 
-        console.log('blocks:', blocks)
         sendEventFileTree(blocks)
         sendEventProgressUpdate(100)
 
