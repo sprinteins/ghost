@@ -5,7 +5,7 @@ sudo: required
 addons:
   chrome: stable
 os:
-  - linux
+  - windows
   - osx
 
 dist: bionic
