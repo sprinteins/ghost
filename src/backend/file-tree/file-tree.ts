@@ -12,7 +12,8 @@ export class FileTree {
     private root: Folder
 
     constructor() {
-        this.root = new Folder('/')
+        this.root = new Folder('')
+        this.folders[''] = this.root
     }
 
     /**
@@ -27,7 +28,12 @@ export class FileTree {
      * @param filePath the path of the file
      */
     public addFile(filePath: string, line?: string) {
-        this.addFileWithOccurrence(filePath)
+        try {
+
+            this.addFileWithOccurrence(filePath)
+        } catch (err) {
+            log.error(err, line)
+        }
     }
 
     /**
@@ -132,7 +138,10 @@ export class FileTree {
             return
         }
 
-        const folderNames = folderPath.split(path.sep)
+        const folderNames = folderPath
+            .split(path.sep)
+            .filter((name) => !!name)
+
         const pathGrow: string[] = []
         let parentFolder: Folder = this.root
         for (const folderName of folderNames) {

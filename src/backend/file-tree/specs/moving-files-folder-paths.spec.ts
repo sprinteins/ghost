@@ -14,7 +14,7 @@ describe('Module: FileTree / Moving Files Affects Folders', () => {
                     new: 'public/index.html',
                 },
             ],
-            folderToFindExclusively: ['public'],
+            folderToFindExclusively: ['', 'public'],
         },
     ]
 

@@ -36,8 +36,9 @@ export class Inspector {
 
         const noOfLines = lines.length
         let currProgress = 0
+        const fileTree = new FileTree()
         // TODO: maybe rename "occurrence" to "change"
-        const trios = lines.map((line, index) => {
+        lines.forEach((line, index) => {
             const trio = this.parse(line)
             const progress = Math.round(((index + 1) / noOfLines) * 100)
             const maxProgress = Math.min(progress, 99)
@@ -45,13 +46,24 @@ export class Inspector {
                 currProgress = maxProgress
                 progressHandler(currProgress)
             }
-            return trio
-        })
-        const [changes, movements] = this.makeBuckets(trios)
 
-        const fileTree = new FileTree()
-        changes.forEach((change) => fileTree.addFile(change.path, change.line))
-        movements.forEach((movement) => fileTree.move(movement.oldPath, movement.newPath, movement.line))
+            if (trio instanceof FileChanges) {
+                fileTree.addFile(trio.path, line)
+            }
+
+            if (trio instanceof FileMovement) {
+                fileTree.move(trio.oldPath, trio.newPath, line)
+            }
+
+
+        })
+
+        // todo
+        // const [changes, movements] = this.makeBuckets(trios)
+
+
+        // changes.forEach((change) => fileTree.addFile(change.path, change.line))
+        // movements.forEach((movement) => fileTree.move(movement.oldPath, movement.newPath, movement.line))
 
         return fileTree
     }

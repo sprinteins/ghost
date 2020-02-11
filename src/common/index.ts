@@ -1,3 +1,5 @@
 export { MessageKey } from './messages'
 export { FileBlock, BlockType } from './fileblock'
 export { log, setFormat } from './log'
+export { CurrentLocation, LinkableFolder } from './currentlocation'
+export { OpenRepoMessage } from './openrepomessage'

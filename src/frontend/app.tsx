@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { FileBlock, log } from '../common'
+import { CurrentLocation, FileBlock, log } from '../common'
 import './App.css'
-import { sendOpenRepoRequest } from './common/messenger'
-import { handleFileTree } from './common/messenger/handlefiletree'
+import { handleLocationChange, sendOpenRepoRequest } from './common/messenger'
 import { handleProgressUpdate } from './common/messenger/handleprogressupdate'
 import { HeaderBar } from './components'
 import { Browser } from './containers'
@@ -12,8 +11,48 @@ import { PrimaryLayout } from './layout/primary'
 export function App() {
 
   const [progress, setProgress] = React.useState(0)
-  const [fileTree, setFileTree] = React.useState<FileBlock[]>([])
+  const [location, setLocation] = React.useState<CurrentLocation>({ folders: [], blocks: [], root: '' })
+  const [query, setQuery] = React.useState('')
+  const [folderPath, setFolderPath] = React.useState<string[]>([])
 
+  const browserStatus = caclBrowserStatus(progress, location.blocks)
+
+  handleProgressUpdate(makeOnProgressUpdate(setProgress))
+  handleLocationChange(makeHandleLocationChange(setLocation))
+
+  const openFolder = makeOnOpenFolder(setLocation)
+
+  const onHeaderBarOpenLocation = (newFolderPath: string[]) => {
+    setFolderPath(newFolderPath)
+    openFolder(newFolderPath, query)
+  }
+
+  const onBrowserQuery = (newQuery: string) => {
+    setQuery(newQuery)
+    openFolder(folderPath, newQuery)
+  }
+
+  return (
+    <PrimaryLayout
+      slotAppBar={<HeaderBar onOpenFolder={onHeaderBarOpenLocation} />}
+      slotContent={
+        <Browser
+          onQuery={onBrowserQuery}
+          root={location.root}
+          progress={progress}
+          fileTree={location.blocks}
+          breadcrumbs={location.folders}
+          status={browserStatus}
+        />
+      }
+    />
+  )
+}
+
+
+// TODO: it is not a good idea to overwrite values
+// ifs should not have overlapping they should be mutually exclusive
+function caclBrowserStatus(progress: number, blocks: FileBlock[]): BrowserStatus {
   let browserStatus: BrowserStatus = 'init'
 
   if (progress === 0) {
@@ -24,44 +63,31 @@ export function App() {
     browserStatus = 'loading'
   }
 
-  if (fileTree.length > 0 && progress === 100) {
+  if (progress === 100) {
     browserStatus = 'ready'
   }
 
-  handleProgressUpdate(makeOnProgressUpdate(setProgress))
-  handleFileTree(makeHandleFileTree(setFileTree))
-
-  return (
-    <PrimaryLayout
-      slotAppBar={<HeaderBar onOpenFolder={makeOnOpenFolder(setFileTree)} />}
-      slotContent={<Browser progress={progress} fileTree={fileTree} status={browserStatus} />}
-    />
-  )
+  return browserStatus
 }
 
-function makeOnOpenFolder(setFileTree: (blocks: FileBlock[]) => void) {
-  return function onOpenFolder(folderPaths: string[]) {
-    sendOpenRepoRequest(folderPaths[0])
-    setFileTree([])
+function makeOnOpenFolder(setLocation: (currLoc: CurrentLocation) => void) {
+  return function onOpenFolder(folderPaths: string[], query: string = '') {
+    sendOpenRepoRequest(folderPaths[0], query)
+    setLocation({ folders: [], blocks: [], root: '' })
   }
 }
-
-
-
 
 function makeOnProgressUpdate(setProgress: (progress: number) => void) {
 
   return function onProgressUpdate(progress: number) {
     setProgress(progress)
-
   }
-
 }
 
-function makeHandleFileTree(setFileTree: (blocks: FileBlock[]) => void) {
+function makeHandleLocationChange(setLocation: (currLoc: CurrentLocation) => void) {
 
-  return function onFileTreeUpdate(blocks: FileBlock[]) {
-    setFileTree(blocks)
+  return function onFileTreeUpdate(currLoc: CurrentLocation) {
+    setLocation(currLoc)
   }
 
 }

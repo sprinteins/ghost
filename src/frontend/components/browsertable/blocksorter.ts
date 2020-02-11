@@ -79,7 +79,7 @@ function makeSortByType(weight: number): SortFn {
 
         if (typeA !== typeB) {
             if (typeA === BlockType.File) {
-                return -1 * weight
+                return 1 * weight
             }
             if (typeB === BlockType.File) {
                 return -1 * weight

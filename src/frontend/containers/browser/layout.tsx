@@ -1,13 +1,14 @@
-import { Box, Container, Grid } from '@material-ui/core'
+import { Box, Container, Grid, TextField } from '@material-ui/core'
 
 import * as React from 'react'
 
 export function Layout(props: Props) {
 
     const {
-        slotBreadcrumbs: SlotBreadcrumbs,
-        slotProgress: SlotProgress,
-        slotContent: SlotContent,
+        slotBreadcrumbs,
+        slotProgress,
+        slotContent,
+        slotTools,
     } = props
 
 
@@ -15,21 +16,27 @@ export function Layout(props: Props) {
         <Container maxWidth="xl">
             <Grid container spacing={3}>
                 <Grid item xs={9}>
-                    {SlotBreadcrumbs}
+                    {slotTools}
                 </Grid>
                 <Grid item xs={3}>
-                    {SlotProgress}
+                    {slotProgress}
                 </Grid>
                 <Grid item xs={12}>
-                    {SlotContent}
+                    {slotBreadcrumbs}
+                </Grid>
+
+                <Grid item xs={12}>
+                    {slotContent}
                 </Grid>
             </Grid>
-        </Container>
+        </Container >
     )
 }
+
 
 interface Props {
     slotBreadcrumbs: React.ReactNode
     slotProgress: React.ReactNode
     slotContent: React.ReactNode
+    slotTools: React.ReactNode[]
 }

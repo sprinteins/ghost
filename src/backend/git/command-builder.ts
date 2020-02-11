@@ -1,12 +1,6 @@
 
 export class CommandBuilder {
 
-    private static normalizeBranchPrefix(branchName: string): string {
-
-        const normalizedBranchName = branchName.replace('/', '') + '/'
-
-        return normalizedBranchName
-    }
     private parameters: string[] = [
         '--reverse',
         '--merges',
@@ -22,13 +16,19 @@ export class CommandBuilder {
     }
 
     public addBranchPrefix(prefix: string): CommandBuilder {
-        const branchPrefix = CommandBuilder.normalizeBranchPrefix(prefix)
-        const branchPrefixQuery = `--grep=${branchPrefix}`
+        // const branchPrefix = CommandBuilder.normalizeBranchPrefix(prefix)
+        const branchPrefixQuery = `--grep=${prefix}`
         this.parameters.push(branchPrefixQuery)
 
         return this
     }
 
+    // private static normalizeBranchPrefix(branchName: string): string {
+
+    //     const normalizedBranchName = branchName.replace('/', '') + '/'
+
+    //     return normalizedBranchName
+    // }
 
 
 }

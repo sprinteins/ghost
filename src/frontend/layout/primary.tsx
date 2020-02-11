@@ -1,6 +1,8 @@
 import {
     AppBar,
     Box,
+    Container,
+    Grid,
     ThemeProvider,
 } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
@@ -19,14 +21,16 @@ export function PrimaryLayout(props: Props) {
 
     return (
         <ThemeProvider theme={ghostTheme} >
-            <Box width={1} className={classes.appBar}>
-                <AppBar position="static">
-                    {SlotAppBar}
-                </AppBar>
-            </Box>
-            <Box>
-                {SlotContent}
-            </Box>
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <AppBar position="static">
+                        {SlotAppBar}
+                    </AppBar>
+                </Grid>
+                <Grid item xs={12}>
+                    {SlotContent}
+                </Grid>
+            </Grid>
         </ThemeProvider>
     )
 }
@@ -46,3 +50,4 @@ function useStyles() {
     )
     return styles()
 }
+

@@ -3,27 +3,56 @@ import Link from '@material-ui/core/Link'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import * as React from 'react'
+import { log } from '../../../common'
 import { Breadcrumb } from './breadcrumb'
 
 
 export function Breadcrumbs(props: Props) {
 
     const classes = useStyle()
+    const [path, current] = splitBreadcrumbs(props.breadcrumbs)
 
-    const [path, current] = makeBreadcrumbs(props.path)
+    const {
+        root,
+        onClick,
+    } = props
 
     return (
         <MUIBreadcrumbs aria-label="breadcrumb">
-            {path && generatePathLinks(path, classes.clickable, props.clickHandler)}
+            {root && generateRootLink(root, classes.clickable, onClick)}
+            {path && generatePathLinks(path, classes.clickable, onClick)}
             {current && generateCurrentLink(current)}
         </MUIBreadcrumbs>
     )
 }
 
 interface Props {
-    clickHandler?: HandlerClick
-    path?: Item[]
+    onClick?: HandlerClick
+    breadcrumbs?: Breadcrumb[]
+    root: string,
 }
+
+type HandlerClick = (path: string) => void
+
+function generateRootLink(
+    root: string,
+    className: string,
+    clickHandler?: HandlerClick,
+): React.ReactNode {
+
+    return (
+        <Link
+            key={`${root}_0`}
+            color="inherit"
+            className={className}
+            onClick={makeClickHandler(clickHandler, '')}>
+
+            {root}
+
+        </Link>
+    )
+}
+
 
 function generatePathLinks(
     bcs: Breadcrumb[],
@@ -50,23 +79,14 @@ function generateCurrentLink(
     return <Typography color="textPrimary">{bc.name}</Typography>
 }
 
-function makeBreadcrumbs(items?: Item[]): [Breadcrumb[], Breadcrumb?] {
-    if (items === undefined) {
-        return [[], undefined]
-    }
+function splitBreadcrumbs(bcs?: Breadcrumb[]): [Breadcrumb[], Breadcrumb?] {
 
-    const breadcrumbs = items.map((item, index) => {
-        return new Breadcrumb(item, items.slice(0, index + 1))
-    })
+    const currBC = bcs.splice(-1, 1)
 
-    const currBC = breadcrumbs.splice(-1, 1)
-
-    return [breadcrumbs, currBC[0]]
+    return [bcs, currBC[0]]
 }
 
 
-type HandlerClick = (path: string[]) => void
-type Item = string
 
 function useStyle() {
     const styles = makeStyles((theme: Theme) =>
@@ -81,7 +101,7 @@ function useStyle() {
 
 
 
-function makeClickHandler(clickHandler: HandlerClick = noopClickHandler, path: string[]) {
+function makeClickHandler(clickHandler: HandlerClick = noopClickHandler, path: string) {
 
     return function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
         event.preventDefault()
@@ -89,5 +109,4 @@ function makeClickHandler(clickHandler: HandlerClick = noopClickHandler, path: s
     }
 }
 
-// tslint:disable-next-line: no-empty
 function noopClickHandler() { }

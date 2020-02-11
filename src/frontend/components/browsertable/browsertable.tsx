@@ -22,7 +22,11 @@ import { Sorting, SortingDirection } from './sorting'
 export function BrowserTable(props: Props) {
 
     const classes = useStyles()
-    const { blocks, status } = props
+    const {
+        blocks,
+        status,
+        onFolderClick = noopOnFolderClick,
+    } = props
     const [sorting, setSorting] = useState<Sorting>({ headerId: HeaderID.None, direction: undefined })
 
     if (status === 'init') {
@@ -35,8 +39,8 @@ export function BrowserTable(props: Props) {
     const sortedBlocks = sortBlocks(blocks, sorting)
 
     return (
-        <TableContainer component={Paper}>
-            <Table className={classes.root} size="small" aria-label="Browser Table">
+        <TableContainer component={Paper} className={classes.container}>
+            <Table stickyHeader className={classes.root} size="small" aria-label="Browser Table">
                 <TableHead>
                     <TableRow>
                         <TableCell sortDirection={sorting.direction}>
@@ -63,7 +67,7 @@ export function BrowserTable(props: Props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(status === 'ready') && generateRows(sortedBlocks)}
+                    {(status === 'ready') && generateRows(sortedBlocks, onFolderClick)}
                     {(status === 'loading') && generateRowSkeletons(10)}
                 </TableBody>
             </Table>
@@ -74,10 +78,12 @@ export function BrowserTable(props: Props) {
 interface Props {
     blocks: FileBlock[]
     status: Status
+    onFolderClick: HandlerOnFolderClick
 }
 
 type Status = 'loading' | 'ready' | 'init'
-
+type HandlerOnFolderClick = (folderName: string) => void
+function noopOnFolderClick() { }
 
 function makeHeaderOnClick(
     newHeaderId: HeaderID,
@@ -121,7 +127,10 @@ function determineSorting(currSort: Sorting, headerId: HeaderID): Sorting {
 
 }
 
-function generateRows(blocks: FileBlock[]) {
+function generateRows(
+    blocks: FileBlock[],
+    onFolderClick: HandlerOnFolderClick,
+) {
 
     return blocks.map((block) => (
         <TableRow hover key={block.name}>
@@ -129,6 +138,7 @@ function generateRows(blocks: FileBlock[]) {
                 <NameCell
                     name={block.name}
                     type={block.type}
+                    onClick={onFolderClick}
                 />
             </TableCell>
             <TableCell align="right">
@@ -162,6 +172,9 @@ function useStyles() {
         createStyles({
             root: {
                 minWidth: 650,
+            },
+            container: {
+                maxHeight: '550px'
             },
         }),
     )

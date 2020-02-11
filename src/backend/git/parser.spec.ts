@@ -83,6 +83,15 @@ describe('Module: Parser', () => {
                     '0\t0\ttechnical-data/deployment/{autoscale.json => autoscale.service.json}',
                 ),
             },
+            {
+                desc: 'can detect movement with "0" instead "-" ',
+                line: '0\t0\tinquiry/{ => src}/catch/catch.go',
+                fileMovement: new FileMovement(
+                    'inquiry/catch/catch.go',
+                    'inquiry/src/catch/catch.go',
+                    '0\t0\tinquiry/{ => src}/catch/catch.go',
+                ),
+            },
         ]
 
         fileMovementTests.forEach(testFileMovement)

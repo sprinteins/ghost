@@ -1,21 +1,23 @@
 import { ipcMain, IpcMainEvent } from 'electron'
-import { MessageKey } from '../../../common'
+import { log, MessageKey, OpenRepoMessage } from '../../../common'
 
 
 export function handleOpenFolderRequest(handler: HandlerOpenFolderRequest) {
     ipcMain.on(MessageKey.RequestOpenFolder, (event: IpcMainEvent, ...args: any[]) => {
-        const folderPath = guardFolderpath(args)
+        const folderPath = guardOpenRepoMessage(args)
         handler(folderPath)
     })
 }
 
-export type HandlerOpenFolderRequest = (folderPath: string) => void
+export type HandlerOpenFolderRequest = (openRepoMsg: OpenRepoMessage) => void
 
-function guardFolderpath(args: any[]): string {
-    const first = args[0]
-    if (typeof first !== 'string') {
-        throw new Error('First arguments has to be string!')
+function guardOpenRepoMessage(args: any[]): OpenRepoMessage {
+    const openRepoMsg = args[0] as OpenRepoMessage
+    if (!openRepoMsg || openRepoMsg.folderPath === undefined || openRepoMsg.query === undefined) {
+        const errorMsg = `wrong format for "OpenRepoMessage": ${openRepoMsg}`
+        log.error(errorMsg)
+        throw new Error(errorMsg)
     }
 
-    return first
+    return openRepoMsg
 }

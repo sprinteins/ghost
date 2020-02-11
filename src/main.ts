@@ -1,9 +1,9 @@
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { Backend } from './backend'
-import { handleOpenFolderRequest } from './backend/common/messenger'
+import { handleLocationChangeRequest, handleOpenFolderRequest } from './backend/common/messenger'
 import { setBrowserWindow } from './backend/common/messenger/sendmessage'
-import { log } from './common'
+
 import isDev from './common/is-dev'
 
 
@@ -11,7 +11,9 @@ main()
 
 function setupBackendListeners() {
     const be = new Backend()
-    handleOpenFolderRequest(be.handleOpenFolderRequest)
+    handleOpenFolderRequest(be.handleOpenFolderRequest.bind(be))
+    handleLocationChangeRequest(be.handleChangeLocationRequest.bind(be))
+
 }
 
 function main() {
@@ -54,7 +56,7 @@ function main() {
 function createWindow(): Electron.BrowserWindow {
     // Create the browser window.
     let mainWindow = new BrowserWindow({
-        height: 600,
+        height: 1024,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
         },
@@ -66,11 +68,13 @@ function createWindow(): Electron.BrowserWindow {
     mainWindow.loadURL(
         isDev
             ? 'http://localhost:1234'
-            : `file://${path.join(__dirname, '../build/index.html')}`,
+            : `file://${path.join(__dirname, 'frontend/index.html')}`,
     )
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    if (isDev) {
+        mainWindow.webContents.openDevTools({ mode: 'bottom' })
+    }
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {

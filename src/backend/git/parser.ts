@@ -1,4 +1,5 @@
 import { defaultTo } from 'lodash'
+import { log } from '../../common'
 import { FileChanges } from './file-changes'
 import { FileMovement } from './file-movement'
 
@@ -39,10 +40,16 @@ function createFileMovement(components: Components, line: string): FileMovement 
     const oldPathPart = pathChange[0]
     const newPathPart = pathChange[1]
 
-    const oldPath = `${pathBeforeChangedPart}${oldPathPart}${pathAfterChangedPart}`
-    const newPath = `${pathBeforeChangedPart}${newPathPart}${pathAfterChangedPart}`
+    const oldPath = normalizePath(`${pathBeforeChangedPart}${oldPathPart}${pathAfterChangedPart}`)
+    const newPath = normalizePath(`${pathBeforeChangedPart}${newPathPart}${pathAfterChangedPart}`)
 
     return new FileMovement(oldPath, newPath, line)
+}
+
+function normalizePath(path: string): string {
+
+    const regex = /\/\/+/g
+    return path.replace(regex, '/')
 }
 
 function createFileChanges(components: Components, line: string): FileChanges {

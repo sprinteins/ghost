@@ -2,12 +2,16 @@ import * as React from 'react'
 
 import {
     Button,
+    Fab,
     Toolbar,
     Typography,
 } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import { log } from '../../../common'
 import { getElectron } from '../../common'
+
+
 
 
 
@@ -24,7 +28,15 @@ export function HeaderBar(props: Props) {
             <Typography variant="h6" className={classes.title}>
                 👻 GHOST
             </Typography>
-            <Button variant="contained" onClick={makeOpenDialog(onOpenFolder)}>Open Git Repo</Button>
+            <Fab
+                size="medium"
+                variant="extended"
+                color="secondary"
+                aria-label="edit"
+                onClick={makeOpenDialog(onOpenFolder)}
+            >
+                <FolderOpenIcon />Open Git Repo
+            </Fab>
         </Toolbar>
     )
 }
