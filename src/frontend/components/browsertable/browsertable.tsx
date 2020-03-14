@@ -154,10 +154,10 @@ function generateRowSkeletons(no: number): React.ReactNode[] {
         rows.push(
             <TableRow key={i}>
                 <TableCell component="th" scope="row">
-                    <Skeleton />
+                    <Skeleton height={29} />
                 </TableCell>
                 <TableCell align="right">
-                    <Skeleton />
+                    <Skeleton height={29} />
                 </TableCell>
             </TableRow>,
         )
