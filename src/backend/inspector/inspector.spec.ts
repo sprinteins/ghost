@@ -24,7 +24,7 @@ describe('Module: Controller ', () => {
                     '-\t-\t{public => src}/index.html',
                 ],
                 expectedChanges: {
-                    'src/index.html': 1,
+                    'src/index.html': 2,
                 },
             },
             {
@@ -34,7 +34,7 @@ describe('Module: Controller ', () => {
                     '-\t-\t{public/www/site => src/website/index}/index.html',
                 ],
                 expectedChanges: {
-                    'src/website/index/index.html': 1,
+                    'src/website/index/index.html': 2,
                 },
             },
             {
@@ -44,7 +44,7 @@ describe('Module: Controller ', () => {
                     '-\t-\tpublic/{index.html => start.html}',
                 ],
                 expectedChanges: {
-                    'public/start.html': 1,
+                    'public/start.html': 2,
                 },
             },
         ]

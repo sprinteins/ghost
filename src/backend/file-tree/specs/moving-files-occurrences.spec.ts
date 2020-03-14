@@ -19,7 +19,7 @@ describe('Module: FileTree / Moving Files Effect on Occurrences', () => {
                     new: 'public/index.html',
                 },
             ],
-            expectedFiles: { 'public/index.html': new TestFile('public/index.html', 1) },
+            expectedFiles: { 'public/index.html': new TestFile('public/index.html', 2) },
         },
         {
             desc: 'renaming files with multiple occurrence adds to the new file',
@@ -28,7 +28,7 @@ describe('Module: FileTree / Moving Files Effect on Occurrences', () => {
                 old: 'src/public/index.html',
                 new: 'public/index.html',
             }],
-            expectedFiles: { 'public/index.html': new TestFile('public/index.html', 2) },
+            expectedFiles: { 'public/index.html': new TestFile('public/index.html', 3) },
         },
         {
             desc: 'multiple movements count only the last one',
@@ -43,7 +43,7 @@ describe('Module: FileTree / Moving Files Effect on Occurrences', () => {
                     new: 'www/index.html',
                 },
             ],
-            expectedFiles: { 'www/index.html': new TestFile('www/index.html', 1) },
+            expectedFiles: { 'www/index.html': new TestFile('www/index.html', 3) },
         },
         {
             desc: 'create file if old one not found',

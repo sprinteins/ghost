@@ -46,14 +46,13 @@ export class FileTree {
         let oldFile = this.findFileByPath(oldFilePath)
 
         if (!oldFile) {
-            this.addFile(oldFilePath, line)
+            this.addFileWithOccurrence(oldFilePath, 0)
             oldFile = this.getFileByPath(oldFilePath)
         }
 
         try {
             const oldFolder = this.getFolderByPath(oldFile.getParentFolderPath())
-
-            this.addFileWithOccurrence(newFilePath, oldFile.getOccurrences())
+            this.addFileWithOccurrence(newFilePath, oldFile.getOccurrences() + 1)
 
             oldFolder.removeFileByName(oldFile.getName())
             this.removeFileByPath(oldFilePath)
@@ -85,6 +84,14 @@ export class FileTree {
     }
 
     private addFileWithOccurrence(filePath: string, occurrence?: number) {
+        const existingFile = this.findFileByPath(filePath)
+
+        if (existingFile) {
+            this.increaseOccurrenceByPath(filePath, occurrence)
+            return
+        }
+
+
         const file = new File(filePath)
         const parentFolderPath = file.getParentFolderPath()
 
