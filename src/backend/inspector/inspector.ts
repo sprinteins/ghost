@@ -31,8 +31,7 @@ export class Inspector {
 
         const command = this.commandBuilder.done()
         const result = await this.exec(command, path)
-        const lines = result
-            .split('\n')
+        const lines = result.split('\n')
 
         const noOfLines = lines.length
         let currProgress = 0
