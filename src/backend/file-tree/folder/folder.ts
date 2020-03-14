@@ -3,10 +3,6 @@ import { inspect } from 'util'
 import { File } from '../file/file'
 
 
-// class MyEmitter extends EventEmitter {
-
-// }
-
 enum Events {
     FileRemoved = 'FileRemoved',
     FolderRemoved = 'FolderRemoved',
@@ -154,6 +150,7 @@ export class Folder {
     public removeFileByName(name: string) {
         const file = this.filesMap[name]
         delete this.filesMap[name]
+        this.inc(-1 * file.getOccurrences())
         this.generateFiles()
         this.eventEmitter.emit(Folder.Events.FileRemoved, file)
     }
@@ -218,7 +215,7 @@ export class Folder {
     }
 
 
-    private inc(byNumber: number) {
+    protected inc(byNumber: number) {
         const from = this.getOccurrences()
         this.occurrences += byNumber
         const to = this.getOccurrences()
