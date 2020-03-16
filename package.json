@@ -17,7 +17,7 @@
     "build-fe": "parcel build ./src/frontend/index.html -d dist/frontend --public-url ./",
     "build-be": "tsc --outDir dist",
     "pack": "electron-builder --dir",
-    "dist": "yarn build-be && yarn build-fe && electron-builder",
+    "build": "yarn build-be && yarn build-fe && electron-builder",
     "_postinstall": "electron-builder install-app-deps",
     "spec": "scripts/spec.sh"
   },
