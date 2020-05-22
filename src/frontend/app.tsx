@@ -6,7 +6,7 @@ import { handleProgressUpdate } from './common/messenger/handleprogressupdate'
 import { HeaderBar } from './components'
 import { Browser } from './containers'
 import { Status as BrowserStatus } from './containers/browser/browser'
-import { PrimaryLayout } from './layout/primary'
+import { PrimaryLayout } from './layout'
 
 export function App() {
 
@@ -91,3 +91,4 @@ function makeHandleLocationChange(setLocation: (currLoc: CurrentLocation) => voi
   }
 
 }
+
