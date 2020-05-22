@@ -7,13 +7,9 @@ import {
     Typography,
 } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen'
 import { log } from '../../../common'
 import { getElectron } from '../../common'
-
-
-
-
 
 export function HeaderBar(props: Props) {
 

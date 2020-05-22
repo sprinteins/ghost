@@ -19,7 +19,9 @@
     "pack": "electron-builder --dir",
     "build": "yarn build-be && yarn build-fe && electron-builder",
     "_postinstall": "electron-builder install-app-deps",
-    "spec": "scripts/spec.sh"
+    "spec": "scripts/spec.sh",
+    "storybook": "start-storybook --ci --port 9000",
+    "build-storybook": "build-storybook"
   },
   "build": {
     "appId": "com.sprinteins.ghost",
@@ -42,16 +44,24 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.40",
     "@types/lodash": "^4.14.149",
+    "@types/node": "^12.12.42",
+    "awesome-typescript-loader": "^5.2.1",
     "lodash": "^4.17.15",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "typescript-tslint-plugin": "^0.5.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/react": "^5.3.18",
     "@types/chai": "^4.2.8",
     "@types/mocha": "^7.0.1",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
+    "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
     "concurrently": "^5.0.2",
     "electron": "^9.0.0",
