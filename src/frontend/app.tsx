@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { CurrentLocation, FileBlock, log } from '../common'
+import { CurrentLocation, FileBlock, log, ViewType } from '../common'
 import './App.css'
 import { handleLocationChange, sendOpenRepoRequest } from './common/messenger'
 import { handleProgressUpdate } from './common/messenger/handleprogressupdate'
@@ -14,6 +14,7 @@ export function App() {
   const [location, setLocation] = React.useState<CurrentLocation>({ folders: [], blocks: [], root: '' })
   const [query, setQuery] = React.useState('')
   const [folderPath, setFolderPath] = React.useState<string[]>([])
+  const [viewType, setViewType] = React.useState(ViewType.Tree)
 
   const browserStatus = caclBrowserStatus(progress, location.blocks)
 
@@ -24,12 +25,17 @@ export function App() {
 
   const onHeaderBarOpenLocation = (newFolderPath: string[]) => {
     setFolderPath(newFolderPath)
-    openFolder(newFolderPath, query)
+    openFolder(newFolderPath, query, viewType)
   }
 
   const onBrowserQuery = (newQuery: string) => {
     setQuery(newQuery)
-    openFolder(folderPath, newQuery)
+    openFolder(folderPath, newQuery, viewType)
+  }
+
+  const onBrowserViewTypeChange = (newViewType: ViewType) => {
+    setViewType(newViewType)
+    openFolder(folderPath, query, newViewType)
   }
 
   return (
@@ -38,6 +44,7 @@ export function App() {
       slotContent={
         <Browser
           onQuery={onBrowserQuery}
+          onViewChange={onBrowserViewTypeChange}
           root={location.root}
           progress={progress}
           fileTree={location.blocks}
@@ -71,8 +78,12 @@ function caclBrowserStatus(progress: number, blocks: FileBlock[]): BrowserStatus
 }
 
 function makeOnOpenFolder(setLocation: (currLoc: CurrentLocation) => void) {
-  return function onOpenFolder(folderPaths: string[], query: string = '') {
-    sendOpenRepoRequest(folderPaths[0], query)
+  return function onOpenFolder(
+    folderPaths: string[],
+    query: string = '',
+    viewType: ViewType,
+  ) {
+    sendOpenRepoRequest(folderPaths[0], query, viewType)
     setLocation({ folders: [], blocks: [], root: '' })
   }
 }

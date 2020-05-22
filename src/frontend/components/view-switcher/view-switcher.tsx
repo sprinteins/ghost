@@ -4,6 +4,7 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import { ViewType } from '../../../common'
 
 
 
@@ -13,7 +14,7 @@ export function ViewSwitcher(props: Props) {
         onChange = noopOnChange,
     } = props
 
-    const [selection, setSelection] = React.useState(View.Tree)
+    const [selection, setSelection] = React.useState(ViewType.Tree)
 
     return (
         <ToggleButtonGroup
@@ -22,10 +23,10 @@ export function ViewSwitcher(props: Props) {
             onChange={makeHandleOnChange(setSelection, onChange)}
             aria-label="Views"
         >
-            <ToggleButton value={View.Tree} aria-label="left aligned">
+            <ToggleButton value={ViewType.Tree} aria-label="left aligned">
                 <AccountTreeIcon />
             </ToggleButton>
-            <ToggleButton value={View.List} aria-label="centered">
+            <ToggleButton value={ViewType.List} aria-label="centered">
                 <FormatListNumberedRtlIcon />
             </ToggleButton>
         </ToggleButtonGroup>
@@ -33,10 +34,10 @@ export function ViewSwitcher(props: Props) {
 }
 
 function makeHandleOnChange(
-    setSelection: (newSelection: View) => void,
+    setSelection: (newSelection: ViewType) => void,
     onChange: OnChangeFn,
 ) {
-    return function handleOnChange(_: React.MouseEvent<HTMLElement>, newValue: View) {
+    return function handleOnChange(_: React.MouseEvent<HTMLElement>, newValue: ViewType) {
         setSelection(newValue)
         onChange(newValue)
     }
@@ -46,10 +47,7 @@ interface Props {
     onChange?: OnChangeFn
 }
 
-type OnChangeFn = (view: View) => void
-function noopOnChange(view: View) { }
+type OnChangeFn = (view: ViewType) => void
+function noopOnChange(view: ViewType) { }
 
-enum View {
-    Tree = 'Tree',
-    List = 'List',
-}
+

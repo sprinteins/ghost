@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { BlockType, FileBlock } from '../../common'
+import { BlockType, FileBlock, log, ViewType } from '../../common'
 import { FileTree } from '../file-tree'
 import { File } from '../file-tree/file'
 import { Folder } from '../file-tree/folder'
@@ -14,6 +14,7 @@ export class Locator {
     constructor(
         private fileTree: FileTree,
         private rootFolderPath: string,
+        private viewType: ViewType,
     ) {
         this.cwd = this.fileTree.getRoot()
         this.changeToRoot()
@@ -51,6 +52,11 @@ export class Locator {
 
     private generateFileBlocks(): FileBlock[] {
 
+        // TODO: no-if-edge-cases
+        if (this.viewType === ViewType.List) {
+            return Object.values(this.fileTree.getAllFiles()).map(this.mapFileToBlockWithPath)
+        }
+
         const folderBlocks: FileBlock[] = this.cwd.getFolders().map(this.mapFolderToBlock)
         const fileBlocks: FileBlock[] = this.cwd.getFiles().map(this.mapFileToBlock)
 
@@ -66,6 +72,10 @@ export class Locator {
         return new FileBlock(file.getName(), file.getOccurrences(), BlockType.File)
     }
 
+    private mapFileToBlockWithPath(file: File): FileBlock {
+        log.debug('filePath:', file.getPath())
+        return new FileBlock(file.getPath(), file.getOccurrences(), BlockType.File)
+    }
 
 
 }

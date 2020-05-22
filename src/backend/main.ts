@@ -1,4 +1,4 @@
-import { BlockType, FileBlock, log, OpenRepoMessage } from '../common'
+import { BlockType, FileBlock, log, OpenRepoCommand } from '../common'
 import { sendEventProgressUpdate } from './common/messenger'
 import { sendEventLocationChange } from './common/messenger/currentlocation'
 import { FileTree } from './file-tree'
@@ -16,11 +16,11 @@ export class Backend {
     }
 
 
-    public async handleOpenFolderRequest(orm: OpenRepoMessage) {
+    public async handleOpenFolderRequest(orc: OpenRepoCommand) {
         sendEventProgressUpdate(1)
         const insp = new Inspector()
-        const fileTree = await insp.analyse(orm.folderPath, undefined, orm.query)
-        this.locator = new Locator(fileTree, orm.folderPath)
+        const fileTree = await insp.analyse(orc.folderPath, undefined, orc.query)
+        this.locator = new Locator(fileTree, orc.folderPath, orc.viewType)
         sendEventProgressUpdate(100)
         sendEventLocationChange(this.locator.getCurrentLocation())
 

@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { FileBlock, log } from '../../../common'
+import { FileBlock, log, ViewType } from '../../../common'
 import { sendChangeLocationRequest } from '../../common/messenger/locationchangerequest'
-import { Breadcrumbs, BrowserTable } from '../../components'
+import { Breadcrumbs, BrowserTable, ViewSwitcher } from '../../components'
 import { Breadcrumb } from '../../components/breadcrumbs/breadcrumb'
 import { BranchQuery } from './branchquery'
 import { Layout } from './layout'
@@ -17,6 +17,7 @@ export function Browser(props: Props) {
         breadcrumbs = [],
         root = '',
         onQuery = () => { },
+        onViewChange = () => { },
     } = props
 
     const basePath = extractBasePath(breadcrumbs)
@@ -24,10 +25,13 @@ export function Browser(props: Props) {
     const onFolderClick = makeOnFolderClick(basePath)
 
     const branchQuery = <BranchQuery key="branch-query" onQuery={onQuery} />
+    const viewSwitcher = <ViewSwitcher onChange={onViewChange} />
+
     return (
         <Layout
             slotBreadcrumbs={<Breadcrumbs root={root} breadcrumbs={breadcrumbs} onClick={logBreadcrumbClicks} />}
             slotProgress={<Progress progress={progress} />}
+            slotViewSwitcher={viewSwitcher}
             slotContent={
                 <BrowserTable
                     blocks={fileTree}
@@ -48,6 +52,7 @@ interface Props {
     breadcrumbs?: Breadcrumb[]
     root?: string
     onQuery?: (query: string) => void
+    onViewChange?: (viewType: ViewType) => void
 }
 
 

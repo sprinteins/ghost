@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
-import { log } from '../../common'
+import { log, ViewType } from '../../common'
 import { FileTree } from '../file-tree'
 import { Locator } from './locator'
 
@@ -43,7 +43,7 @@ describe('Module: Locator', () => {
                 t.filePaths.forEach((filePath) => {
                     fileTree.addFile(filePath)
                 })
-                const locator = new Locator(fileTree, t.rootPath)
+                const locator = new Locator(fileTree, t.rootPath, ViewType.Tree)
                 locator.changeDirector(t.cd)
 
                 const location = locator.getCurrentLocation()
