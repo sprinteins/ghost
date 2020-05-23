@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core'
 import { ViewSwitcher } from '.'
 
 export default {
-    title: 'Components | ViewSwitcher',
+    title: 'Components | View Switcher',
     component: ViewSwitcher,
 }
 

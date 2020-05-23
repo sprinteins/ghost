@@ -2,7 +2,7 @@ import { Box, Button, Grid, TextField } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import SearchIcon from '@material-ui/icons/Search'
 import * as React from 'react'
-import { log } from '../../../common'
+
 
 
 export function BranchQuery(props: Props) {
@@ -11,30 +11,34 @@ export function BranchQuery(props: Props) {
 
     const {
         onQuery = () => { },
+        onChange = () => { },
     } = props
 
     const sendQuery = () => onQuery(query)
+    const inputOnChange = (value: string) => {
+        setQuery(value)
+        onChange(value)
+    }
 
-    const button = <SearchButton onClick={sendQuery} />
-    const input = <Input onChange={setQuery} onEnter={sendQuery} />
+    const input = <Input onChange={inputOnChange} onEnter={sendQuery} />
 
     return layout(
         input,
-        button,
     )
 
 }
 
 interface Props {
-    onQuery?: HandlerOnQuery
+    onQuery?: OnQueryHandler
+    onChange?: OnChangeHandler
 }
 
-type HandlerOnQuery = (query: string) => void
+type OnQueryHandler = (query: string) => void
+type OnChangeHandler = (query: string) => void
 
 
 function layout(
     input: React.ReactNode,
-    button: React.ReactNode,
 ) {
 
     const classes = useStyles()
@@ -42,7 +46,6 @@ function layout(
     return (
         <Box>
             <span>{input}</span>
-            <span className={classes.button}>{button}</span>
         </Box>
     )
 }
@@ -77,29 +80,6 @@ function Input(props: InputProps) {
 interface InputProps {
     onChange?: (text: string) => void
     onEnter?: () => void
-}
-
-function SearchButton(props: SearchButtonProps) {
-
-    const {
-        onClick = () => { },
-    } = props
-
-    return (
-        <Button
-            onClick={onClick}
-            variant="contained"
-            color="secondary"
-            size="small"
-            startIcon={<SearchIcon />}
-        >
-            Query
-      </Button>
-    )
-}
-
-interface SearchButtonProps {
-    onClick: () => void
 }
 
 

@@ -3,9 +3,9 @@ import { FileBlock, log, ViewType } from '../../../common'
 import { sendChangeLocationRequest } from '../../common/messenger/locationchangerequest'
 import { Breadcrumbs, BrowserTable, ViewSwitcher } from '../../components'
 import { Breadcrumb } from '../../components/breadcrumbs/breadcrumb'
-import { BranchQuery } from './branchquery'
 import { Layout } from './layout'
 import { Progress } from './progress'
+import { BranchQuery } from '../../components'
 
 
 export function Browser(props: Props) {
