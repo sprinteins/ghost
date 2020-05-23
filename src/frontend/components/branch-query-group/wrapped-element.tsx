@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core'
 import * as React from 'react'
 import { BranchQuery } from '../'
-import { CloseButton } from './close-button'
+import { ButtonClose } from './button-close'
 
 // TODO: rename
 export function WrappedElement(props: Props) {
@@ -14,7 +14,7 @@ export function WrappedElement(props: Props) {
 
     return (
         <Grid item>
-            <CloseButton show={withClose} onClick={onCloseClick} />
+            <ButtonClose show={withClose} onClick={onCloseClick} />
             <BranchQuery onChange={onChange} />
         </Grid >
     )

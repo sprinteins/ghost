@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import CloseIcon from '@material-ui/icons/Close'
 
-export function CloseButton(props: Props) {
+export function ButtonClose(props: Props) {
 
     const {
         show = true,

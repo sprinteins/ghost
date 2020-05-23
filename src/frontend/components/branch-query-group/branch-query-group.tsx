@@ -1,8 +1,7 @@
-import { Fab, Grid, IconButton } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import CloseIcon from '@material-ui/icons/Close'
 import * as React from 'react'
-import { QueryButton } from './query-button'
+import { ButtonAdd } from './button-add'
+import { ButtonQuery } from './button-query'
+import { Layout } from './layout'
 import { WrappedElement } from './wrapped-element'
 
 
@@ -28,21 +27,13 @@ export function BranchQueryGroup(props: Props) {
         setQueryElements, ,
     ] = React.useState<QueryElementState>(genInitQueryElemntState(setQueries))
 
+
     return (
-        <Grid container spacing={1}>
-            {childrenObjectToKeyedArray(queryElements)}
-            <Grid item>
-                <IconButton
-                    onClick={makeAddQueryElement(setQueryElements, setQueries)}
-                    size="medium"
-                    color="secondary"
-                    aria-label="add"
-                >
-                    <AddIcon />
-                </IconButton>
-                <QueryButton onClick={makeHandleOnClick(onQuery, queries)} />
-            </Grid>
-        </Grid >
+        <Layout
+            slotBranchQueryElements={childrenObjectToKeyedArray(queryElements)}
+            slotAddButton={<ButtonAdd onClick={makeAddQueryElement(setQueryElements, setQueries)} />}
+            slotQueryButton={<ButtonQuery onClick={makeHandleOnClick(onQuery, queries)} />}
+        />
     )
 }
 
@@ -78,7 +69,7 @@ function genInitQueryElemntState(setQueries: SetQueriesFn): QueryElementState {
     })
 }
 
-// Dispatch<SetStateAction<S>>
+
 function makeAddQueryElement(
     setQueryElements: SetQueryElementFn,
     setQueries: SetQueriesFn,

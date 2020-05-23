@@ -3,7 +3,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import * as React from 'react'
 
 
-export function QueryButton(props: SearchButtonProps) {
+export function ButtonQuery(props: SearchButtonProps) {
 
     const {
         onClick = () => { },
